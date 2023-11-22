@@ -19,13 +19,36 @@
     <description>Microsphere Alibaba Sentinel Core</description>
 
     <dependencies>
-        <!-- Microsphere Core -->
+        <!-- Microsphere JDBC -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-core</artifactId>
+            <artifactId>microsphere-jdbc</artifactId>
         </dependency>
 
+
+
         <!-- Third-Party Dependencies -->
+        <!-- P6spy -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Alibaba Sentinel -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- MyBatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
