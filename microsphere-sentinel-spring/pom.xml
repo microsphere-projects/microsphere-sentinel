@@ -27,7 +27,7 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- Microsphere Spring Redis -->
+        <!-- Microsphere Redis Spring -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-redis-spring</artifactId>
