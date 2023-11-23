@@ -3,7 +3,7 @@ package io.microsphere.sentinel.spring.boot.autoconfigure;
 import com.alibaba.csp.sentinel.SphU;
 import io.microsphere.sentinel.mybatis.SentinelMyBatisInterceptor;
 import io.microsphere.sentinel.spring.redis.SentinelRedisCommandInterceptor;
-import io.microsphere.spring.redis.interceptor.RedisMethodInterceptor;
+import io.microsphere.redis.spring.interceptor.RedisMethodInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.constants.PropertyConstants.MICROSPHERE_PROPERTY_NAME_PREFIX;
 import static io.microsphere.sentinel.spring.boot.autoconfigure.SentinelAutoConfiguration.PROPERTY_NAME_PREFIX;
 import static io.microsphere.spring.boot.constants.PropertyConstants.MICROSPHERE_SPRING_BOOT_PROPERTY_NAME_PREFIX;
 
