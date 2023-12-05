@@ -1,10 +1,6 @@
 package io.microsphere.sentinel.mybatis;
 
-import com.alibaba.csp.sentinel.Entry;
-import com.alibaba.csp.sentinel.SphU;
-import com.alibaba.csp.sentinel.Tracer;
-import com.alibaba.csp.sentinel.context.ContextUtil;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
+import io.microsphere.sentinel.util.SentinelUtils;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.executor.BatchResult;
@@ -111,28 +107,7 @@ class DelegatingSentinelMyBatisExecutor implements Executor {
 
     protected <T> T doInSentinel(MappedStatement ms, Callable<T> callable) throws SQLException {
         String resourceName = getSentinelResourceName(ms);
-        T result = null;
-        ContextUtil.enter("mybatis-context", "Executor");
-        Entry entry = null;
-        try {
-            entry = SphU.entry(resourceName);
-            result = callable.call();
-        } catch (Throwable e) {
-            if (!BlockException.isBlockException(e)) {
-                Tracer.trace(e);
-            }
-            if (e instanceof SQLException) {
-                throw (SQLException) e;
-            } else {
-                throw new SQLException(e);
-            }
-        } finally {
-            if (entry != null) {
-                entry.exit();
-            }
-            ContextUtil.exit();
-        }
-        return result;
+        return SentinelUtils.doInSentinel("mybatis-context", "Executor", resourceName, callable, SQLException.class);
     }
 
     private String getSentinelResourceName(MappedStatement ms) {
