@@ -12,10 +12,11 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.util.StringJoiner;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 import static com.alibaba.csp.sentinel.Constants.CONTEXT_DEFAULT_NAME;
 import static io.microsphere.util.ClassUtils.getSimpleName;
-
+import static io.microsphere.util.ExceptionUtils.throwTarget;
 
 /**
  * Alibaba Sentinel Utilities Class
@@ -53,7 +54,7 @@ public abstract class SentinelUtils {
      * @param <T>          the return type
      * @return nullable
      */
-    public static <T> T doInSentinel(String resourceName, Callable<T> callback) {
+    public static <T> T doInSentinel(String resourceName, Callable<T> callback) throws Throwable {
         return doInSentinel(CONTEXT_DEFAULT_NAME, "", resourceName, callback);
     }
 
@@ -67,7 +68,7 @@ public abstract class SentinelUtils {
      * @param <T>          the return type
      * @return nullable
      */
-    public static <T> T doInSentinel(String contextName, String origin, String resourceName, Callable<T> callback) {
+    public static <T> T doInSentinel(String contextName, String origin, String resourceName, Callable<T> callback) throws Throwable {
         T result = null;
         ContextUtil.enter(contextName, origin);
         Entry entry = null;
@@ -78,14 +79,64 @@ public abstract class SentinelUtils {
             if (!BlockException.isBlockException(e)) {
                 Tracer.trace(e);
             }
+            if (logger.isErrorEnabled()) {
+                logger.error("A callback '{}' of Sentinel context[name :'{}' , origin : '{}'] resource[name :'{}'] execution is failed",
+                        callback, contextName, origin, resourceName, e);
+            }
+            throw e;
         } finally {
             if (entry != null) {
                 entry.exit();
             }
             ContextUtil.exit();
             if (logger.isDebugEnabled()) {
-                logger.debug("A callback : {} of Sentinel context[name :'{}' , origin : '{}'] resource[name :'{}'] was executed", callback, contextName, origin, resourceName);
+                logger.debug("A callback '{}' of Sentinel context[name :'{}' , origin : '{}'] resource[name :'{}'] was executed",
+                        callback, contextName, origin, resourceName);
             }
+        }
+        return result;
+    }
+
+    /**
+     * Executes a callback in sentinel
+     *
+     * @param contextName      the name of {@link Context}
+     * @param origin           the origin of {@link Context}
+     * @param resourceName     the resource of Sentinel's resource
+     * @param callback         callback
+     * @param <T>              the return type
+     * @param exceptionHandler the handler for {@link Throwable}
+     * @return nullable
+     */
+    public static <T> T doInSentinel(String contextName, String origin, String resourceName, Callable<T> callback, Consumer<Throwable> exceptionHandler) {
+        T result = null;
+        try {
+            result = doInSentinel(contextName, origin, resourceName, callback);
+        } catch (Throwable e) {
+            exceptionHandler.accept(e);
+        }
+        return result;
+    }
+
+    /**
+     * Executes a callback in sentinel
+     *
+     * @param contextName   the name of {@link Context}
+     * @param origin        the origin of {@link Context}
+     * @param resourceName  the resource of Sentinel's resource
+     * @param callback      callback
+     * @param throwableType the handler for {@link Throwable}
+     * @param <T>           the return type
+     * @param <TT>          the throwable type
+     * @return nullable
+     */
+    public static <T, TT extends Throwable> T doInSentinel(String contextName, String origin, String resourceName,
+                                                           Callable<T> callback, Class<TT> throwableType) throws TT {
+        T result = null;
+        try {
+            result = doInSentinel(contextName, origin, resourceName, callback);
+        } catch (Throwable e) {
+            throwTarget(e, throwableType);
         }
         return result;
     }
