@@ -103,7 +103,7 @@ public class SentinelRedisCommandInterceptor implements RedisConnectionIntercept
     }
 
     private String getOrigin(RedisConnection redisConnection) {
-        return "";
+        return "RedisConnection";
     }
 
     private String getResourceName(Method method) {
@@ -111,7 +111,7 @@ public class SentinelRedisCommandInterceptor implements RedisConnectionIntercept
     }
 
     private String getContextName(String resourceName) {
-        return "spring.redis.commands.context-" + resourceName;
+        return "microsphere-redis-context";
     }
 
     private void entranceEntry(RedisMethodContext<RedisConnection> context, String resourceName) {
