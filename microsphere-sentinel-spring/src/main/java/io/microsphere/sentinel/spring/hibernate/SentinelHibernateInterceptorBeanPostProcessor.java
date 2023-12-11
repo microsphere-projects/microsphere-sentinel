@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.sentinel.spring.hibernate.factory.config;
+package io.microsphere.sentinel.spring.hibernate;
 
 import io.microsphere.reflect.FieldUtils;
-import io.microsphere.sentinel.spring.hibernate.SentinelHibernateInterceptor;
+import io.microsphere.sentinel.hibernate.SentinelHibernateInterceptor;
 import io.microsphere.spring.beans.factory.config.GenericBeanPostProcessorAdapter;
 import org.hibernate.Interceptor;
 import org.springframework.beans.BeansException;

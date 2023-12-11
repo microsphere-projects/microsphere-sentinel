@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.sentinel.spring.hibernate;
+package io.microsphere.sentinel.hibernate;
 
 import io.microsphere.sentinel.util.SentinelUtils;
 import org.hibernate.CallbackException;
