@@ -1,6 +1,7 @@
 package io.microsphere.sentinel.util;
 
 import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.ResourceTypeConstants;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.Tracer;
 import com.alibaba.csp.sentinel.context.Context;
@@ -10,15 +11,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringJoiner;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 import static com.alibaba.csp.sentinel.Constants.CONTEXT_DEFAULT_NAME;
+import static io.microsphere.reflect.FieldUtils.getFieldValue;
 import static io.microsphere.text.FormatUtils.format;
 import static io.microsphere.util.ClassUtils.getSimpleName;
 import static io.microsphere.util.ExceptionUtils.throwTarget;
+import static java.lang.reflect.Modifier.isStatic;
 
 /**
  * Alibaba Sentinel Utilities Class
@@ -33,6 +39,20 @@ public abstract class SentinelUtils {
     public static final String DEFAULT_ORIGIN = "";
 
     public static final String FLOW_DATA_ID_PATTERN = "{}-flow-rules";
+
+    private static final Map<Integer, String> resourceTypeToLabelMapping = initResourceTypeToLabelMapping();
+
+    private static Map<Integer, String> initResourceTypeToLabelMapping() {
+        Field[] fields = ResourceTypeConstants.class.getFields();
+        Map<Integer, String> resourceTypeToLabelMapping = new HashMap<>(fields.length);
+        for (Field field : fields) {
+            if (isStatic(field.getModifiers())) {
+                Integer value = getFieldValue(null, field);
+                resourceTypeToLabelMapping.put(value, field.getName());
+            }
+        }
+        return resourceTypeToLabelMapping;
+    }
 
     private SentinelUtils() {
     }
@@ -156,5 +176,13 @@ public abstract class SentinelUtils {
         return format(FLOW_DATA_ID_PATTERN, appName);
     }
 
+    /**
+     * Get the label string for resource type
+     *
+     * @param resourceType resource type
+     * @return non-null
+     */
+    public static String getResourceTypeAsString(int resourceType) {
+        return resourceTypeToLabelMapping.getOrDefault(resourceType, "UNKNOWN");
+    }
 }
-
