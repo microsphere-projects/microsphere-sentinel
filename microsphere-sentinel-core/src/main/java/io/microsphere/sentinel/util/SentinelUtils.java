@@ -4,9 +4,11 @@ import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.ResourceTypeConstants;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.Tracer;
+import com.alibaba.csp.sentinel.concurrent.NamedThreadFactory;
 import com.alibaba.csp.sentinel.context.Context;
 import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,14 +19,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.function.Consumer;
 
 import static com.alibaba.csp.sentinel.Constants.CONTEXT_DEFAULT_NAME;
 import static io.microsphere.reflect.FieldUtils.getFieldValue;
+import static io.microsphere.reflect.FieldUtils.getStaticFieldValue;
 import static io.microsphere.text.FormatUtils.format;
 import static io.microsphere.util.ClassUtils.getSimpleName;
 import static io.microsphere.util.ExceptionUtils.throwTarget;
 import static java.lang.reflect.Modifier.isStatic;
+import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
 /**
  * Alibaba Sentinel Utilities Class
@@ -41,6 +48,8 @@ public abstract class SentinelUtils {
     public static final String FLOW_DATA_ID_PATTERN = "{}-flow-rules";
 
     private static final Map<Integer, String> resourceTypeToLabelMapping = initResourceTypeToLabelMapping();
+
+    private static volatile ScheduledExecutorService sentinelMetricsTaskExecutor;
 
     private static Map<Integer, String> initResourceTypeToLabelMapping() {
         Field[] fields = ResourceTypeConstants.class.getFields();
@@ -185,4 +194,43 @@ public abstract class SentinelUtils {
     public static String getResourceTypeAsString(int resourceType) {
         return resourceTypeToLabelMapping.getOrDefault(resourceType, "UNKNOWN");
     }
+
+    /**
+     * Find the Sentinel Metrics Task {@link ScheduledExecutorService Executor} from {@link FlowRuleManager}
+     *
+     * @return <code>null</code> if can't be found
+     * @see FlowRuleManager#SCHEDULER
+     */
+    public static ScheduledExecutorService findSentinelMetricsTaskExecutor() {
+        String fieldName = "SCHEDULER";
+        ScheduledExecutorService scheduledExecutorService = null;
+        try {
+            scheduledExecutorService = getStaticFieldValue(FlowRuleManager.class, "SCHEDULER");
+        } catch (Throwable e) {
+            logger.warn("The static field[name : '{}'] can't be found in the {}", fieldName, FlowRuleManager.class, e);
+        }
+        return scheduledExecutorService;
+    }
+
+    /**
+     * Get the Sentinel Metrics Task {@link ScheduledExecutorService Executor}
+     *
+     * @return {@link Executors#newSingleThreadScheduledExecutor(ThreadFactory) new a single ScheduledExecutorService}
+     * if can't be {@link #findSentinelMetricsTaskExecutor() found}
+     * @see #findSentinelMetricsTaskExecutor()
+     */
+    public static ScheduledExecutorService getSentinelMetricsTaskExecutor() {
+        ScheduledExecutorService scheduledExecutorService = sentinelMetricsTaskExecutor;
+
+        if (scheduledExecutorService == null) {
+            scheduledExecutorService = findSentinelMetricsTaskExecutor();
+            if (scheduledExecutorService == null) {
+                scheduledExecutorService = newSingleThreadScheduledExecutor(new NamedThreadFactory("sentinel-metrics-task", true));
+            }
+            sentinelMetricsTaskExecutor = scheduledExecutorService;
+        }
+
+        return scheduledExecutorService;
+    }
+
 }
