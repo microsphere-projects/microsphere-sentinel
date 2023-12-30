@@ -107,7 +107,7 @@ class DelegatingSentinelMyBatisExecutor implements Executor {
 
     protected <T> T doInSentinel(MappedStatement ms, Callable<T> callable) throws SQLException {
         String resourceName = getSentinelResourceName(ms);
-        return SentinelUtils.doInSentinel("microsphere-mybatis-context", "Executor", resourceName, callable, SQLException.class);
+        return SentinelUtils.doInSentinel(resourceName, "sentinel_microsphere_mybatis_context", resourceName, callable, SQLException.class);
     }
 
     private String getSentinelResourceName(MappedStatement ms) {

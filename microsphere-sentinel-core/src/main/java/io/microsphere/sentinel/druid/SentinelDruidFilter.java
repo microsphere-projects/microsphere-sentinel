@@ -136,7 +136,7 @@ public class SentinelDruidFilter extends FilterAdapter {
 
     protected <T> T doInSentinel(StatementProxy statement, Callable<T> callable) throws SQLException {
         String resourceName = getSentinelResourceName(statement);
-        return SentinelUtils.doInSentinel(resourceName, "jdbc-context", "Statement", callable, SQLException.class);
+        return SentinelUtils.doInSentinel(resourceName, "sentinel_microsphere_jdbc_context", "Statement", callable, SQLException.class);
     }
 
     private String getSentinelResourceName(StatementProxy statement) {

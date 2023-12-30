@@ -29,7 +29,6 @@ import java.util.concurrent.Callable;
  * Sentinel x Hibernate {@link Interceptor}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see DelegatingInterceptor
  * @see Interceptor
  * @since 1.0.0
  */
@@ -63,7 +62,7 @@ public class SentinelHibernateInterceptor extends DelegatingInterceptor {
 
     protected <T> T doInSentinel(Object entity, String action, Callable<T> callable) {
         String resourceName = getSentinelResourceName(entity, action);
-        return SentinelUtils.doInSentinel(resourceName, "microsphere-hibernate-context", "SessionFactory", callable, e -> {
+        return SentinelUtils.doInSentinel(resourceName, "sentinel_microsphere_hibernate_context", "SessionFactory", callable, e -> {
             if (e instanceof CallbackException) {
                 throw (CallbackException) e;
             } else {

@@ -102,16 +102,17 @@ public class SentinelRedisCommandInterceptor implements RedisConnectionIntercept
         ContextUtil.exit();
     }
 
-    private String getOrigin(RedisConnection redisConnection) {
-        return "RedisConnection";
-    }
 
     private String getResourceName(Method method) {
         return methodResourceNamesCache.get(method);
     }
 
+    private String getOrigin(RedisConnection redisConnection) {
+        return "RedisConnection";
+    }
+
     private String getContextName(String resourceName) {
-        return "microsphere-redis-context";
+        return "sentinel_microsphere_redis_context";
     }
 
     private void entranceEntry(RedisMethodContext<RedisConnection> context, String resourceName) {
