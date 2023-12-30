@@ -34,6 +34,13 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-transport-simple-http</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
         <!-- P6spy -->
         <dependency>
             <groupId>p6spy</groupId>
