@@ -1,9 +1,9 @@
 package io.microsphere.sentinel.spring.boot.autoconfigure;
 
 import com.alibaba.csp.sentinel.SphU;
+import io.microsphere.redis.spring.interceptor.RedisMethodInterceptor;
 import io.microsphere.sentinel.mybatis.SentinelMyBatisInterceptor;
 import io.microsphere.sentinel.spring.redis.SentinelRedisCommandInterceptor;
-import io.microsphere.redis.spring.interceptor.RedisMethodInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

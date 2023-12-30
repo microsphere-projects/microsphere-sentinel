@@ -3,11 +3,9 @@ package io.microsphere.sentinel.util;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
-import java.util.StringJoiner;
 
 import static io.microsphere.reflect.MethodUtils.findMethod;
 import static io.microsphere.sentinel.util.SentinelUtils.buildResourceName;
-import static io.microsphere.util.ClassUtils.getSimpleName;
 import static org.junit.Assert.assertEquals;
 
 /**
