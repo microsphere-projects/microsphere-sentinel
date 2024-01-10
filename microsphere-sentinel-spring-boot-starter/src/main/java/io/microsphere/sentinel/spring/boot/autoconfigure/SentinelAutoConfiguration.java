@@ -1,48 +1,53 @@
 package io.microsphere.sentinel.spring.boot.autoconfigure;
-
-import com.alibaba.csp.sentinel.SphU;
-import io.microsphere.redis.spring.interceptor.RedisMethodInterceptor;
 import io.microsphere.sentinel.mybatis.SentinelMyBatisInterceptor;
+import io.microsphere.sentinel.spring.boot.autoconfigure.condition.ConditionalOnSentinelEnabled;
+import io.microsphere.sentinel.spring.druid.SentinelDruidFilterBeanPostProcessor;
+import io.microsphere.sentinel.spring.hibernate.SentinelHibernateInterceptorBeanPostProcessor;
 import io.microsphere.sentinel.spring.redis.SentinelRedisCommandInterceptor;
-import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.sentinel.spring.boot.autoconfigure.SentinelAutoConfiguration.PROPERTY_NAME_PREFIX;
-import static io.microsphere.spring.boot.constants.PropertyConstants.MICROSPHERE_SPRING_BOOT_PROPERTY_NAME_PREFIX;
+import static io.microsphere.sentinel.spring.boot.autoconfigure.condition.ConditionalOnSentinelEnabled.PREFIX;
 
 /**
- * Sentinel Auto-Configuration
+ * Microsphere Sentinel Spring Boot Auto-Configuration
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
+ * @see com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration
  * @since 1.0.0
  */
-@ConditionalOnProperty(prefix = PROPERTY_NAME_PREFIX, name = ENABLED_PROPERTY_NAME, matchIfMissing = true)
-@ConditionalOnClass({SphU.class})
+@ConditionalOnSentinelEnabled
+@AutoConfigureAfter(name = {
+        "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
+        "org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration",
+        "com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration",
+})
 @Import(value = {
-        SentinelAutoConfiguration.MyBatisConfiguration.class,
-        SentinelAutoConfiguration.RedisConfiguration.class
-})
-@AutoConfigureBefore(name = {
-        "com.alibaba.cloud.sentinel.feign.SentinelFeignAutoConfiguration"
-})
-@AutoConfigureAfter(value = {
-        DataSourceAutoConfiguration.class
+        SentinelAutoConfiguration.RedisConfiguration.class,
+        SentinelAutoConfiguration.HibernateConfiguration.class,
+        SentinelAutoConfiguration.DruidConfiguration.class,
+        SentinelAutoConfiguration.MyBatisConfiguration.class
 })
 public class SentinelAutoConfiguration {
 
-    public static final String PROPERTY_NAME_PREFIX = MICROSPHERE_SPRING_BOOT_PROPERTY_NAME_PREFIX + "sentinel";
-
-    @ConditionalOnClass(RedisMethodInterceptor.class)
+    @ConditionalOnProperty(
+            prefix = PREFIX + "redis",
+            name = ENABLED_PROPERTY_NAME,
+            matchIfMissing = true
+    )
+    @ConditionalOnClass(name = {
+            "org.springframework.data.redis.connection.RedisConnection",
+            "io.microsphere.redis.spring.interceptor.RedisConnectionInterceptor"
+    })
     static class RedisConfiguration {
 
         @Bean
@@ -52,16 +57,57 @@ public class SentinelAutoConfiguration {
         }
     }
 
-    @ConditionalOnClass(Interceptor.class)
-    static class MyBatisConfiguration {
+    @ConditionalOnProperty(
+            prefix = PREFIX + "hibernate",
+            name = ENABLED_PROPERTY_NAME,
+            matchIfMissing = true
+    )
+    @ConditionalOnClass(name = {
+            "org.hibernate.SessionFactory", // Hibernate
+            "org.springframework.orm.hibernate5.LocalSessionFactoryBean" // Spring ORM
+    })
+    static class HibernateConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(SqlSessionFactory.class)
-        public SentinelMyBatisInterceptor sentinelInterceptor(SqlSessionFactory sqlSessionFactory) {
-            SentinelMyBatisInterceptor interceptor = new SentinelMyBatisInterceptor();
-            sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
-            return interceptor;
+        public BeanPostProcessor sentinelHibernateInterceptorBeanPostProcessor() {
+            return new SentinelHibernateInterceptorBeanPostProcessor();
+        }
+    }
+
+    @ConditionalOnProperty(
+            prefix = PREFIX + "druid",
+            name = ENABLED_PROPERTY_NAME,
+            matchIfMissing = true
+    )
+    @ConditionalOnClass(name = {
+            "com.alibaba.druid.pool.DruidDataSource"
+    })
+    static class DruidConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public BeanPostProcessor sentinelDruidFilterBeanPostProcessor() {
+            return new SentinelDruidFilterBeanPostProcessor();
+        }
+    }
+
+    @ConditionalOnProperty(
+            prefix = PREFIX + "mybatis",
+            name = ENABLED_PROPERTY_NAME,
+            matchIfMissing = true
+    )
+    @ConditionalOnClass(name = {
+            "org.apache.ibatis.executor.Executor"
+    })
+    static class MyBatisConfiguration {
+
+        @Autowired
+        public void initSentinelMyBatisInterceptor(ObjectProvider<SqlSessionFactory> sqlSessionFactoryProvider) {
+            sqlSessionFactoryProvider.forEach(sqlSessionFactory -> {
+                SentinelMyBatisInterceptor interceptor = new SentinelMyBatisInterceptor();
+                sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
+            });
         }
     }
 }
