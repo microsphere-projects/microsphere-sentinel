@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
+import static io.microsphere.sentinel.spring.boot.autoconfigure.condition.ConditionalOnSentinelEnabled.PREFIX;
 
 /**
  * Microsphere Sentinel Spring Boot Auto-Configuration
@@ -38,7 +39,7 @@ import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
 public class SentinelAutoConfiguration {
 
     @ConditionalOnProperty(
-            prefix = ConditionalOnSentinelEnabled.PREFIX + "redis",
+            prefix = PREFIX + "redis",
             name = ENABLED_PROPERTY_NAME,
             matchIfMissing = true
     )
@@ -56,7 +57,7 @@ public class SentinelAutoConfiguration {
     }
 
     @ConditionalOnProperty(
-            prefix = ConditionalOnSentinelEnabled.PREFIX + "hibernate",
+            prefix = PREFIX + "hibernate",
             name = ENABLED_PROPERTY_NAME,
             matchIfMissing = true
     )
@@ -74,7 +75,7 @@ public class SentinelAutoConfiguration {
     }
 
     @ConditionalOnProperty(
-            prefix = ConditionalOnSentinelEnabled.PREFIX + "druid",
+            prefix = PREFIX + "druid",
             name = ENABLED_PROPERTY_NAME,
             matchIfMissing = true
     )
@@ -91,7 +92,7 @@ public class SentinelAutoConfiguration {
     }
 
     @ConditionalOnProperty(
-            prefix = ConditionalOnSentinelEnabled.PREFIX + "mybatis",
+            prefix = PREFIX + "mybatis",
             name = ENABLED_PROPERTY_NAME,
             matchIfMissing = true
     )
