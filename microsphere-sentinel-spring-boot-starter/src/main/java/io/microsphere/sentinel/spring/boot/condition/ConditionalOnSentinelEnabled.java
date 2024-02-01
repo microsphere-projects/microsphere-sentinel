@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.sentinel.spring.boot.autoconfigure.condition;
+package io.microsphere.sentinel.spring.boot.condition;
 
 import io.microsphere.sentinel.spring.boot.autoconfigure.SentinelAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

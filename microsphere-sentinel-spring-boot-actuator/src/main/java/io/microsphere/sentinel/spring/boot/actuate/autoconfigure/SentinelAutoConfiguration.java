@@ -1,6 +1,5 @@
 package io.microsphere.sentinel.spring.boot.actuate.autoconfigure;
 import io.microsphere.sentinel.mybatis.SentinelMyBatisInterceptor;
-import io.microsphere.sentinel.spring.boot.autoconfigure.condition.ConditionalOnSentinelEnabled;
 import io.microsphere.sentinel.spring.druid.SentinelDruidFilterBeanPostProcessor;
 import io.microsphere.sentinel.spring.hibernate.SentinelHibernateInterceptorBeanPostProcessor;
 import io.microsphere.sentinel.spring.redis.SentinelRedisCommandInterceptor;
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.sentinel.spring.boot.autoconfigure.condition.ConditionalOnSentinelEnabled.PREFIX;
+import static io.microsphere.sentinel.spring.boot.condition.ConditionalOnSentinelEnabled.PREFIX;
 
 /**
  * Microsphere Sentinel Spring Boot Auto-Configuration
