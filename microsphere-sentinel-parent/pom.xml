@@ -35,7 +35,7 @@
         <druid.version>1.2.20</druid.version>
         <fastjson.version>2.0.39</fastjson.version>
         <apollo.client.version>1.9.2</apollo.client.version>
-        <apollo.openapi.Version>1.7.0</apollo.openapi.Version>
+        <apollo.openapi.version>1.7.0</apollo.openapi.version>
     </properties>
 
     <dependencyManagement>
