@@ -19,7 +19,7 @@ import io.microsphere.sentinel.dashboard.auth.AuthService;
 import io.microsphere.sentinel.dashboard.auth.SimpleWebAuthServiceImpl;
 import io.microsphere.sentinel.dashboard.config.DashboardConfig;
 import io.microsphere.sentinel.dashboard.domain.Result;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
