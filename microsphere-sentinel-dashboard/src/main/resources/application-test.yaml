@@ -1,0 +1,12 @@
+# Nacos
+nacos:
+  discovery:
+    enabled: true
+    namespace: test
+  server:
+    address: 172.16.6.92:8848
+
+# Apollo
+apollo:
+  bootstrap:
+    namespaces: jgb.zkbc-bcy-test-common,application

@@ -1,0 +1,13 @@
+# Nacos
+nacos:
+  discovery:
+    enabled: true
+    namespace: dev
+  server:
+    address: 172.16.6.92:8848
+
+
+# Apollo
+apollo:
+  bootstrap:
+    namespaces: application

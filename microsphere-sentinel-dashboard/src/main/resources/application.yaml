@@ -1,0 +1,74 @@
+# Spring
+spring:
+  application:
+    name: sentinel-dashboard
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
+    session:
+      cookie:
+        name: sentinel_dashboard_cookie
+
+
+actuator-web-path : ${management.server.base-path:}${management.endpoints.web.base-path:/actuator}
+
+auth:
+  filter:
+    exclude-urls: /,/auth/login,/auth/logout,/registry/machine,/version,${actuator-web-path}/**
+    exclude-url-suffixes: htm,html,js,css,map,ico,ttf,woff,png
+  username: sentinel
+  password: 7H9xk99pxJ68STm
+
+# Sentinel
+sentinel:
+  enabled: true
+  dashboard:
+    version: 1.8.6.internal
+    address: 127.0.0.1:${server.port}
+
+# Microsphere
+microsphere:
+  spring:
+    cloud:
+      fault-tolerance:
+        tomcat:
+          enabled: true
+        sentinel:
+          enabled: true
+          redis:
+            enabled: true
+          hibernate:
+            enabled: false
+  redis:
+    enabled: true
+
+# Apollo
+app:
+  id: ${spring.application.name}
+apollo:
+  override-system-properties: true
+  bootstrap:
+    enabled: true
+  meta: http://172.16.16.39:9080
+  open:
+    portal-url: http://172.16.16.39:9070
+    env: PRO
+    cluster: default
+    namespace: jgb.sentinel
+    operator: apollo
+
+# Actuator
+management:
+  endpoint:
+    serviceRegistration:
+      enabled: true
+    serviceDeregistration:
+      enabled: true
