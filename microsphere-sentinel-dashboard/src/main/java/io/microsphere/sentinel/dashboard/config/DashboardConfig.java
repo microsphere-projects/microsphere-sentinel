@@ -15,8 +15,8 @@
  */
 package io.microsphere.sentinel.dashboard.config;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.lang.NonNull;
 
 import java.util.concurrent.ConcurrentHashMap;
