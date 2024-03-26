@@ -16,13 +16,14 @@
 
     <name>Microsphere :: Alibaba Sentinel</name>
     <description>Microsphere Projects for Alibaba Sentinel</description>
+    <url>https://github.com/microsphere-projects/microsphere-sentinel</url>
 
-    <scm>
-        <url>https://github.com/microsphere-projects/microsphere-sentinel</url>
-        <connection>scm:git:git://github.com/microsphere-projects/microsphere-sentinel.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/microsphere-projects/microsphere-sentinel.git
-        </developerConnection>
-    </scm>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
     <developers>
         <developer>
@@ -38,6 +39,13 @@
         </developer>
     </developers>
 
+    <scm>
+        <url>https://github.com/microsphere-projects/microsphere-sentinel</url>
+        <connection>scm:git:git://github.com/microsphere-projects/microsphere-sentinel.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/microsphere-projects/microsphere-sentinel.git
+        </developerConnection>
+    </scm>
+    
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
     </properties>
