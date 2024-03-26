@@ -45,7 +45,7 @@
         <developerConnection>scm:git:ssh://git@github.com/microsphere-projects/microsphere-sentinel.git
         </developerConnection>
     </scm>
-    
+
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
     </properties>
