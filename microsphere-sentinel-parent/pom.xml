@@ -19,6 +19,8 @@
     <description>Microsphere Alibaba Sentinel Parent</description>
 
     <properties>
+        <!-- BOM versions -->
+        <spring-boot.version>2.7.18</spring-boot.version>
         <microsphere-spring-cloud.version>${revision}</microsphere-spring-cloud.version>
         <microsphere-redis.version>${revision}</microsphere-redis.version>
         <!-- Third-party versions -->
