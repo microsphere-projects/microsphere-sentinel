@@ -20,6 +20,7 @@
 
     <properties>
         <microsphere-spring-cloud.version>${revision}</microsphere-spring-cloud.version>
+        <microsphere-redis.version>${revision}</microsphere-redis.version>
         <!-- Third-party versions -->
         <mybatis.version>3.5.11</mybatis.version>
         <druid.version>1.2.20</druid.version>
@@ -36,6 +37,15 @@
                 <groupId>io.github.microsphere-projects</groupId>
                 <artifactId>microsphere-spring-cloud-dependencies</artifactId>
                 <version>${microsphere-spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Microsphere Redis Dependencies -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-redis-dependencies</artifactId>
+                <version>${microsphere-redis.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
