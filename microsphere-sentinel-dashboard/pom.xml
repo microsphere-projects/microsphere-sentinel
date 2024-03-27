@@ -35,7 +35,7 @@
         <!-- Microsphere Sentinel Spring Boot Starter -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-spring-boot-starter</artifactId>
+            <artifactId>microsphere-sentinel-spring-boot</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -147,7 +147,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
                 <executions>
                     <execution>
                         <goals>

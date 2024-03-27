@@ -35,13 +35,7 @@
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-spring-boot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-spring-boot-actuator</artifactId>
+                <artifactId>microsphere-sentinel-spring-boot</artifactId>
                 <version>${revision}</version>
             </dependency>
 

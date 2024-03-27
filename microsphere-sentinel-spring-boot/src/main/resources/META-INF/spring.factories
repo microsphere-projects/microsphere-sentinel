@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.microsphere.sentinel.spring.boot.autoconfigure.SentinelAutoConfiguration,\
+io.microsphere.sentinel.spring.boot.actuate.autoconfigure.SentinelActuatorAutoConfiguration

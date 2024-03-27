@@ -30,12 +30,12 @@ import static io.microsphere.sentinel.spring.boot.condition.ConditionalOnSentine
         "com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration",
 })
 @Import(value = {
-        SentinelAutoConfiguration.RedisConfiguration.class,
-        SentinelAutoConfiguration.HibernateConfiguration.class,
-        SentinelAutoConfiguration.DruidConfiguration.class,
-        SentinelAutoConfiguration.MyBatisConfiguration.class
+        SentinelActuatorAutoConfiguration.RedisConfiguration.class,
+        SentinelActuatorAutoConfiguration.HibernateConfiguration.class,
+        SentinelActuatorAutoConfiguration.DruidConfiguration.class,
+        SentinelActuatorAutoConfiguration.MyBatisConfiguration.class
 })
-public class SentinelAutoConfiguration {
+public class SentinelActuatorAutoConfiguration {
 
     @ConditionalOnProperty(
             prefix = PREFIX + "redis",

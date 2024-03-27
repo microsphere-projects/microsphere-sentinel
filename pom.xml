@@ -54,8 +54,7 @@
         <module>microsphere-sentinel-parent</module>
         <module>microsphere-sentinel-core</module>
         <module>microsphere-sentinel-spring</module>
-        <module>microsphere-sentinel-spring-boot-starter</module>
-        <module>microsphere-sentinel-spring-boot-actuator</module>
+        <module>microsphere-sentinel-spring-boot</module>
         <module>microsphere-sentinel-dashboard</module>
         <module>microsphere-sentinel-dependencies</module>
     </modules>

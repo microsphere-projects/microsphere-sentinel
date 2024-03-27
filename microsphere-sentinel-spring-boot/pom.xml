@@ -11,23 +11,30 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-spring-boot-actuator</artifactId>
+    <artifactId>microsphere-sentinel-spring-boot</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Spring Boot Actuator</name>
-    <description>Microsphere Alibaba Sentinel Spring Boot Actuator</description>
+    <name>Microsphere :: Alibaba Sentinel :: Spring Boot</name>
+    <description>Microsphere Alibaba Sentinel Spring Boot</description>
 
     <dependencies>
 
-        <!-- Microsphere Sentinel Spring Boot Starter -->
+        <!-- Microsphere Sentinel Spring -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-spring-boot-starter</artifactId>
+            <artifactId>microsphere-sentinel-spring</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- Spring Boot -->
+        <!-- Microsphere Spring Boot Starter -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-core-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Spring Boot Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
