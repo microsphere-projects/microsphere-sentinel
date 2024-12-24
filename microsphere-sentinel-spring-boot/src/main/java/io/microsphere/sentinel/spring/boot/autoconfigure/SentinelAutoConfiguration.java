@@ -1,4 +1,5 @@
 package io.microsphere.sentinel.spring.boot.autoconfigure;
+
 import io.microsphere.sentinel.mybatis.SentinelMyBatisInterceptor;
 import io.microsphere.sentinel.spring.boot.condition.ConditionalOnSentinelEnabled;
 import io.microsphere.sentinel.spring.druid.SentinelDruidFilterBeanPostProcessor;
@@ -103,11 +104,12 @@ public class SentinelAutoConfiguration {
     static class MyBatisConfiguration {
 
         @Autowired
-        public void initSentinelMyBatisInterceptor(ObjectProvider<SqlSessionFactory> sqlSessionFactoryProvider) {
-            sqlSessionFactoryProvider.forEach(sqlSessionFactory -> {
-                SentinelMyBatisInterceptor interceptor = new SentinelMyBatisInterceptor();
+        public void initSentinelMyBatisInterceptor(ObjectProvider<SqlSessionFactory[]> sqlSessionFactoryProvider) {
+            SentinelMyBatisInterceptor interceptor = new SentinelMyBatisInterceptor();
+            SqlSessionFactory[] sqlSessionFactories = sqlSessionFactoryProvider.getIfAvailable();
+            for (SqlSessionFactory sqlSessionFactory : sqlSessionFactories) {
                 sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
-            });
+            }
         }
     }
 }
