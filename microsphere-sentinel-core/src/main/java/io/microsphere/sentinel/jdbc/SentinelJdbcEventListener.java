@@ -89,6 +89,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
     }
 
     private String getContextName(StatementInformation statementInformation) {
+        // FIXME : sentinel_microsphere_jdbc_context
         int connectionId = statementInformation.getConnectionInformation().getConnectionId();
         return "microsphere.sentinel.jdbc.context-" + connectionId;
     }
