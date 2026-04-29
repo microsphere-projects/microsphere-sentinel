@@ -47,7 +47,6 @@
             <optional>true</optional>
         </dependency>
 
-
         <!-- P6spy -->
         <dependency>
             <groupId>p6spy</groupId>
@@ -64,7 +63,7 @@
 
         <!-- Hibernate -->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <optional>true</optional>
         </dependency>
