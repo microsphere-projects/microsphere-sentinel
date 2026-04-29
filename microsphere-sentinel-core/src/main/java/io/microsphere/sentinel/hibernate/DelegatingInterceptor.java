@@ -17,7 +17,6 @@
 package io.microsphere.sentinel.hibernate;
 
 import org.hibernate.CallbackException;
-import org.hibernate.EntityMode;
 import org.hibernate.Interceptor;
 import org.hibernate.Transaction;
 import org.hibernate.type.Type;
@@ -96,11 +95,6 @@ public class DelegatingInterceptor implements Interceptor {
     }
 
     @Override
-    public Object instantiate(String entityName, EntityMode entityMode, Serializable id) throws CallbackException {
-        return delegate.instantiate(entityName, entityMode, id);
-    }
-
-    @Override
     public String getEntityName(Object object) throws CallbackException {
         return delegate.getEntityName(object);
     }
@@ -125,15 +119,7 @@ public class DelegatingInterceptor implements Interceptor {
         delegate.afterTransactionCompletion(tx);
     }
 
-    @Override
-    @Deprecated
-    public String onPrepareStatement(String sql) {
-        return delegate.onPrepareStatement(sql);
-    }
-
     public Interceptor getDelegate() {
         return delegate;
     }
 }
-
-

@@ -30,7 +30,7 @@
         <!-- Microsphere Spring Boot Starter -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-core-spring-boot-starter</artifactId>
+            <artifactId>microsphere-spring-boot-core</artifactId>
         </dependency>
 
         <!-- Spring Boot Dependencies -->
@@ -77,7 +77,7 @@
 
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-autoconfigure</artifactId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
             <optional>true</optional>
         </dependency>
 

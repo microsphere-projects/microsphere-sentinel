@@ -18,12 +18,13 @@ package io.microsphere.sentinel.hibernate;
 
 import io.microsphere.sentinel.util.SentinelUtils;
 import org.hibernate.CallbackException;
-import org.hibernate.EmptyInterceptor;
 import org.hibernate.Interceptor;
 import org.hibernate.type.Type;
 
 import java.io.Serializable;
 import java.util.concurrent.Callable;
+
+import static org.hibernate.internal.EmptyInterceptor.INSTANCE;
 
 /**
  * Sentinel x Hibernate {@link Interceptor}
@@ -35,7 +36,7 @@ import java.util.concurrent.Callable;
 public class SentinelHibernateInterceptor extends DelegatingInterceptor {
 
     public SentinelHibernateInterceptor(Interceptor delegate) {
-        super(delegate == null ? EmptyInterceptor.INSTANCE : delegate);
+        super(delegate == null ? INSTANCE : delegate);
     }
 
     @Override
