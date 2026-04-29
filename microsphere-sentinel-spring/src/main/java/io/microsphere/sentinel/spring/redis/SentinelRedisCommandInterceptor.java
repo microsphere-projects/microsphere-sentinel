@@ -156,4 +156,9 @@ public class SentinelRedisCommandInterceptor implements RedisConnectionIntercept
             }
         }
     }
+
+    @Override
+    public int getOrder() {
+        return 9;
+    }
 }
