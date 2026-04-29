@@ -22,7 +22,7 @@
         <!-- BOM versions -->
         <spring-boot.version>2.7.18</spring-boot.version>
         <microsphere-spring-cloud.version>0.0.1</microsphere-spring-cloud.version>
-        <microsphere-redis.version>0.0.1</microsphere-redis.version>
+        <microsphere-redis.version>0.2.3</microsphere-redis.version>
         <!-- Third-party versions -->
         <mybatis.version>3.5.11</mybatis.version>
         <mybatis-spring.version>2.1.2</mybatis-spring.version>
