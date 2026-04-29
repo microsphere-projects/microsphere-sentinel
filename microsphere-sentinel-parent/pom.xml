@@ -25,7 +25,7 @@
         <microsphere-redis.version>0.0.1</microsphere-redis.version>
         <!-- Third-party versions -->
         <mybatis.version>3.5.11</mybatis.version>
-        <mybatis-spring.version>2.1.2</mybatis-spring.version>
+        <mybatis-spring.version>4.0.0</mybatis-spring.version>
         <mybatis-spring-boot.version>2.3.2</mybatis-spring-boot.version>
         <druid.version>1.2.20</druid.version>
         <fastjson.version>2.0.39</fastjson.version>
