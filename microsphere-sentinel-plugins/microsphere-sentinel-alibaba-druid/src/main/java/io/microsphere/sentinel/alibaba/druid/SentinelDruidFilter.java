@@ -22,6 +22,7 @@ import com.alibaba.druid.proxy.jdbc.StatementProxy;
 import io.microsphere.alibaba.druid.filter.AbstractStatementFilter;
 import io.microsphere.sentinel.common.SentinelContext;
 import io.microsphere.sentinel.common.SentinelOperations;
+import io.microsphere.sentinel.common.SentinelPlugin;
 import io.microsphere.sentinel.common.SentinelTemplate;
 
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
@@ -35,7 +36,7 @@ import static io.microsphere.sentinel.common.SentinelContext.doInContext;
  * @see FilterAdapter
  * @since 1.0.0
  */
-public class SentinelDruidFilter extends AbstractStatementFilter {
+public class SentinelDruidFilter extends AbstractStatementFilter implements SentinelPlugin {
 
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
 
