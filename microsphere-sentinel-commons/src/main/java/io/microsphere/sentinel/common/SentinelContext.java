@@ -295,9 +295,14 @@ public class SentinelContext {
     }
 
     /**
-     * Clear the current {@link SentinelContext}
+     * Remove and return the current {@link SentinelContext}
+     *
+     * @return <code>null</code> if there is no {@link SentinelContext} associated with the current thread
      */
-    public static void clearContext() {
+    @Nullable
+    public static SentinelContext removeContext() {
+        SentinelContext context = getContext();
         contextHolder.remove();
+        return context;
     }
 }
