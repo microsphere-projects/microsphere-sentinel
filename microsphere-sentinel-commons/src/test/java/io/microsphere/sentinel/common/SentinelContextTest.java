@@ -61,6 +61,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 
+import static io.microsphere.sentinel.common.SentinelContext.clearContext;
+import static io.microsphere.sentinel.common.SentinelContext.getContext;
 import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -508,5 +510,15 @@ public class SentinelContextTest {
 
         // Then verify cleanup
         assertFalse(flowContext.hasAttribute("flow-attr"));
+    }
+
+    @Test
+    @DisplayName("Context Holder: set, get and remove")
+    public void testContextHolder() {
+        assertNull(getContext());
+        this.context.setContext();
+        assertSame(this.context, getContext());
+        clearContext();
+        assertNull(getContext());
     }
 }
