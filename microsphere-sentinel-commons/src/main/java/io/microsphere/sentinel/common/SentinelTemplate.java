@@ -63,8 +63,8 @@ public class SentinelTemplate implements SentinelOperations {
         String actualContextName = isBlank(contextName) ? DEFAULT_CONTEXT_NAME : contextName;
         String actualOrigin = isBlank(origin) ? DEFAULT_ORIGIN : origin;
         if (logger.isTraceEnabled()) {
-            logger.trace("The operation of Sentinel [context name : '{}' -> '{}' , origin : '{}' -> '{}' , resource name : '{}'] is beginning",
-                    contextName, actualContextName, origin, actualOrigin, resourceName);
+            logger.trace("The operation of Sentinel[context name : '{}' -> '{}' , origin : '{}' -> '{}' , resource name : '{}', type : {} , entry type : {}] is beginning",
+                    contextName, actualContextName, origin, actualOrigin, resourceName, this.resourceType, this.trafficType);
         }
         enter(actualContextName, actualOrigin);
         Entry entry = entry(resourceName, this.resourceType, this.trafficType);
@@ -81,7 +81,7 @@ public class SentinelTemplate implements SentinelOperations {
         entry.exit();
         exit();
         if (logger.isTraceEnabled()) {
-            logger.trace("The operation of Sentinel [{}] is ended", context);
+            logger.trace("The operation of Sentinel[{}] is ended", context);
         }
     }
 }

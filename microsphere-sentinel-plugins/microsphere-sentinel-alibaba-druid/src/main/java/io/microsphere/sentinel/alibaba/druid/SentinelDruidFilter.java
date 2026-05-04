@@ -24,6 +24,7 @@ import io.microsphere.sentinel.common.SentinelContext;
 import io.microsphere.sentinel.common.SentinelOperations;
 import io.microsphere.sentinel.common.SentinelTemplate;
 
+import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
 import static io.microsphere.sentinel.common.SentinelContext.removeContext;
 
 /**
@@ -40,7 +41,7 @@ public class SentinelDruidFilter extends AbstractStatementFilter {
 
     static final String ORIGIN_NAME = "Statement";
 
-    private final SentinelOperations sentinelOperations = new SentinelTemplate();
+    private final SentinelOperations sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
 
     @Override
     protected void beforeExecute(StatementProxy statement, String resourceName) throws Throwable {
