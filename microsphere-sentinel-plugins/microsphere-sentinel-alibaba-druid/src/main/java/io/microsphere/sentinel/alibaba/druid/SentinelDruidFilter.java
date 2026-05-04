@@ -25,7 +25,7 @@ import io.microsphere.sentinel.common.SentinelOperations;
 import io.microsphere.sentinel.common.SentinelTemplate;
 
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
-import static io.microsphere.sentinel.common.SentinelContext.removeContext;
+import static io.microsphere.sentinel.common.SentinelContext.doInContext;
 
 /**
  * Sentinel x Druid {@link Filter}
@@ -65,9 +65,10 @@ public class SentinelDruidFilter extends AbstractStatementFilter {
 
     @Override
     protected void afterExecute(StatementProxy statement, String resourceName, Object result, Throwable failure) {
-        SentinelContext context = removeContext();
-        context.setResult(result);
-        context.setFailure(failure);
-        this.sentinelOperations.end(context);
+        doInContext(context -> {
+            context.setResult(result);
+            context.setFailure(failure);
+            this.sentinelOperations.end(context);
+        }, true);
     }
 }
