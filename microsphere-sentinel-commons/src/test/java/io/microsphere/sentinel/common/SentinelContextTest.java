@@ -52,6 +52,7 @@
 package io.microsphere.sentinel.common;
 
 import com.alibaba.csp.sentinel.Entry;
+import io.microsphere.util.ValueHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,8 +62,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 
+import static io.microsphere.sentinel.common.SentinelContext.doInContext;
 import static io.microsphere.sentinel.common.SentinelContext.getContext;
-import static io.microsphere.sentinel.common.SentinelContext.removeContext;
 import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -518,7 +519,18 @@ public class SentinelContextTest {
         assertNull(getContext());
         this.context.setContext();
         assertSame(this.context, getContext());
-        assertSame(this.context, removeContext());
+        assertSame(this.context, SentinelContext.removeContext());
         assertNull(getContext());
+    }
+
+    @Test
+    void testDoInContext() {
+        ValueHolder<SentinelContext> contextHolder = new ValueHolder<>();
+        doInContext(context -> contextHolder.setValue(context));
+        assertNull(contextHolder.getValue());
+
+        this.context.setContext();
+        doInContext(context -> assertSame(this.context, context));
+        doInContext(context -> assertSame(this.context, context), true);
     }
 }
