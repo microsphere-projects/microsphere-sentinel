@@ -61,8 +61,7 @@ public class SentinelTemplate implements SentinelOperations {
         entry.exit();
         exit();
         if (logger.isTraceEnabled()) {
-            logger.trace("The operation of Sentinel [context name :'{}' , origin : '{}' , resource name : '{}'] is ended",
-                    context.getContextName(), context.getOrigin(), context.getResourceName());
+            logger.trace("The operation of Sentinel [{}] is ended", context);
         }
     }
 }
