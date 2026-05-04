@@ -61,8 +61,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 
-import static io.microsphere.sentinel.common.SentinelContext.clearContext;
 import static io.microsphere.sentinel.common.SentinelContext.getContext;
+import static io.microsphere.sentinel.common.SentinelContext.removeContext;
 import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -518,7 +518,7 @@ public class SentinelContextTest {
         assertNull(getContext());
         this.context.setContext();
         assertSame(this.context, getContext());
-        clearContext();
+        assertSame(this.context, removeContext());
         assertNull(getContext());
     }
 }
