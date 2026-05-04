@@ -18,8 +18,11 @@
 package io.microsphere.sentinel.common;
 
 import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.EntryType;
 import io.microsphere.logging.Logger;
 
+import static com.alibaba.csp.sentinel.EntryType.IN;
+import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
 import static com.alibaba.csp.sentinel.SphU.entry;
 import static com.alibaba.csp.sentinel.Tracer.traceEntry;
 import static com.alibaba.csp.sentinel.context.ContextUtil.enter;
@@ -38,6 +41,23 @@ public class SentinelTemplate implements SentinelOperations {
 
     private static final Logger logger = getLogger(SentinelTemplate.class);
 
+    private final int resourceType;
+
+    private final EntryType trafficType;
+
+    public SentinelTemplate() {
+        this(COMMON);
+    }
+
+    public SentinelTemplate(int resourceType) {
+        this(resourceType, IN);
+    }
+
+    public SentinelTemplate(int resourceType, EntryType trafficType) {
+        this.resourceType = resourceType;
+        this.trafficType = trafficType;
+    }
+
     @Override
     public SentinelContext begin(String resourceName, String contextName, String origin) throws Throwable {
         String actualContextName = isBlank(contextName) ? DEFAULT_CONTEXT_NAME : contextName;
@@ -47,7 +67,7 @@ public class SentinelTemplate implements SentinelOperations {
                     contextName, actualContextName, origin, actualOrigin, resourceName);
         }
         enter(actualContextName, actualOrigin);
-        Entry entry = entry(resourceName);
+        Entry entry = entry(resourceName, this.resourceType, this.trafficType);
         return new SentinelContext(resourceName, actualContextName, actualOrigin, entry);
     }
 
