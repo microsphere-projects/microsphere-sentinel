@@ -9,8 +9,7 @@ import com.alibaba.csp.sentinel.context.Context;
 import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.microsphere.logging.Logger;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -25,6 +24,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.function.Consumer;
 
 import static com.alibaba.csp.sentinel.Constants.CONTEXT_DEFAULT_NAME;
+import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.reflect.FieldUtils.getFieldValue;
 import static io.microsphere.reflect.FieldUtils.getStaticFieldValue;
 import static io.microsphere.text.FormatUtils.format;
@@ -41,7 +41,7 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
  */
 public abstract class SentinelUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(SentinelUtils.class);
+    private static final Logger logger = getLogger(SentinelUtils.class);
 
     public static final String DEFAULT_ORIGIN = "";
 
@@ -125,8 +125,8 @@ public abstract class SentinelUtils {
                 entry.exit();
             }
             ContextUtil.exit();
-            if (logger.isDebugEnabled()) {
-                logger.debug("A callback '{}' of Sentinel context[name :'{}' , origin : '{}'] resource[name :'{}'] was executed", callback, contextName, origin, resourceName);
+            if (logger.isTraceEnabled()) {
+                logger.trace("A callback '{}' of Sentinel context[name :'{}' , origin : '{}'] resource[name :'{}'] was executed", callback, contextName, origin, resourceName);
             }
         }
         return result;
