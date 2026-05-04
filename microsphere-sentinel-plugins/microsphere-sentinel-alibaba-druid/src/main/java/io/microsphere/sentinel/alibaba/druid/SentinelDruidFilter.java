@@ -37,7 +37,7 @@ import static io.microsphere.sentinel.common.SentinelContext.removeContext;
  */
 public class SentinelDruidFilter extends AbstractStatementFilter {
 
-    static final String CONTEXT_NAME = "microsphere_sentinel_jdbc_context";
+    static final String CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
 
     static final String ORIGIN_NAME = "Statement";
 
