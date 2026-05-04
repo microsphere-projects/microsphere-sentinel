@@ -37,15 +37,15 @@ import static io.microsphere.sentinel.common.SentinelContext.removeContext;
  */
 public class SentinelDruidFilter extends AbstractStatementFilter {
 
-    static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
+    public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
 
-    static final String DEFAULT_ORIGIN = "Statement";
-
-    private final SentinelOperations sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
+    public static final String DEFAULT_ORIGIN = "Statement";
 
     private final String contextName;
 
     private final String origin;
+
+    private final SentinelOperations sentinelOperations;
 
     public SentinelDruidFilter() {
         this(DEFAULT_CONTEXT_NAME, DEFAULT_ORIGIN);
@@ -54,6 +54,7 @@ public class SentinelDruidFilter extends AbstractStatementFilter {
     public SentinelDruidFilter(String contextName, String origin) {
         this.contextName = contextName;
         this.origin = origin;
+        this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
     }
 
     @Override
