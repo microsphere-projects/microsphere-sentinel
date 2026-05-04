@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @see SentinelTemplate
  * @since 1.0.0
  */
-@LoggingLevelsClass(levels = {"TRACE", "INFO", "ERROR"})
+@LoggingLevelsClass(levels = {"TRACE", "INFO", "OFF"})
 class SentinelTemplateTest {
 
     private String resourceName = "test-resource";
@@ -144,7 +144,10 @@ class SentinelTemplateTest {
     }
 
     @Test
-    void testBeginAndEnd() {
+    void testBeginAndEnd() throws Throwable {
+        SentinelContext context = this.sentinelTemplate.begin(this.resourceName, this.contextName, this.origin);
+        context.setFailure(new RuntimeException("For testing..."));
+        this.sentinelTemplate.end(context);
     }
 
     void assertSentinelContext(String resourceName, String contextName, String origin, SentinelContext context) {
