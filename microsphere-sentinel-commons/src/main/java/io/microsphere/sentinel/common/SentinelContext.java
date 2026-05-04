@@ -22,6 +22,7 @@ import io.microsphere.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static io.microsphere.util.Assert.assertNotEmpty;
 import static io.microsphere.util.Assert.assertNotNull;
@@ -304,5 +305,28 @@ public class SentinelContext {
         SentinelContext context = getContext();
         contextHolder.remove();
         return context;
+    }
+
+    /**
+     * Do something in the current {@link SentinelContext}
+     *
+     * @param contextConsumer the {@link Consumer} of {@link SentinelContext}, must not be <code>null</code>
+     */
+    public static void doInContext(@Nonnull Consumer<SentinelContext> contextConsumer) {
+        doInContext(contextConsumer, false);
+    }
+
+    /**
+     * Do something in the current {@link SentinelContext}
+     *
+     * @param contextConsumer the {@link Consumer} of {@link SentinelContext}, must not be <code>null</code>
+     * @param forRemoval      if <code>true</code>, remove the current {@link SentinelContext} after the contextConsumer
+     *                        execution.
+     */
+    public static void doInContext(@Nonnull Consumer<SentinelContext> contextConsumer, boolean forRemoval) {
+        SentinelContext context = forRemoval ? removeContext() : getContext();
+        if (context != null) {
+            contextConsumer.accept(context);
+        }
     }
 }
