@@ -3,10 +3,12 @@ package io.microsphere.sentinel.mybatis;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Invocation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.microsphere.logging.Logger;
+import io.microsphere.logging.LoggerFactory;
 
 import java.util.Properties;
+
+import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * Sentinel for Mybatis {@link Interceptor}
@@ -16,7 +18,7 @@ import java.util.Properties;
  */
 public class SentinelMyBatisInterceptor implements Interceptor {
 
-    private static final Logger logger = LoggerFactory.getLogger(SentinelMyBatisInterceptor.class);
+    private static final Logger logger = getLogger(SentinelMyBatisInterceptor.class);
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {

@@ -23,10 +23,9 @@ import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.Tracer;
 import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import io.microsphere.logging.Logger;
 import io.microsphere.redis.spring.interceptor.RedisConnectionInterceptor;
 import io.microsphere.redis.spring.interceptor.RedisMethodContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.connection.RedisCommands;
@@ -38,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.sentinel.util.SentinelUtils.buildResourceName;
 
 /**
@@ -48,7 +48,7 @@ import static io.microsphere.sentinel.util.SentinelUtils.buildResourceName;
  */
 public class SentinelRedisCommandInterceptor implements RedisConnectionInterceptor, InitializingBean, BeanClassLoaderAware {
 
-    private static final Logger logger = LoggerFactory.getLogger(SentinelRedisCommandInterceptor.class);
+    private static final Logger logger = getLogger(SentinelRedisCommandInterceptor.class);
 
     private static final String ENTRY_ATTRIBUTE_NAME = "sentinel.entry";
 
