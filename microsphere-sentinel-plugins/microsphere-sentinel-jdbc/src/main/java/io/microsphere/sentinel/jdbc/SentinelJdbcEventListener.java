@@ -16,22 +16,21 @@
  */
 package io.microsphere.sentinel.jdbc;
 
-import com.alibaba.csp.sentinel.Entry;
-import com.alibaba.csp.sentinel.context.ContextUtil;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.p6spy.engine.common.PreparedStatementInformation;
 import com.p6spy.engine.common.StatementInformation;
 import com.p6spy.engine.event.JdbcEventListener;
 import com.p6spy.engine.event.SimpleJdbcEventListener;
 import io.microsphere.logging.Logger;
+import io.microsphere.sentinel.common.SentinelContext;
+import io.microsphere.sentinel.common.SentinelOperations;
+import io.microsphere.sentinel.common.SentinelTemplate;
 
 import java.sql.SQLException;
 
-import static com.alibaba.csp.sentinel.EntryType.IN;
-import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
-import static com.alibaba.csp.sentinel.SphU.entry;
-import static com.alibaba.csp.sentinel.Tracer.traceEntry;
-import static com.alibaba.csp.sentinel.context.ContextUtil.exit;
+import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
+import static io.microsphere.lang.function.ThrowableAction.execute;
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.sentinel.common.SentinelContext.doInContext;
 
 /**
  * {@link JdbcEventListener} based on Alibaba Sentinel
@@ -41,79 +40,62 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
  */
 public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
 
+    public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_jdbc_context";
+
+    public static final String DEFAULT_ORIGIN = "Statement";
+
     private static final Logger logger = getLogger(SentinelJdbcEventListener.class);
 
-    private final ThreadLocal<Entry> entryThreadLocal = new ThreadLocal<>();
+    private final String contextName;
+
+    private final String origin;
+
+    private final SentinelOperations sentinelOperations;
+
+    public SentinelJdbcEventListener() {
+        this(DEFAULT_CONTEXT_NAME, DEFAULT_ORIGIN);
+    }
+
+    public SentinelJdbcEventListener(String contextName, String origin) {
+        this.contextName = contextName;
+        this.origin = origin;
+        this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
+    }
 
     @Override
     public void onBeforeAnyExecute(StatementInformation statementInformation) {
-        String resourceName = getResourceName(statementInformation);
-
-        String origin = getOrigin(statementInformation);
-
-        String contextName = getContextName(statementInformation);
-
-        ContextUtil.enter(contextName, origin);
-
-        entranceEntry(resourceName);
+        if (isEligibleStatement(statementInformation)) {
+            execute(() -> {
+                String resourceName = getResourceName(statementInformation);
+                SentinelContext context = this.sentinelOperations.begin(resourceName, this.contextName, this.origin);
+                context.setContext();
+            });
+        }
     }
 
     @Override
     public void onAfterAnyExecute(StatementInformation statementInformation, long timeElapsedNanos, SQLException e) {
-        Entry entry = getEntry();
-
-        if (entry == null) {
-            logger.trace("The Sentinel Entry was not bound at the current thread, the statement sql : '{}'", statementInformation.getSql());
-            return;
+        if (isEligibleStatement(statementInformation)) {
+            doInContext(context -> {
+                context.setFailure(e);
+                this.sentinelOperations.end(context);
+            }, true);
         }
-
-        if (e != null) {
-            traceEntry(e, entry);
-        }
-
-        entry.exit();
-
-        exit();
-
-        clearEntry();
     }
 
-    private String getResourceName(StatementInformation statementInformation) {
-        // TODO may bound the sql to prevent OOM.
+    protected String getResourceName(StatementInformation statementInformation) {
         String resourceName = statementInformation.getSql();
         logger.trace("Sentinel JDBC StatementInformation resource[name : '{}']", resourceName);
         return resourceName;
     }
 
-    private String getOrigin(StatementInformation statementInformation) {
-        // TODO
-        return null;
-    }
-
-    private String getContextName(StatementInformation statementInformation) {
-        // FIXME : sentinel_microsphere_jdbc_context
-        int connectionId = statementInformation.getConnectionInformation().getConnectionId();
-        return "microsphere.sentinel.jdbc.context-" + connectionId;
-    }
-
-    private void entranceEntry(String resourceName) {
-        try {
-            Entry entry = entry(resourceName, COMMON, IN);
-            setEntry(entry);
-        } catch (BlockException e) {
-            logger.info("Sentinel JDBC StatementInformation resource[name : '{}'] is blocked", resourceName, e);
-        }
-    }
-
-    private void setEntry(Entry entry) {
-        entryThreadLocal.set(entry);
-    }
-
-    private Entry getEntry() {
-        return entryThreadLocal.get();
-    }
-
-    private void clearEntry() {
-        entryThreadLocal.remove();
+    /**
+     * Determine whether the specified {@link StatementInformation} is eligible
+     *
+     * @param statementInformation
+     * @return
+     */
+    protected boolean isEligibleStatement(StatementInformation statementInformation) {
+        return statementInformation instanceof PreparedStatementInformation;
     }
 }
