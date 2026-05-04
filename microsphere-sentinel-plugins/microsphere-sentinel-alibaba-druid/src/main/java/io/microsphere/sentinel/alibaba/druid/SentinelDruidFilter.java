@@ -19,26 +19,12 @@ package io.microsphere.sentinel.alibaba.druid;
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.FilterAdapter;
 import com.alibaba.druid.proxy.jdbc.StatementProxy;
-import com.alibaba.druid.sql.ast.SQLStatement;
-import com.alibaba.druid.sql.ast.statement.SQLDeleteStatement;
-import com.alibaba.druid.sql.ast.statement.SQLExprTableSource;
-import com.alibaba.druid.sql.ast.statement.SQLInsertStatement;
-import com.alibaba.druid.sql.ast.statement.SQLSelect;
-import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
-import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
-import com.alibaba.druid.sql.ast.statement.SQLTableSource;
-import com.alibaba.druid.sql.ast.statement.SQLUpdateStatement;
 import io.microsphere.alibaba.druid.filter.AbstractStatementFilter;
-import io.microsphere.logging.Logger;
-import io.microsphere.sentinel.util.SentinelUtils;
+import io.microsphere.sentinel.common.SentinelContext;
+import io.microsphere.sentinel.common.SentinelOperations;
+import io.microsphere.sentinel.common.SentinelTemplate;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-
-import static com.alibaba.druid.sql.SQLUtils.parseStatements;
-import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.sentinel.common.SentinelContext.removeContext;
 
 /**
  * Sentinel x Druid {@link Filter}
@@ -50,81 +36,23 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
  */
 public class SentinelDruidFilter extends AbstractStatementFilter {
 
-    private static final Logger logger = getLogger(SentinelDruidFilter.class);
+    static final String CONTEXT_NAME = "microsphere_sentinel_jdbc_context";
+
+    static final String ORIGIN_NAME = "Statement";
+
+    private final SentinelOperations sentinelOperations = new SentinelTemplate();
 
     @Override
     protected void beforeExecute(StatementProxy statement, String resourceName) throws Throwable {
-
+        SentinelContext context = this.sentinelOperations.begin(resourceName, CONTEXT_NAME, ORIGIN_NAME);
+        context.setContext();
     }
 
     @Override
     protected void afterExecute(StatementProxy statement, String resourceName, Object result, Throwable failure) {
-
-    }
-
-    protected <T> T doInSentinel(StatementProxy statement, Callable<T> callable) throws SQLException {
-        String resourceName = getSentinelResourceName(statement);
-        return SentinelUtils.doInSentinel(resourceName, "sentinel_microsphere_jdbc_context", "Statement", callable, SQLException.class);
-    }
-
-    private String getSentinelResourceName(StatementProxy statement) {
-        String sql = statement.getLastExecuteSql();
-        if (Objects.equals(sql, validationSQL)) {
-            return sql;
-        }
-        String dbType = dataSource.getDbType();
-        List<SQLStatement> statementList = parseStatements(sql, dbType);
-        String resourceName = null;
-        if (statementList.size() > 0) {
-            SQLStatement sqlStatement = statementList.get(0);
-            resourceName = getSentinelResourceName(sqlStatement);
-        }
-        if (resourceName == null) {
-            logger.debug("The JDBC statement can't be recognized, sql : '{}' , dbType : '{}'", sql, dbType);
-            resourceName = "UNRECOGNIZED";
-        }
-        return resourceName;
-    }
-
-    private String getSentinelResourceName(SQLStatement sqlStatement) {
-        try {
-            if (sqlStatement instanceof SQLSelectStatement) {
-                return getSentinelResourceName((SQLSelectStatement) sqlStatement);
-            } else if (sqlStatement instanceof SQLUpdateStatement) {
-                return getSentinelResourceName((SQLUpdateStatement) sqlStatement);
-            } else if (sqlStatement instanceof SQLInsertStatement) {
-                return getSentinelResourceName((SQLInsertStatement) sqlStatement);
-            } else if (sqlStatement instanceof SQLDeleteStatement) {
-                return getSentinelResourceName((SQLDeleteStatement) sqlStatement);
-            }
-        } catch (Throwable e) {
-            logger.debug("The JDBC statement can't be parsed, sql : '{}'", sqlStatement, e);
-        }
-        return null;
-    }
-
-    private String getSentinelResourceName(SQLSelectStatement selectStatement) {
-        SQLSelect sqlSelect = selectStatement.getSelect();
-        SQLSelectQueryBlock sqlSelectQueryBlock = sqlSelect.getFirstQueryBlock();
-        if (sqlSelectQueryBlock == null) {
-            return null;
-        }
-        SQLTableSource sqlTableSource = sqlSelectQueryBlock.getFrom();
-        return "SELECT " + sqlTableSource.computeAlias();
-    }
-
-    private String getSentinelResourceName(SQLUpdateStatement updateStatement) {
-        SQLTableSource sqlTableSource = updateStatement.getFrom();
-        return "UPDATE " + sqlTableSource.computeAlias();
-    }
-
-    private String getSentinelResourceName(SQLInsertStatement insertStatement) {
-        SQLExprTableSource sqlTableSource = insertStatement.getTableSource();
-        return "INSERT " + sqlTableSource.computeAlias();
-    }
-
-    private String getSentinelResourceName(SQLDeleteStatement deleteStatement) {
-        SQLTableSource sqlTableSource = deleteStatement.getTableSource();
-        return "DELETE " + sqlTableSource.computeAlias();
+        SentinelContext context = removeContext();
+        context.setResult(result);
+        context.setFailure(failure);
+        this.sentinelOperations.end(context);
     }
 }
