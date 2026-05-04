@@ -17,19 +17,21 @@
 package io.microsphere.sentinel.jdbc;
 
 import com.alibaba.csp.sentinel.Entry;
-import com.alibaba.csp.sentinel.EntryType;
-import com.alibaba.csp.sentinel.ResourceTypeConstants;
-import com.alibaba.csp.sentinel.SphU;
-import com.alibaba.csp.sentinel.Tracer;
 import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.p6spy.engine.common.StatementInformation;
 import com.p6spy.engine.event.JdbcEventListener;
 import com.p6spy.engine.event.SimpleJdbcEventListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.microsphere.logging.Logger;
 
 import java.sql.SQLException;
+
+import static com.alibaba.csp.sentinel.EntryType.IN;
+import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
+import static com.alibaba.csp.sentinel.SphU.entry;
+import static com.alibaba.csp.sentinel.Tracer.traceEntry;
+import static com.alibaba.csp.sentinel.context.ContextUtil.exit;
+import static io.microsphere.logging.LoggerFactory.getLogger;
 
 /**
  * {@link JdbcEventListener} based on Alibaba Sentinel
@@ -39,7 +41,7 @@ import java.sql.SQLException;
  */
 public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(SentinelJdbcEventListener.class);
+    private static final Logger logger = getLogger(SentinelJdbcEventListener.class);
 
     private final ThreadLocal<Entry> entryThreadLocal = new ThreadLocal<>();
 
@@ -61,17 +63,17 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
         Entry entry = getEntry();
 
         if (entry == null) {
-            logger.debug("The Sentinel Entry was not bound at the current thread, the statement sql : '{}'", statementInformation.getSql());
+            logger.trace("The Sentinel Entry was not bound at the current thread, the statement sql : '{}'", statementInformation.getSql());
             return;
         }
 
         if (e != null) {
-            Tracer.traceEntry(e, entry);
+            traceEntry(e, entry);
         }
 
         entry.exit();
 
-        ContextUtil.exit();
+        exit();
 
         clearEntry();
     }
@@ -96,7 +98,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
 
     private void entranceEntry(String resourceName) {
         try {
-            Entry entry = SphU.entry(resourceName, ResourceTypeConstants.COMMON, EntryType.IN);
+            Entry entry = entry(resourceName, COMMON, IN);
             setEntry(entry);
         } catch (BlockException e) {
             logger.info("Sentinel JDBC StatementInformation resource[name : '{}'] is blocked", resourceName, e);
