@@ -1,10 +1,8 @@
 package io.microsphere.sentinel.util;
 
-import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.ResourceTypeConstants;
 import com.alibaba.csp.sentinel.concurrent.NamedThreadFactory;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
-import io.microsphere.logging.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -15,7 +13,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 
 import static io.microsphere.collection.MapUtils.newFixedHashMap;
-import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.reflect.FieldUtils.getFieldValue;
 import static io.microsphere.reflect.FieldUtils.getStaticFieldValue;
 import static io.microsphere.text.FormatUtils.format;
@@ -31,11 +28,7 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
  */
 public abstract class SentinelUtils {
 
-    private static final Logger logger = getLogger(SentinelUtils.class);
-
     public static final String FLOW_DATA_ID_PATTERN = "{}-flow-rules";
-
-    private static final ThreadLocal<Entry> entryThreadLocal = new ThreadLocal<>();
 
     private static final Map<Integer, String> resourceTypeToLabelMapping = initResourceTypeToLabelMapping();
 
