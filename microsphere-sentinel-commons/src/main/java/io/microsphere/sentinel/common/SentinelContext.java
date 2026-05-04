@@ -36,6 +36,8 @@ import static java.util.Collections.unmodifiableMap;
  */
 public class SentinelContext {
 
+    private static final ThreadLocal<SentinelContext> contextHolder = new ThreadLocal<>();
+
     @Nonnull
     private final String resourceName;
 
@@ -253,6 +255,13 @@ public class SentinelContext {
         return attributes;
     }
 
+    /**
+     * Set the current {@link SentinelContext}
+     */
+    public void setContext() {
+        setContext(this);
+    }
+
     @Override
     public String toString() {
         return "SentinelContext{" +
@@ -264,5 +273,31 @@ public class SentinelContext {
                 ", failure=" + failure +
                 ", attributes=" + attributes +
                 '}';
+    }
+
+    /**
+     * Get the current {@link SentinelContext}
+     *
+     * @return <code>null</code> if there is no {@link SentinelContext} associated with the current thread
+     */
+    @Nullable
+    public static SentinelContext getContext() {
+        return contextHolder.get();
+    }
+
+    /**
+     * Set the current {@link SentinelContext}
+     *
+     * @param context the {@link SentinelContext} , must not be <code>null</code>
+     */
+    public static void setContext(@Nullable SentinelContext context) {
+        contextHolder.set(context);
+    }
+
+    /**
+     * Clear the current {@link SentinelContext}
+     */
+    public static void clearContext() {
+        contextHolder.remove();
     }
 }
