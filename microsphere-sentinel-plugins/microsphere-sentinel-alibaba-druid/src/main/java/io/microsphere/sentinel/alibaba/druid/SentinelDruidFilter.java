@@ -16,6 +16,7 @@
  */
 package io.microsphere.sentinel.alibaba.druid;
 
+import com.alibaba.druid.filter.AutoLoad;
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.FilterAdapter;
 import com.alibaba.druid.proxy.jdbc.StatementProxy;
@@ -36,6 +37,7 @@ import static io.microsphere.sentinel.common.SentinelContext.doInContext;
  * @see FilterAdapter
  * @since 1.0.0
  */
+@AutoLoad
 public class SentinelDruidFilter extends AbstractStatementFilter implements SentinelPlugin {
 
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
