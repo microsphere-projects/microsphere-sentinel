@@ -22,6 +22,7 @@
         <module>microsphere-sentinel-alibaba-druid</module>
         <module>microsphere-sentinel-jdbc</module>
         <module>microsphere-sentinel-mybatis</module>
+        <module>microsphere-sentinel-hibernate</module>
     </modules>
 
 </project>
