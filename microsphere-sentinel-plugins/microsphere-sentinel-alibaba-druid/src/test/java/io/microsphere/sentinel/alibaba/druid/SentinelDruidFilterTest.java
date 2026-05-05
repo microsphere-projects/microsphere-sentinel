@@ -18,10 +18,7 @@
 package io.microsphere.sentinel.alibaba.druid;
 
 
-import com.alibaba.druid.pool.DruidDataSource;
 import io.microsphere.alibaba.druid.test.AbstractAlibabaDruidTest;
-
-import static java.util.Arrays.asList;
 
 /**
  * {@link SentinelDruidFilter} Testt
@@ -32,10 +29,4 @@ import static java.util.Arrays.asList;
  * @since 1.0.0
  */
 class SentinelDruidFilterTest extends AbstractAlibabaDruidTest {
-
-    @Override
-    protected void customize(DruidDataSource dataSource) {
-        SentinelDruidFilter sentinelDruidFilter = new SentinelDruidFilter();
-        dataSource.setProxyFilters(asList(sentinelDruidFilter));
-    }
 }
