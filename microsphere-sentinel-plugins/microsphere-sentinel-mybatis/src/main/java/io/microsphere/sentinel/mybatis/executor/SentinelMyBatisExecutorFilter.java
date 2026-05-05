@@ -45,7 +45,7 @@ public class SentinelMyBatisExecutorFilter implements ExecutorFilter, SentinelPl
 
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_mybatis_context";
 
-    public static final String DEFAULT_ORIGIN = "Statement";
+    public static final String DEFAULT_ORIGIN = "Executor";
 
     private final String contextName;
 
