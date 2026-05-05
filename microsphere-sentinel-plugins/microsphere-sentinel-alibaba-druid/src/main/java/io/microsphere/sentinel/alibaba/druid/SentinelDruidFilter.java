@@ -40,7 +40,7 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
 
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
 
-    public static final String DEFAULT_ORIGIN = "Statement";
+    public static final String DEFAULT_ORIGIN = "Filter";
 
     private final String contextName;
 
