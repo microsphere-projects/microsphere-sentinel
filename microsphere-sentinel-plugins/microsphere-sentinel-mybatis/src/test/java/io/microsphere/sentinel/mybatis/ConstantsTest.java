@@ -15,37 +15,33 @@
  * limitations under the License.
  */
 
-package io.microsphere.sentinel.mybatis.executor;
+package io.microsphere.sentinel.mybatis;
 
 
-import io.microsphere.mybatis.plugin.InterceptingExecutorInterceptor;
-import io.microsphere.mybatis.test.AbstractMapperTest;
-import org.apache.ibatis.session.Configuration;
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.util.ArrayUtils.ofArray;
+import static io.microsphere.sentinel.mybatis.Constants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.mybatis.Constants.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.mybatis.Constants.ENABLED_PROPERTY_NAME;
+import static io.microsphere.sentinel.mybatis.Constants.PLUGIN_NAME;
+import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * {@link SentinelMyBatisExecutorFilter} Test
+ * {@link Constants} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see SentinelMyBatisExecutorFilter
+ * @see Constants
  * @since 1.0.0
  */
-class SentinelMyBatisExecutorFilterTest extends AbstractMapperTest {
-
-    private SentinelMyBatisExecutorFilter filter;
-
-    @Override
-    protected void customize(Configuration configuration) {
-        this.filter = new SentinelMyBatisExecutorFilter();
-        InterceptingExecutorInterceptor interceptor = new InterceptingExecutorInterceptor(ofArray(this.filter));
-        configuration.addInterceptor(interceptor);
-    }
+class ConstantsTest {
 
     @Test
-    void testDisabled() throws Throwable {
-        this.filter.setEnabled(false);
-        super.testMapper();
+    void testConstants() {
+        assertEquals("mybatis", PLUGIN_NAME);
+        assertEquals("microsphere_sentinel_mybatis_context", DEFAULT_CONTEXT_NAME);
+        assertEquals("Executor", DEFAULT_ORIGIN);
+        assertEquals("microsphere.sentinel.mybatis.enabled", ENABLED_PROPERTY_NAME);
+        assertEquals(getPluginEnabledPropertyName(PLUGIN_NAME), ENABLED_PROPERTY_NAME);
     }
 }
