@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
+import static io.microsphere.util.ExceptionUtils.throwTarget;
 
 /**
  * Sentinel x MyBatis {@link ExecutorFilter}
@@ -77,9 +78,17 @@ public class SentinelMyBatisExecutorFilter extends AbstractSentinelPlugin implem
     }
 
     protected <T> T doInSentinel(MappedStatement ms, Callable<T> callable) throws SQLException {
-        String resourceName = getSentinelResourceName(ms);
-        return sentinelOperations.call(resourceName, getContextName(), getOrigin(),
-                context -> callable.call(), SQLException.class);
+        if (isEnabled()) {
+            String resourceName = getSentinelResourceName(ms);
+            return sentinelOperations.call(resourceName, getContextName(), getOrigin(),
+                    context -> callable.call(), SQLException.class);
+        } else {
+            try {
+                return callable.call();
+            } catch (Exception e) {
+                throw throwTarget(e, SQLException.class);
+            }
+        }
     }
 
     protected String getSentinelResourceName(MappedStatement ms) {

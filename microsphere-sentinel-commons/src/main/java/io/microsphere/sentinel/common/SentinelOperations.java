@@ -29,7 +29,7 @@ import java.util.function.Function;
 import static com.alibaba.csp.sentinel.Tracer.trace;
 import static com.alibaba.csp.sentinel.slots.block.BlockException.isBlockException;
 import static io.microsphere.logging.LoggerFactory.getLogger;
-import static io.microsphere.util.ExceptionUtils.wrap;
+import static io.microsphere.util.ExceptionUtils.throwTarget;
 
 /**
  * The common operations for Sentinel:
@@ -207,7 +207,7 @@ public interface SentinelOperations {
         try {
             return call(resourceName, contextName, origin, callback);
         } catch (Throwable t) {
-            throw wrap(t, throwableClass);
+            throw throwTarget(t, throwableClass);
         }
     }
 

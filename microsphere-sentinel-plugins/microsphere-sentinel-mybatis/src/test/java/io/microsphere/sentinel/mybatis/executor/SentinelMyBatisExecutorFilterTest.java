@@ -21,6 +21,7 @@ package io.microsphere.sentinel.mybatis.executor;
 import io.microsphere.mybatis.plugin.InterceptingExecutorInterceptor;
 import io.microsphere.mybatis.test.AbstractMapperTest;
 import org.apache.ibatis.session.Configuration;
+import org.junit.jupiter.api.Test;
 
 import static io.microsphere.util.ArrayUtils.ofArray;
 
@@ -33,10 +34,19 @@ import static io.microsphere.util.ArrayUtils.ofArray;
  */
 class SentinelMyBatisExecutorFilterTest extends AbstractMapperTest {
 
+    private SentinelMyBatisExecutorFilter filter;
+
     @Override
     protected void customize(Configuration configuration) {
-        SentinelMyBatisExecutorFilter filter = new SentinelMyBatisExecutorFilter();
-        InterceptingExecutorInterceptor interceptor = new InterceptingExecutorInterceptor(ofArray(filter));
+        this.filter = new SentinelMyBatisExecutorFilter();
+        InterceptingExecutorInterceptor interceptor = new InterceptingExecutorInterceptor(ofArray(this.filter));
         configuration.addInterceptor(interceptor);
     }
+
+    @Test
+    void testDisabled() throws Throwable {
+        this.filter.setEnabled(false);
+        super.testMapper();
+    }
+
 }

@@ -21,6 +21,7 @@ import io.microsphere.annotation.Nullable;
 import io.microsphere.sentinel.common.SentinelOperations;
 import io.microsphere.sentinel.common.SentinelPlugin;
 import io.microsphere.sentinel.common.SentinelTemplate;
+import io.microsphere.sentinel.common.SimpleSentinelPlugin;
 import org.hibernate.CallbackException;
 import org.hibernate.Interceptor;
 import org.hibernate.type.Type;
@@ -38,13 +39,13 @@ import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
  */
 public class SentinelHibernateInterceptor extends DelegatingInterceptor implements Interceptor, SentinelPlugin {
 
+    public static final String PLUGIN_NAME = "hibernate";
+
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_hibernate_context";
 
     public static final String DEFAULT_ORIGIN = "SessionFactory";
 
-    private final String contextName;
-
-    private final String origin;
+    private final SentinelPlugin delegate;
 
     private final SentinelOperations sentinelOperations;
 
@@ -58,8 +59,7 @@ public class SentinelHibernateInterceptor extends DelegatingInterceptor implemen
 
     public SentinelHibernateInterceptor(@Nullable Interceptor interceptor, @Nonnull String contextName, @Nonnull String origin) {
         super(interceptor);
-        this.contextName = contextName;
-        this.origin = origin;
+        this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin);
         this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
     }
 
@@ -70,7 +70,7 @@ public class SentinelHibernateInterceptor extends DelegatingInterceptor implemen
 
     @Override
     public boolean onPersist(Object entity, Object id, Object[] state, String[] propertyNames, Type[] types) throws CallbackException {
-        return doInSentinel(entity, "Persist", () -> super.onPersist(entity, id, state, propertyNames, types));
+        return doInSentinel(entity, "PERSIST", () -> super.onPersist(entity, id, state, propertyNames, types));
     }
 
     @Override
@@ -112,8 +112,12 @@ public class SentinelHibernateInterceptor extends DelegatingInterceptor implemen
     }
 
     protected <T> T doInSentinel(Object entity, String action, Supplier<T> callable) {
-        String resourceName = getSentinelResourceName(entity, action);
-        return this.sentinelOperations.execute(resourceName, this.getContextName(), this.getOrigin(), context -> (T) callable.get());
+        if (isEnabled()) {
+            String resourceName = getSentinelResourceName(entity, action);
+            return this.sentinelOperations.execute(resourceName, this.getContextName(), this.getOrigin(), context -> (T) callable.get());
+        } else {
+            return callable.get();
+        }
     }
 
     protected String getSentinelResourceName(Object entity, String action) {
@@ -122,17 +126,27 @@ public class SentinelHibernateInterceptor extends DelegatingInterceptor implemen
     }
 
     @Override
+    public boolean isEnabled() {
+        return this.delegate.isEnabled();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.delegate.setEnabled(enabled);
+    }
+
+    @Override
     public String getName() {
-        return "hibernate";
+        return this.delegate.getName();
     }
 
     @Override
     public String getContextName() {
-        return this.contextName;
+        return this.delegate.getContextName();
     }
 
     @Override
     public String getOrigin() {
-        return this.origin;
+        return this.delegate.getOrigin();
     }
 }
