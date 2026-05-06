@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.microsphere.sentinel.alibaba.druid.SentinelDruidFilter.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.alibaba.druid.SentinelDruidFilter.DEFAULT_ORIGIN;
 import static io.microsphere.sentinel.alibaba.druid.SentinelDruidFilter.PLUGIN_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,6 +39,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @since 1.0.0
  */
 class SentinelDruidFilterTest extends AbstractAlibabaDruidTest {
+
+    @Test
+    void testConstants() {
+        assertEquals("alibaba-druid", PLUGIN_NAME);
+        assertEquals("microsphere_sentinel_alibaba_druid_context", DEFAULT_CONTEXT_NAME);
+        assertEquals("Filter", DEFAULT_ORIGIN);
+    }
 
     @Test
     void testEnable() throws Throwable {
