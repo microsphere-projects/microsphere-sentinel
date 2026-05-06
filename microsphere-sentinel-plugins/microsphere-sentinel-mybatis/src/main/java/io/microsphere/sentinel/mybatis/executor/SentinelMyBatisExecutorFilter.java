@@ -34,6 +34,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
+import static io.microsphere.sentinel.mybatis.Constants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.mybatis.Constants.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.mybatis.Constants.PLUGIN_NAME;
 import static io.microsphere.util.ExceptionUtils.throwTarget;
 
 /**
@@ -44,12 +47,6 @@ import static io.microsphere.util.ExceptionUtils.throwTarget;
  * @since 1.0.0
  */
 public class SentinelMyBatisExecutorFilter extends AbstractSentinelPlugin implements ExecutorFilter, SentinelPlugin {
-
-    public static final String PLUGIN_NAME = "mybatis";
-
-    public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_mybatis_context";
-
-    public static final String DEFAULT_ORIGIN = "Executor";
 
     private final SentinelOperations sentinelOperations;
 
