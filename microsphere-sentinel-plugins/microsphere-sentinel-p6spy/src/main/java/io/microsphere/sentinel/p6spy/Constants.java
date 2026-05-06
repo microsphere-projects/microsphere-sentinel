@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package io.microsphere.sentinel.mybatis;
+package io.microsphere.sentinel.p6spy;
 
 import io.microsphere.annotation.ConfigurationProperty;
 import io.microsphere.constants.PropertyConstants;
@@ -25,7 +25,7 @@ import static io.microsphere.constants.SymbolConstants.DOT;
 import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
 
 /**
- * The interface to declare the constants of MyBatis
+ * The interface to declare the constants of P6Spy
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
@@ -33,22 +33,22 @@ import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
 public interface Constants {
 
     /**
-     * The plugin name of Sentinel x MyBatis
+     * The plugin name of Sentinel x P6Spy
      */
-    String PLUGIN_NAME = "mybatis";
+    String PLUGIN_NAME = "p6spy";
 
     /**
-     * The default context name of Sentinel x MyBatis
+     * The default context name of Sentinel x P6Spy
      */
-    String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_mybatis_context";
+    String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_p6spy_context";
 
     /**
-     * The default origin of Sentinel x MyBatis
+     * The default origin of Sentinel x P6Spy
      */
     String DEFAULT_ORIGIN = "Executor";
 
     /**
-     * The property name of the plugin of Sentinel x MyBatis enabled
+     * The property name of the plugin of Sentinel x P6Spy enabled
      */
     @ConfigurationProperty(
             type = boolean.class,
