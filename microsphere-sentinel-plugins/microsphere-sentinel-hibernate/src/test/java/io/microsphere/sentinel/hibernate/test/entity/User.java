@@ -34,23 +34,23 @@ import java.util.Objects;
 public class User implements Serializable {
 
     @Id
-    private Integer id;
+    private Long id;
 
     private String name;
 
     public User() {
     }
 
-    public User(Integer id, String name) {
+    public User(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,10 +64,12 @@ public class User implements Serializable {
 
     @Override
     public final boolean equals(Object o) {
-        if (!(o instanceof User)) return false;
+        if (!(o instanceof User)) {
+            return false;
+        }
 
         User user = (User) o;
-        return id == user.id && Objects.equals(name, user.name);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name);
     }
 
     @Override

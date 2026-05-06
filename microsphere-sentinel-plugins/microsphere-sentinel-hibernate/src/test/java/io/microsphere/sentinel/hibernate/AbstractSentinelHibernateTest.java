@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package io.microsphere.sentinel;
+package io.microsphere.sentinel.hibernate;
 
-import io.microsphere.sentinel.hibernate.SentinelHibernateInterceptor;
 import io.microsphere.sentinel.hibernate.test.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,29 +28,35 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static io.microsphere.sentinel.hibernate.SentinelHibernateInterceptor.PLUGIN_NAME;
+import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
+import static java.lang.System.currentTimeMillis;
+import static java.lang.System.setProperty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * {@link SentinelHibernateInterceptor} Test
+ * Abstract Sentinel x Hibernate Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see SentinelHibernateInterceptor
  * @since 1.0.0
  */
-class SentinelHibernateInterceptorTest {
+abstract class AbstractSentinelHibernateTest {
 
-    private SessionFactory sessionFactory;
+    protected Configuration configuration;
 
-    private Session session;
+    protected SessionFactory sessionFactory;
 
-    private StatelessSession statelessSession;
+    protected Session session;
 
-    private User user;
+    protected StatelessSession statelessSession;
+
+    protected User user;
 
     @BeforeEach
     void setUp() {
-        Configuration configuration = new Configuration()
+        setEnabled(false);
+        this.configuration = new Configuration()
                 .addAnnotatedClass(User.class)
                 .setProperty("jakarta.persistence.jdbc.driver", "org.h2.Driver")
                 .setProperty("jakarta.persistence.jdbc.url", "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1")
@@ -60,15 +65,15 @@ class SentinelHibernateInterceptorTest {
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect")
                 .setProperty("hibernate.format_sql", "true")
                 .setProperty("hibernate.show_sql", "true")
-                .setProperty("hibernate.hbm2ddl.auto", "update")
-                // .setInterceptor(new SentinelHibernateInterceptor())
-                ;
+                .setProperty("hibernate.hbm2ddl.auto", "update");
+
+        customizeConfiguration(configuration);
 
         this.sessionFactory = configuration.buildSessionFactory();
         this.session = sessionFactory.openSession();
         this.statelessSession = sessionFactory.openStatelessSession();
         this.user = new User();
-        this.user.setId(1);
+        this.user.setId(currentTimeMillis());
         this.user.setName("Mercy");
     }
 
@@ -77,12 +82,13 @@ class SentinelHibernateInterceptorTest {
         this.session.close();
         this.statelessSession.close();
         this.sessionFactory.close();
+        setEnabled(true);
     }
 
     @Test
     @DisplayName("Test Session: save & update & flush & get & delete")
     void testSession1() {
-        int userId = this.user.getId();
+        long userId = this.user.getId();
         assertEquals(userId, this.session.save(this.user));
 
         this.user.setName("Ma");
@@ -93,7 +99,7 @@ class SentinelHibernateInterceptorTest {
         this.session.flush();
         transaction.commit();
 
-        this.user = this.session.get(User.class, 1);
+        this.user = this.session.get(User.class, userId);
         assertNotNull(this.user);
 
         this.session.delete(this.user);
@@ -102,13 +108,14 @@ class SentinelHibernateInterceptorTest {
     @Test
     @DisplayName("Test : persist & saveOrUpdate & load & remove")
     void testSession2() {
+        long userId = this.user.getId();
         this.session.persist(this.user);
 
-        this.user.setId(2);
+        this.user.setId(currentTimeMillis());
         this.user.setName("Ma");
         this.session.saveOrUpdate(this.user);
 
-        this.user = this.session.load(User.class, 1);
+        this.user = this.session.load(User.class, userId);
         assertNotNull(this.user);
 
         this.session.remove(this.user);
@@ -117,12 +124,13 @@ class SentinelHibernateInterceptorTest {
     @Test
     @DisplayName("Test : persist & find & merge & remove")
     void testSession3() {
+        long userId = this.user.getId();
         this.session.persist(this.user);
 
-        this.user = this.session.find(User.class, 1);
+        this.user = this.session.find(User.class, userId);
         assertNotNull(this.user);
 
-        this.user.setId(2);
+        this.user.setId(currentTimeMillis());
         this.user.setName("Ma");
         this.session.merge(this.user);
 
@@ -132,7 +140,7 @@ class SentinelHibernateInterceptorTest {
     @Test
     @DisplayName("Test Stateless Session: insert & update & get & delete")
     void testStatelessSession1() {
-        int userId = this.user.getId();
+        long userId = this.user.getId();
 
         // insert
         assertEquals(userId, this.statelessSession.insert(this.user));
@@ -151,5 +159,11 @@ class SentinelHibernateInterceptorTest {
         this.statelessSession.delete(this.user);
     }
 
+    protected void customizeConfiguration(Configuration configuration) {
+    }
 
+    protected void setEnabled(boolean enabled) {
+        String propertyName = getPluginEnabledPropertyName(PLUGIN_NAME);
+        setProperty(propertyName, Boolean.toString(enabled));
+    }
 }
