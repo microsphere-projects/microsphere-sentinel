@@ -41,6 +41,8 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
 
     protected final EntryType trafficType;
 
+    private volatile boolean enabled;
+
     protected AbstractSentinelPlugin(String name, String contextName, String origin) {
         this(name, contextName, origin, COMMON);
     }
@@ -55,6 +57,26 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
         this.origin = origin;
         this.resourceType = resourceType;
         this.trafficType = trafficType;
+        this.enabled = SentinelPlugin.super.isEnabled();
+    }
+
+    /**
+     * Enable this {@link SentinelPlugin}
+     */
+    public void enable() {
+        this.enabled = true;
+    }
+
+    /**
+     * Disable this {@link SentinelPlugin}
+     */
+    public void disable() {
+        this.enabled = false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
     @Override
