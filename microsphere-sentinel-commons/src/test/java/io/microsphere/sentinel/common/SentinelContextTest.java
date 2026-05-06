@@ -83,7 +83,9 @@ public class SentinelContextTest {
     private Entry mockEntry;
 
     private String testResourceName = "test-resource";
+
     private String testContextName = "test-context";
+
     private String testOrigin = "test-origin";
 
     private SentinelContext context;
