@@ -18,7 +18,15 @@
 package io.microsphere.sentinel.alibaba.druid;
 
 
+import com.alibaba.druid.filter.Filter;
+import com.alibaba.druid.pool.DruidDataSource;
 import io.microsphere.alibaba.druid.test.AbstractAlibabaDruidTest;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static io.microsphere.sentinel.alibaba.druid.SentinelDruidFilter.PLUGIN_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * {@link SentinelDruidFilter} Testt
@@ -29,4 +37,31 @@ import io.microsphere.alibaba.druid.test.AbstractAlibabaDruidTest;
  * @since 1.0.0
  */
 class SentinelDruidFilterTest extends AbstractAlibabaDruidTest {
+
+    @Test
+    void testEnable() throws Throwable {
+        setEnable(true);
+        super.test();
+    }
+
+    @Test
+    void testDisable() throws Throwable {
+        setEnable(false);
+        super.test();
+    }
+
+    void setEnable(boolean enabled) {
+        DruidDataSource dataSource = getDruidDataSource();
+        List<Filter> proxyFilters = dataSource.getProxyFilters();
+        for (Filter proxyFilter : proxyFilters) {
+            if (proxyFilter instanceof SentinelDruidFilter filter) {
+                assertEquals(PLUGIN_NAME, filter.getName());
+                if (enabled) {
+                    filter.enable();
+                } else {
+                    filter.disable();
+                }
+            }
+        }
+    }
 }
