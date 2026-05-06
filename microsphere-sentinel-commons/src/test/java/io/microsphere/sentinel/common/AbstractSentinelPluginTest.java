@@ -41,7 +41,7 @@ class AbstractSentinelPluginTest {
 
     @BeforeEach
     void setUp() {
-        this.plugin = new DefaultSentinelPlugin();
+        this.plugin = new SimpleSentinelPlugin("default");
     }
 
     @Test

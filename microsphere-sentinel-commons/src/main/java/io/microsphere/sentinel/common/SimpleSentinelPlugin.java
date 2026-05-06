@@ -17,20 +17,34 @@
 
 package io.microsphere.sentinel.common;
 
+import com.alibaba.csp.sentinel.EntryType;
+
 import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
 
 /**
- * Default {@link SentinelPlugin}
+ * Simple {@link SentinelPlugin}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see AbstractSentinelPlugin
  * @see SentinelPlugin
  * @since 1.0.0
  */
-class DefaultSentinelPlugin extends AbstractSentinelPlugin {
+public class SimpleSentinelPlugin extends AbstractSentinelPlugin {
 
-    DefaultSentinelPlugin() {
-        super("default", DEFAULT_CONTEXT_NAME, DEFAULT_ORIGIN);
+    public SimpleSentinelPlugin(String name) {
+        super(name, DEFAULT_CONTEXT_NAME, DEFAULT_ORIGIN);
+    }
+
+    public SimpleSentinelPlugin(String name, String contextName, String origin) {
+        super(name, contextName, origin);
+    }
+
+    public SimpleSentinelPlugin(String name, String contextName, String origin, int resourceType) {
+        super(name, contextName, origin, resourceType);
+    }
+
+    public SimpleSentinelPlugin(String name, String contextName, String origin, int resourceType, EntryType trafficType) {
+        super(name, contextName, origin, resourceType, trafficType);
     }
 }
