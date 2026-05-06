@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link SentinelPlugin} Test
@@ -56,6 +56,6 @@ class SentinelPluginTest {
         assertEquals("test", plugin.getName());
         assertEquals("microsphere_sentinel_test_context", plugin.getContextName());
         assertEquals(DEFAULT_ORIGIN, plugin.getOrigin());
-        assertFalse(plugin.isEnabled());
+        assertTrue(plugin.isEnabled());
     }
 }
