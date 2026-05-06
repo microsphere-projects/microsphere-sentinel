@@ -45,7 +45,7 @@ public interface Constants {
     /**
      * The default origin of Sentinel x P6Spy
      */
-    String DEFAULT_ORIGIN = "Executor";
+    String DEFAULT_ORIGIN = "Statement";
 
     /**
      * The property name of the plugin of Sentinel x P6Spy enabled
