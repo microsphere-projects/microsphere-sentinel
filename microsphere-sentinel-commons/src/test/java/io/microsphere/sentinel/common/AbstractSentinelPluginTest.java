@@ -27,6 +27,7 @@ import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link AbstractSentinelPlugin} Test
@@ -51,6 +52,15 @@ class AbstractSentinelPluginTest {
         assertEquals(DEFAULT_ORIGIN, plugin.getOrigin());
         assertEquals(COMMON, plugin.getResourceType());
         assertEquals(IN, plugin.getTrafficType());
+        assertFalse(plugin.isEnabled());
+    }
+
+    @Test
+    void testEnable() {
+        assertFalse(plugin.isEnabled());
+        plugin.enable();
+        assertTrue(plugin.isEnabled());
+        plugin.disable();
         assertFalse(plugin.isEnabled());
     }
 }
