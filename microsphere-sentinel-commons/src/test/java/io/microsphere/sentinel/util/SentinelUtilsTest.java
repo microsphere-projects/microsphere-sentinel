@@ -25,10 +25,10 @@ import static io.microsphere.sentinel.util.SentinelUtils.getResourceTypeAsString
 import static io.microsphere.sentinel.util.SentinelUtils.getSentinelMetricsTaskExecutor;
 import static io.microsphere.sentinel.util.SentinelUtils.isPluginEnabled;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link SentinelUtils} Test
@@ -61,7 +61,7 @@ class SentinelUtilsTest {
 
     @Test
     void testIsPluginEnabled() {
-        assertFalse(isPluginEnabled("default"));
+        assertTrue(isPluginEnabled("default"));
     }
 
     @Test

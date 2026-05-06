@@ -52,15 +52,15 @@ class AbstractSentinelPluginTest {
         assertEquals(DEFAULT_ORIGIN, plugin.getOrigin());
         assertEquals(COMMON, plugin.getResourceType());
         assertEquals(IN, plugin.getTrafficType());
-        assertFalse(plugin.isEnabled());
+        assertTrue(plugin.isEnabled());
     }
 
     @Test
     void testEnable() {
-        assertFalse(plugin.isEnabled());
-        plugin.enable();
         assertTrue(plugin.isEnabled());
         plugin.disable();
         assertFalse(plugin.isEnabled());
+        plugin.enable();
+        assertTrue(plugin.isEnabled());
     }
 }

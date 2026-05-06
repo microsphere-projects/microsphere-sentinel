@@ -20,7 +20,7 @@ import static io.microsphere.reflect.FieldUtils.getFieldValue;
 import static io.microsphere.reflect.FieldUtils.getStaticFieldValue;
 import static io.microsphere.text.FormatUtils.format;
 import static io.microsphere.util.ClassUtils.getSimpleName;
-import static java.lang.Boolean.getBoolean;
+import static io.microsphere.util.SystemUtils.getSystemProperty;
 import static java.lang.reflect.Modifier.isStatic;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
@@ -115,11 +115,13 @@ public abstract class SentinelUtils {
      * Is the plugin enabled ?
      *
      * @param pluginName the name of plugin
-     * @return if enabled , return <code>true</code> , else <code>false</code>
+     * @return the <code>true</code> as default, otherwise set the Java System Property to be "false" , is like
+     * "microsphere.sentinel.${pluginName}.enabled" = "false"
      */
     public static final boolean isPluginEnabled(String pluginName) {
         String propertyName = getPluginEnabledPropertyName(pluginName);
-        return getBoolean(propertyName);
+        String propertyValue = getSystemProperty(propertyName, "true");
+        return !"false".equalsIgnoreCase(propertyValue);
     }
 
     /**
