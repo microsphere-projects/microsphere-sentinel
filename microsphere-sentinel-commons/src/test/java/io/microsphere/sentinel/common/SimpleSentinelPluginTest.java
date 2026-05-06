@@ -53,7 +53,6 @@ class SimpleSentinelPluginTest {
         }
     }
 
-
     @RepeatedTest(value = 4, name = "Test SimpleSentinelPlugin with {currentRepetition} constructor argument(s)")
     void test(RepetitionInfo repetitionInfo) {
         String value = value(repetitionInfo.getCurrentRepetition());
