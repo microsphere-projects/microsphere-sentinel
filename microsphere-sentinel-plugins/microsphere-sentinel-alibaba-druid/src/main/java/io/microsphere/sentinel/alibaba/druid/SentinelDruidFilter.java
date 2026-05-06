@@ -25,7 +25,9 @@ import io.microsphere.sentinel.common.SentinelContext;
 import io.microsphere.sentinel.common.SentinelOperations;
 import io.microsphere.sentinel.common.SentinelPlugin;
 import io.microsphere.sentinel.common.SentinelTemplate;
+import io.microsphere.sentinel.common.SimpleSentinelPlugin;
 
+import static com.alibaba.csp.sentinel.EntryType.IN;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
 import static io.microsphere.sentinel.common.SentinelContext.doInContext;
 
@@ -40,13 +42,13 @@ import static io.microsphere.sentinel.common.SentinelContext.doInContext;
 @AutoLoad
 public class SentinelDruidFilter extends AbstractStatementFilter implements SentinelPlugin {
 
+    public static final String PLUGIN_NAME = "alibaba-druid";
+
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
 
     public static final String DEFAULT_ORIGIN = "Filter";
 
-    private final String contextName;
-
-    private final String origin;
+    private final SimpleSentinelPlugin delegate;
 
     private final SentinelOperations sentinelOperations;
 
@@ -55,38 +57,54 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
     }
 
     public SentinelDruidFilter(String contextName, String origin) {
-        this.contextName = contextName;
-        this.origin = origin;
+        this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin, COMMON_DB_SQL, IN);
         this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
     }
 
     @Override
     protected void beforeExecute(StatementProxy statement, String resourceName) throws Throwable {
-        SentinelContext context = this.sentinelOperations.begin(resourceName, this.contextName, this.origin);
-        context.setContext();
+        if (isEnabled()) {
+            SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
+            context.setContext();
+        }
     }
 
     @Override
     protected void afterExecute(StatementProxy statement, String resourceName, Object result, Throwable failure) {
-        doInContext(context -> {
-            context.setResult(result);
-            context.setFailure(failure);
-            this.sentinelOperations.end(context);
-        }, true);
+        if (isEnabled()) {
+            doInContext(context -> {
+                context.setResult(result);
+                context.setFailure(failure);
+                this.sentinelOperations.end(context);
+            }, true);
+        }
+    }
+
+    public void enable() {
+        this.delegate.enable();
+    }
+
+    public void disable() {
+        this.delegate.disable();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.delegate.isEnabled();
     }
 
     @Override
     public String getName() {
-        return "alibaba-druid";
+        return this.delegate.getName();
     }
 
     @Override
     public String getContextName() {
-        return this.contextName;
+        return this.delegate.getContextName();
     }
 
     @Override
     public String getOrigin() {
-        return this.origin;
+        return this.delegate.getOrigin();
     }
 }
