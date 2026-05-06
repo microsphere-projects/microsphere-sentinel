@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package io.microsphere.sentinel.jdbc;
+package io.microsphere.sentinel.p6spy;
 
 
 import com.alibaba.druid.pool.DruidDataSource;

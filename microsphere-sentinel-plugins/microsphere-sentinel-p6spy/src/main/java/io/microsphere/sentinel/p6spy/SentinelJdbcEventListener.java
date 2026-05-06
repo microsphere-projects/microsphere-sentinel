@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.sentinel.jdbc;
+package io.microsphere.sentinel.p6spy;
 
 import com.p6spy.engine.common.PreparedStatementInformation;
 import com.p6spy.engine.common.StatementInformation;
@@ -23,7 +23,9 @@ import com.p6spy.engine.event.SimpleJdbcEventListener;
 import io.microsphere.logging.Logger;
 import io.microsphere.sentinel.common.SentinelContext;
 import io.microsphere.sentinel.common.SentinelOperations;
+import io.microsphere.sentinel.common.SentinelPlugin;
 import io.microsphere.sentinel.common.SentinelTemplate;
+import io.microsphere.sentinel.common.SimpleSentinelPlugin;
 
 import java.sql.SQLException;
 
@@ -38,17 +40,17 @@ import static io.microsphere.sentinel.common.SentinelContext.doInContext;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
+public class SentinelJdbcEventListener extends SimpleJdbcEventListener implements SentinelPlugin {
 
-    public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_jdbc_context";
+    public static final String PLUGIN_NAME = "p6spy";
+
+    public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_p6spy_context";
 
     public static final String DEFAULT_ORIGIN = "Statement";
 
     private static final Logger logger = getLogger(SentinelJdbcEventListener.class);
 
-    private final String contextName;
-
-    private final String origin;
+    private final SimpleSentinelPlugin delegate;
 
     private final SentinelOperations sentinelOperations;
 
@@ -57,8 +59,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
     }
 
     public SentinelJdbcEventListener(String contextName, String origin) {
-        this.contextName = contextName;
-        this.origin = origin;
+        this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin);
         this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
     }
 
@@ -67,7 +68,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
         if (isEligibleStatement(statementInformation)) {
             execute(() -> {
                 String resourceName = getResourceName(statementInformation);
-                SentinelContext context = this.sentinelOperations.begin(resourceName, this.contextName, this.origin);
+                SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
                 context.setContext();
             });
         }
@@ -97,5 +98,25 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener {
      */
     protected boolean isEligibleStatement(StatementInformation statementInformation) {
         return statementInformation instanceof PreparedStatementInformation;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.delegate.isEnabled();
+    }
+
+    @Override
+    public String getName() {
+        return this.delegate.getName();
+    }
+
+    @Override
+    public String getContextName() {
+        return this.delegate.getContextName();
+    }
+
+    @Override
+    public String getOrigin() {
+        return this.delegate.getOrigin();
     }
 }
