@@ -25,7 +25,7 @@ import static io.microsphere.constants.SymbolConstants.DOT;
 import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
 
 /**
- * The interface to declare the constants of Hibernate
+ * The interface to declare the constants of MyBatis
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
