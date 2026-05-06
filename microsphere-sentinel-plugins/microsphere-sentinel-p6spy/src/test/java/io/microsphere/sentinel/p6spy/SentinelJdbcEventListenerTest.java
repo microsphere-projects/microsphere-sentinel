@@ -58,7 +58,6 @@ class SentinelJdbcEventListenerTest extends AbstractAlibabaDruidTest {
     @Test
     void testDefaults() {
         SentinelJdbcEventListener listener = new SentinelJdbcEventListener();
-        listener.setEnabled(false);
         listener.onBeforeAnyExecute(null);
         listener.onAfterAnyExecute(null, 0L, null);
         assertTrue(listener.isEnabled());
