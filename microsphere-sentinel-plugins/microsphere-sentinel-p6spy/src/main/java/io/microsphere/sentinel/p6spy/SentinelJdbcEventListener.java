@@ -33,6 +33,9 @@ import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
 import static io.microsphere.lang.function.ThrowableAction.execute;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.sentinel.common.SentinelContext.doInContext;
+import static io.microsphere.sentinel.p6spy.Constants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.p6spy.Constants.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.p6spy.Constants.PLUGIN_NAME;
 
 /**
  * P6Spy {@link JdbcEventListener} based on Alibaba Sentinel
@@ -41,12 +44,6 @@ import static io.microsphere.sentinel.common.SentinelContext.doInContext;
  * @since 1.0.0
  */
 public class SentinelJdbcEventListener extends SimpleJdbcEventListener implements SentinelPlugin {
-
-    public static final String PLUGIN_NAME = "p6spy";
-
-    public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_p6spy_context";
-
-    public static final String DEFAULT_ORIGIN = "Statement";
 
     private static final Logger logger = getLogger(SentinelJdbcEventListener.class);
 
