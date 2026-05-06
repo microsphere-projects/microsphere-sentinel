@@ -21,46 +21,41 @@ package io.microsphere.sentinel.common;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.alibaba.csp.sentinel.EntryType.IN;
-import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link AbstractSentinelPlugin} Test
+ * {@link SentinelPlugin} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see AbstractSentinelPlugin
+ * @see SentinelPlugin
  * @since 1.0.0
  */
-class AbstractSentinelPluginTest {
+class SentinelPluginTest {
 
-    private AbstractSentinelPlugin plugin;
+    private SentinelPlugin plugin;
 
     @BeforeEach
     void setUp() {
-        this.plugin = new SimpleSentinelPlugin("default");
+        this.plugin = new SentinelPlugin() {
+            @Override
+            public String getName() {
+                return "test";
+            }
+
+            @Override
+            public String getOrigin() {
+                return "";
+            }
+        };
     }
 
     @Test
     void testGetters() {
-        assertEquals("default", plugin.getName());
-        assertEquals(DEFAULT_CONTEXT_NAME, plugin.getContextName());
+        assertEquals("test", plugin.getName());
+        assertEquals("microsphere_sentinel_test_context", plugin.getContextName());
         assertEquals(DEFAULT_ORIGIN, plugin.getOrigin());
-        assertEquals(COMMON, plugin.getResourceType());
-        assertEquals(IN, plugin.getTrafficType());
-        assertFalse(plugin.isEnabled());
-    }
-
-    @Test
-    void testEnable() {
-        assertFalse(plugin.isEnabled());
-        plugin.enable();
-        assertTrue(plugin.isEnabled());
-        plugin.disable();
         assertFalse(plugin.isEnabled());
     }
 }
