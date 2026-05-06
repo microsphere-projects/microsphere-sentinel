@@ -16,8 +16,10 @@
  */
 package io.microsphere.sentinel.hibernate;
 
+import io.microsphere.annotation.ConfigurationProperty;
 import io.microsphere.annotation.Nonnull;
 import io.microsphere.annotation.Nullable;
+import io.microsphere.constants.PropertyConstants;
 import io.microsphere.sentinel.common.SentinelOperations;
 import io.microsphere.sentinel.common.SentinelPlugin;
 import io.microsphere.sentinel.common.SentinelTemplate;
@@ -29,6 +31,9 @@ import org.hibernate.type.Type;
 import java.util.function.Supplier;
 
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
+import static io.microsphere.annotation.ConfigurationProperty.SYSTEM_PROPERTIES_SOURCE;
+import static io.microsphere.constants.SymbolConstants.DOT;
+import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
 
 /**
  * Sentinel x Hibernate {@link Interceptor}
@@ -44,6 +49,16 @@ public class SentinelHibernateInterceptor extends DelegatingInterceptor implemen
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_hibernate_context";
 
     public static final String DEFAULT_ORIGIN = "SessionFactory";
+
+    /**
+     * The property name of the plugin of Sentinel x Hibernate enabled
+     */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "true",
+            source = SYSTEM_PROPERTIES_SOURCE
+    )
+    public static final String ENABLED_PROPERTY_NAME = PROPERTY_NAME_PREFIX + PLUGIN_NAME + DOT + PropertyConstants.ENABLED_PROPERTY_NAME;
 
     private final SentinelPlugin delegate;
 
