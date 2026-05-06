@@ -40,6 +40,13 @@ public interface SentinelPlugin {
     }
 
     /**
+     * Set the plugin enabled or not
+     *
+     * @param enabled
+     */
+    void setEnabled(boolean enabled);
+
+    /**
      * The plugin name of Sentinel
      *
      * @return non-null

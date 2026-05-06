@@ -20,6 +20,14 @@ package io.microsphere.sentinel.p6spy;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import io.microsphere.alibaba.druid.test.AbstractAlibabaDruidTest;
+import org.junit.jupiter.api.Test;
+
+import static io.microsphere.sentinel.p6spy.SentinelJdbcEventListener.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.p6spy.SentinelJdbcEventListener.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.p6spy.SentinelJdbcEventListener.PLUGIN_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link SentinelJdbcEventListener}
@@ -38,5 +46,33 @@ class SentinelJdbcEventListenerTest extends AbstractAlibabaDruidTest {
         dataSource.setUrl("jdbc:p6spy:h2:mem:test_mem");
         dataSource.setUsername("sa");
         return dataSource;
+    }
+
+    @Test
+    void testConstants() {
+        assertEquals("p6spy", PLUGIN_NAME);
+        assertEquals("microsphere_sentinel_p6spy_context", DEFAULT_CONTEXT_NAME);
+        assertEquals("Statement", DEFAULT_ORIGIN);
+    }
+
+    @Test
+    void testDefaults() {
+        SentinelJdbcEventListener listener = new SentinelJdbcEventListener();
+        listener.setEnabled(false);
+        listener.onBeforeAnyExecute(null);
+        listener.onAfterAnyExecute(null, 0L, null);
+        assertTrue(listener.isEnabled());
+        assertEquals(PLUGIN_NAME, listener.getName());
+        assertEquals(DEFAULT_CONTEXT_NAME, listener.getContextName());
+        assertEquals(DEFAULT_ORIGIN, listener.getOrigin());
+    }
+
+    @Test
+    void testDisabled() {
+        SentinelJdbcEventListener listener = new SentinelJdbcEventListener();
+        listener.setEnabled(false);
+        listener.onBeforeAnyExecute(null);
+        listener.onAfterAnyExecute(null, 0L, null);
+        assertFalse(listener.isEnabled());
     }
 }
