@@ -28,7 +28,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.sentinel.hibernate.SentinelHibernateInterceptor.PLUGIN_NAME;
+import static io.microsphere.sentinel.hibernate.Constants.PLUGIN_NAME;
 import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.System.setProperty;

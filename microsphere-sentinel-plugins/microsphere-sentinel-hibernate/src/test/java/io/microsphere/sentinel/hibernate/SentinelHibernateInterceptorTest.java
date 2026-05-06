@@ -21,9 +21,9 @@ package io.microsphere.sentinel.hibernate;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.sentinel.hibernate.SentinelHibernateInterceptor.DEFAULT_CONTEXT_NAME;
-import static io.microsphere.sentinel.hibernate.SentinelHibernateInterceptor.DEFAULT_ORIGIN;
-import static io.microsphere.sentinel.hibernate.SentinelHibernateInterceptor.PLUGIN_NAME;
+import static io.microsphere.sentinel.hibernate.Constants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.hibernate.Constants.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.hibernate.Constants.PLUGIN_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
