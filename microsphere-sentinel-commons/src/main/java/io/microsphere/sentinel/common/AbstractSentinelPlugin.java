@@ -64,19 +64,24 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
      * Enable this {@link SentinelPlugin}
      */
     public void enable() {
-        this.enabled = true;
+        setEnabled(true);
     }
 
     /**
      * Disable this {@link SentinelPlugin}
      */
     public void disable() {
-        this.enabled = false;
+        setEnabled(false);
     }
 
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

@@ -56,11 +56,7 @@ class SentinelDruidFilterTest extends AbstractAlibabaDruidTest {
         for (Filter proxyFilter : proxyFilters) {
             if (proxyFilter instanceof SentinelDruidFilter filter) {
                 assertEquals(PLUGIN_NAME, filter.getName());
-                if (enabled) {
-                    filter.enable();
-                } else {
-                    filter.disable();
-                }
+                filter.setEnabled(enabled);
             }
         }
     }

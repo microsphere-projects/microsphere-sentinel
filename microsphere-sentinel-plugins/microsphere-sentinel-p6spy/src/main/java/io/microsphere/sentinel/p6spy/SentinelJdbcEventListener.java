@@ -35,7 +35,7 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.sentinel.common.SentinelContext.doInContext;
 
 /**
- * {@link JdbcEventListener} based on Alibaba Sentinel
+ * P6Spy {@link JdbcEventListener} based on Alibaba Sentinel
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
@@ -50,7 +50,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener implement
 
     private static final Logger logger = getLogger(SentinelJdbcEventListener.class);
 
-    private final SimpleSentinelPlugin delegate;
+    private final SentinelPlugin delegate;
 
     private final SentinelOperations sentinelOperations;
 
@@ -65,22 +65,26 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener implement
 
     @Override
     public void onBeforeAnyExecute(StatementInformation statementInformation) {
-        if (isEligibleStatement(statementInformation)) {
-            execute(() -> {
-                String resourceName = getResourceName(statementInformation);
-                SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
-                context.setContext();
-            });
+        if (isEnabled()) {
+            if (isEligibleStatement(statementInformation)) {
+                execute(() -> {
+                    String resourceName = getResourceName(statementInformation);
+                    SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
+                    context.setContext();
+                });
+            }
         }
     }
 
     @Override
     public void onAfterAnyExecute(StatementInformation statementInformation, long timeElapsedNanos, SQLException e) {
-        if (isEligibleStatement(statementInformation)) {
-            doInContext(context -> {
-                context.setFailure(e);
-                this.sentinelOperations.end(context);
-            }, true);
+        if (isEnabled()) {
+            if (isEligibleStatement(statementInformation)) {
+                doInContext(context -> {
+                    context.setFailure(e);
+                    this.sentinelOperations.end(context);
+                }, true);
+            }
         }
     }
 
@@ -103,6 +107,11 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener implement
     @Override
     public boolean isEnabled() {
         return this.delegate.isEnabled();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.delegate.setEnabled(enabled);
     }
 
     @Override

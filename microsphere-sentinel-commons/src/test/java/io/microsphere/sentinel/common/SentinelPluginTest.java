@@ -40,6 +40,11 @@ class SentinelPluginTest {
     void setUp() {
         this.plugin = new SentinelPlugin() {
             @Override
+            public void setEnabled(boolean enabled) {
+
+            }
+
+            @Override
             public String getName() {
                 return "test";
             }

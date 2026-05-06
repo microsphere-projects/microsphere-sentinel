@@ -48,7 +48,7 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
 
     public static final String DEFAULT_ORIGIN = "Filter";
 
-    private final SimpleSentinelPlugin delegate;
+    private final SentinelPlugin delegate;
 
     private final SentinelOperations sentinelOperations;
 
@@ -80,17 +80,14 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
         }
     }
 
-    public void enable() {
-        this.delegate.enable();
-    }
-
-    public void disable() {
-        this.delegate.disable();
-    }
-
     @Override
     public boolean isEnabled() {
         return this.delegate.isEnabled();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.delegate.setEnabled(enabled);
     }
 
     @Override
