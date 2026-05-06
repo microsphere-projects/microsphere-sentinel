@@ -11,12 +11,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-jdbc</artifactId>
+    <artifactId>microsphere-sentinel-p6spy</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Plugins :: JDBC</name>
-    <description>Microsphere Alibaba Sentinel Plugin for JDBC</description>
+    <name>Microsphere :: Alibaba Sentinel :: Plugins :: P6Spy</name>
+    <description>Microsphere Alibaba Sentinel Plugin for P6Spy</description>
 
     <dependencies>
 
