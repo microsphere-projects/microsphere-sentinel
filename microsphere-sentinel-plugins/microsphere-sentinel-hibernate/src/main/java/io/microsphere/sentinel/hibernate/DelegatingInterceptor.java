@@ -41,10 +41,6 @@ public class DelegatingInterceptor implements Interceptor, DelegatingWrapper {
 
     protected final Interceptor delegate;
 
-    public DelegatingInterceptor() {
-        this(null);
-    }
-
     public DelegatingInterceptor(@Nullable Interceptor delegate) {
         this.delegate = delegate == null ? INSTANCE : delegate;
     }
