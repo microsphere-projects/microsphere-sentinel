@@ -113,11 +113,26 @@ public class SentinelHibernateInterceptor extends DelegatingInterceptor implemen
 
     protected <T> T doInSentinel(Object entity, String action, Supplier<T> callable) {
         String resourceName = getSentinelResourceName(entity, action);
-        return this.sentinelOperations.execute(resourceName, this.contextName, this.origin, context -> (T) callable.get());
+        return this.sentinelOperations.execute(resourceName, this.getContextName(), this.getOrigin(), context -> (T) callable.get());
     }
 
     protected String getSentinelResourceName(Object entity, String action) {
         String className = entity.getClass().getName();
         return "Entity:" + action + ":" + className;
+    }
+
+    @Override
+    public String getName() {
+        return "hibernate";
+    }
+
+    @Override
+    public String getContextName() {
+        return this.contextName;
+    }
+
+    @Override
+    public String getOrigin() {
+        return this.origin;
     }
 }

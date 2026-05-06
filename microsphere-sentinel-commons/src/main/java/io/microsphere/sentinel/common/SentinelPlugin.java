@@ -17,6 +17,11 @@
 
 package io.microsphere.sentinel.common;
 
+import io.microsphere.annotation.Nonnull;
+
+import static io.microsphere.sentinel.util.SentinelUtils.getDefaultContextName;
+import static io.microsphere.sentinel.util.SentinelUtils.isPluginEnabled;
+
 /**
  * The Plugin interface for Sentinel
  *
@@ -24,4 +29,39 @@ package io.microsphere.sentinel.common;
  * @since 1.0.0
  */
 public interface SentinelPlugin {
+
+    /**
+     * Determine whether the plugin is enabled
+     *
+     * @return if enabled , return {@code true} , else return {@code false}
+     */
+    default boolean isEnabled() {
+        return isPluginEnabled(getName());
+    }
+
+    /**
+     * The plugin name of Sentinel
+     *
+     * @return non-null
+     */
+    @Nonnull
+    String getName();
+
+    /**
+     * The context name that Sentinel Plugin belongs to
+     *
+     * @return non-null
+     */
+    @Nonnull
+    default String getContextName() {
+        return getDefaultContextName(getName());
+    }
+
+    /**
+     * The origin that Sentinel Plugin belongs to
+     *
+     * @return non-null
+     */
+    @Nonnull
+    String getOrigin();
 }
