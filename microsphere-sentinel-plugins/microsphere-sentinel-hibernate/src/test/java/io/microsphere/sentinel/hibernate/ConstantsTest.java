@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-package io.microsphere.sentinel.alibaba.druid;
+package io.microsphere.sentinel.hibernate;
 
 
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.sentinel.alibaba.druid.Constants.DEFAULT_CONTEXT_NAME;
-import static io.microsphere.sentinel.alibaba.druid.Constants.DEFAULT_ORIGIN;
-import static io.microsphere.sentinel.alibaba.druid.Constants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.sentinel.alibaba.druid.Constants.PLUGIN_NAME;
+import static io.microsphere.sentinel.hibernate.Constants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.hibernate.Constants.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.hibernate.Constants.ENABLED_PROPERTY_NAME;
+import static io.microsphere.sentinel.hibernate.Constants.PLUGIN_NAME;
 import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,10 +38,10 @@ class ConstantsTest {
 
     @Test
     void testConstants() {
-        assertEquals("alibaba-druid", PLUGIN_NAME);
-        assertEquals("microsphere_sentinel_alibaba_druid_context", DEFAULT_CONTEXT_NAME);
-        assertEquals("Filter", DEFAULT_ORIGIN);
-        assertEquals("microsphere.sentinel.alibaba-druid.enabled", ENABLED_PROPERTY_NAME);
+        assertEquals("hibernate", PLUGIN_NAME);
+        assertEquals("microsphere_sentinel_hibernate_context", DEFAULT_CONTEXT_NAME);
+        assertEquals("SessionFactory", DEFAULT_ORIGIN);
+        assertEquals("microsphere.sentinel.hibernate.enabled", ENABLED_PROPERTY_NAME);
         assertEquals(getPluginEnabledPropertyName(PLUGIN_NAME), ENABLED_PROPERTY_NAME);
     }
 }
