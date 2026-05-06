@@ -21,6 +21,8 @@ import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.FilterAdapter;
 import com.alibaba.druid.proxy.jdbc.StatementProxy;
 import io.microsphere.alibaba.druid.filter.AbstractStatementFilter;
+import io.microsphere.annotation.ConfigurationProperty;
+import io.microsphere.constants.PropertyConstants;
 import io.microsphere.sentinel.common.SentinelContext;
 import io.microsphere.sentinel.common.SentinelOperations;
 import io.microsphere.sentinel.common.SentinelPlugin;
@@ -29,7 +31,10 @@ import io.microsphere.sentinel.common.SimpleSentinelPlugin;
 
 import static com.alibaba.csp.sentinel.EntryType.IN;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
+import static io.microsphere.annotation.ConfigurationProperty.SYSTEM_PROPERTIES_SOURCE;
+import static io.microsphere.constants.SymbolConstants.DOT;
 import static io.microsphere.sentinel.common.SentinelContext.doInContext;
+import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
 
 /**
  * Sentinel x Druid {@link Filter}
@@ -47,6 +52,16 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
 
     public static final String DEFAULT_ORIGIN = "Filter";
+
+    /**
+     * The property name of {@link SentinelDruidFilter} enabled
+     */
+    @ConfigurationProperty(
+            type = boolean.class,
+            defaultValue = "true",
+            source = SYSTEM_PROPERTIES_SOURCE
+    )
+    public static final String ENABLED_PROPERTY_NAME = PROPERTY_NAME_PREFIX + PLUGIN_NAME + DOT + PropertyConstants.ENABLED_PROPERTY_NAME;
 
     private final SentinelPlugin delegate;
 
