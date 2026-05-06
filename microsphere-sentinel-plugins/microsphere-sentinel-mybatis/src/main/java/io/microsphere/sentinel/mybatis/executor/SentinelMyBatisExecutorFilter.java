@@ -19,6 +19,7 @@ package io.microsphere.sentinel.mybatis.executor;
 
 import io.microsphere.mybatis.executor.ExecutorFilter;
 import io.microsphere.mybatis.executor.ExecutorFilterChain;
+import io.microsphere.sentinel.common.AbstractSentinelPlugin;
 import io.microsphere.sentinel.common.SentinelOperations;
 import io.microsphere.sentinel.common.SentinelPlugin;
 import io.microsphere.sentinel.common.SentinelTemplate;
@@ -41,15 +42,13 @@ import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
  * @see ExecutorFilter
  * @since 1.0.0
  */
-public class SentinelMyBatisExecutorFilter implements ExecutorFilter, SentinelPlugin {
+public class SentinelMyBatisExecutorFilter extends AbstractSentinelPlugin implements ExecutorFilter, SentinelPlugin {
+
+    public static final String PLUGIN_NAME = "mybatis";
 
     public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_mybatis_context";
 
     public static final String DEFAULT_ORIGIN = "Executor";
-
-    private final String contextName;
-
-    private final String origin;
 
     private final SentinelOperations sentinelOperations;
 
@@ -58,9 +57,8 @@ public class SentinelMyBatisExecutorFilter implements ExecutorFilter, SentinelPl
     }
 
     public SentinelMyBatisExecutorFilter(String contextName, String origin) {
-        this.contextName = contextName;
-        this.origin = origin;
-        this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
+        super(PLUGIN_NAME, contextName, origin, COMMON_DB_SQL);
+        this.sentinelOperations = new SentinelTemplate(getResourceType());
     }
 
     @Override
@@ -80,26 +78,11 @@ public class SentinelMyBatisExecutorFilter implements ExecutorFilter, SentinelPl
 
     protected <T> T doInSentinel(MappedStatement ms, Callable<T> callable) throws SQLException {
         String resourceName = getSentinelResourceName(ms);
-        return sentinelOperations.call(resourceName, this.getContextName(), this.getOrigin(),
+        return sentinelOperations.call(resourceName, getContextName(), getOrigin(),
                 context -> callable.call(), SQLException.class);
     }
 
     protected String getSentinelResourceName(MappedStatement ms) {
         return ms.getId();
-    }
-
-    @Override
-    public String getName() {
-        return "mybatis";
-    }
-
-    @Override
-    public String getContextName() {
-        return this.contextName;
-    }
-
-    @Override
-    public String getOrigin() {
-        return this.origin;
     }
 }
