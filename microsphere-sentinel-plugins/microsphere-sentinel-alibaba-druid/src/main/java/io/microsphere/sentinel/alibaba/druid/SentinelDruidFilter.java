@@ -74,4 +74,19 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
             this.sentinelOperations.end(context);
         }, true);
     }
+
+    @Override
+    public String getName() {
+        return "alibaba-druid";
+    }
+
+    @Override
+    public String getContextName() {
+        return this.contextName;
+    }
+
+    @Override
+    public String getOrigin() {
+        return this.origin;
+    }
 }

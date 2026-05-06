@@ -28,6 +28,8 @@ import static com.alibaba.csp.sentinel.Tracer.traceEntry;
 import static com.alibaba.csp.sentinel.context.ContextUtil.enter;
 import static com.alibaba.csp.sentinel.context.ContextUtil.exit;
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
 import static io.microsphere.util.StringUtils.isBlank;
 
 /**
