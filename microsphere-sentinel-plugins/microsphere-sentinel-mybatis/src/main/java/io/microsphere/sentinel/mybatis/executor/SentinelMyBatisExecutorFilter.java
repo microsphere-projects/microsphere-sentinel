@@ -80,11 +80,26 @@ public class SentinelMyBatisExecutorFilter implements ExecutorFilter, SentinelPl
 
     protected <T> T doInSentinel(MappedStatement ms, Callable<T> callable) throws SQLException {
         String resourceName = getSentinelResourceName(ms);
-        return sentinelOperations.call(resourceName, this.contextName, this.origin,
+        return sentinelOperations.call(resourceName, this.getContextName(), this.getOrigin(),
                 context -> callable.call(), SQLException.class);
     }
 
     protected String getSentinelResourceName(MappedStatement ms) {
         return ms.getId();
+    }
+
+    @Override
+    public String getName() {
+        return "mybatis";
+    }
+
+    @Override
+    public String getContextName() {
+        return this.contextName;
+    }
+
+    @Override
+    public String getOrigin() {
+        return this.origin;
     }
 }

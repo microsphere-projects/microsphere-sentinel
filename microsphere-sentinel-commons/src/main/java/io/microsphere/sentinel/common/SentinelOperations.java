@@ -63,10 +63,6 @@ import static io.microsphere.util.ExceptionUtils.wrap;
  */
 public interface SentinelOperations {
 
-    String DEFAULT_ORIGIN = "";
-
-    String DEFAULT_CONTEXT_NAME = "microsphere_default_context";
-
     // The One-Time Operations
 
     /**

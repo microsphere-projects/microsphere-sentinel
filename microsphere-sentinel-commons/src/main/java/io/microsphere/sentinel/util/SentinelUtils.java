@@ -3,6 +3,7 @@ package io.microsphere.sentinel.util;
 import com.alibaba.csp.sentinel.ResourceTypeConstants;
 import com.alibaba.csp.sentinel.concurrent.NamedThreadFactory;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import io.microsphere.annotation.Nonnull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -13,10 +14,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 
 import static io.microsphere.collection.MapUtils.newFixedHashMap;
+import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
+import static io.microsphere.constants.SymbolConstants.DOT;
 import static io.microsphere.reflect.FieldUtils.getFieldValue;
 import static io.microsphere.reflect.FieldUtils.getStaticFieldValue;
 import static io.microsphere.text.FormatUtils.format;
 import static io.microsphere.util.ClassUtils.getSimpleName;
+import static java.lang.Boolean.getBoolean;
 import static java.lang.reflect.Modifier.isStatic;
 import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 
@@ -28,7 +32,30 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
  */
 public abstract class SentinelUtils {
 
+    /***
+     * The Flow Data ID pattern
+     */
     public static final String FLOW_DATA_ID_PATTERN = "{}-flow-rules";
+
+    /**
+     * The default Context name pattern
+     */
+    public static final String DEFAULT_CONTEXT_NAME_PATTERN = "microsphere_sentinel_{}_context";
+
+    /**
+     * The default Context name : "microsphere_sentinel_default_context"
+     */
+    public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_default_context";
+
+    /**
+     * The default origin : ""
+     */
+    public static final String DEFAULT_ORIGIN = "";
+
+    /**
+     * The Property Name Prefix of Sentinel : "microsphere.sentinel."
+     */
+    public static final String PROPERTY_NAME_PREFIX = "microsphere.sentinel.";
 
     private static final Map<Integer, String> resourceTypeToLabelMapping = initResourceTypeToLabelMapping();
 
@@ -52,6 +79,7 @@ public abstract class SentinelUtils {
      * @param method {@link Method}
      * @return The method signature (simple class) serves as the Resource name
      */
+    @Nonnull
     public static String buildResourceName(Method method) {
         String prefix = getSimpleName(method.getDeclaringClass()) + "." + method.getName();
         StringJoiner resourceNameBuilder = new StringJoiner(",", prefix + "(", ")");
@@ -67,8 +95,42 @@ public abstract class SentinelUtils {
      * @param appName the name of application
      * @return non-null
      */
+    @Nonnull
     public static String getFlowDataId(String appName) {
         return format(FLOW_DATA_ID_PATTERN, appName);
+    }
+
+    /**
+     * Get the Property Name of plugin enabled property : "microsphere.sentinel.${pluginName}.enabled"
+     *
+     * @param pluginName the name of plugin
+     * @return non-null
+     */
+    @Nonnull
+    public static final String getPluginEnabledPropertyName(String pluginName) {
+        return PROPERTY_NAME_PREFIX + pluginName + DOT + ENABLED_PROPERTY_NAME;
+    }
+
+    /**
+     * Is the plugin enabled ?
+     *
+     * @param pluginName the name of plugin
+     * @return if enabled , return <code>true</code> , else <code>false</code>
+     */
+    public static final boolean isPluginEnabled(String pluginName) {
+        String propertyName = getPluginEnabledPropertyName(pluginName);
+        return getBoolean(propertyName);
+    }
+
+    /**
+     * Get the default Context name
+     *
+     * @param pluginName the name of plugin
+     * @return non-null
+     */
+    @Nonnull
+    public static String getDefaultContextName(String pluginName) {
+        return format(DEFAULT_CONTEXT_NAME_PATTERN, pluginName);
     }
 
     /**
@@ -77,6 +139,7 @@ public abstract class SentinelUtils {
      * @param resourceType resource type
      * @return non-null
      */
+    @Nonnull
     public static String getResourceTypeAsString(int resourceType) {
         return resourceTypeToLabelMapping.getOrDefault(resourceType, "UNKNOWN");
     }
@@ -98,6 +161,7 @@ public abstract class SentinelUtils {
      * if can't be {@link #findSentinelMetricsTaskExecutor() found}
      * @see #findSentinelMetricsTaskExecutor()
      */
+    @Nonnull
     public static ScheduledExecutorService getSentinelMetricsTaskExecutor() {
         ScheduledExecutorService scheduledExecutorService = sentinelMetricsTaskExecutor;
 

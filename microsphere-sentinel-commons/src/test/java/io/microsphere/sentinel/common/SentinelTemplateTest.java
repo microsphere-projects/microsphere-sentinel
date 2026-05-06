@@ -24,8 +24,8 @@ import io.microsphere.logging.test.jupiter.LoggingLevelsClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.sentinel.common.SentinelOperations.DEFAULT_CONTEXT_NAME;
-import static io.microsphere.sentinel.common.SentinelOperations.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
