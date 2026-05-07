@@ -48,12 +48,12 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringJUnitConfig
 @WebAppConfiguration
 @ContextConfiguration(classes = {
-        TestController.class,           // Test Controller
+        TestController.class,
         SentinelHandlerMethodInterceptor.class,
-        SentinelHandlerMethodInterceptorTest.class  // Test RouterFunction
+        SentinelHandlerMethodInterceptorTest.class
 })
 @EnableWebMvc
-@EnableWebMvcExtension
+@EnableWebMvcExtension(registerHandlerInterceptors = true)
 class SentinelHandlerMethodInterceptorTest {
 
     @Autowired
