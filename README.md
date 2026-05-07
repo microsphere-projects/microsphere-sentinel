@@ -17,12 +17,17 @@ The project follows a layered approach, offering both low-level integration APIs
 Spring Boot applications. This design allows developers to adopt Sentinel protection incrementally, from core
 infrastructure components to complete application-level integration:
 
+- Web
+    - Spring Web
+        - Spring WebMVC
+        - Spring WebFlux
 - Database access
     - Alibaba Druid
     - Hibernate
     - MyBatis
     - P6Spy
 - Redis
+    - Spring Data Redis
 
 ## Modules
 
@@ -123,6 +128,7 @@ We welcome your contributions! Please read [Code of Conduct](./CODE_OF_CONDUCT.m
 - [microsphere-sentinel-p6spy](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-p6spy)
 - [microsphere-sentinel-redis](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-redis)
 - [microsphere-sentinel-spring](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-spring)
+- [microsphere-sentinel-spring-web](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-spring-web)
 
 ## License
 
