@@ -25,7 +25,7 @@ import io.microsphere.sentinel.common.SentinelOperations;
 import io.microsphere.sentinel.common.SentinelTemplate;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.data.redis.connection.RedisCommands;
+import org.springframework.data.redis.connection.RedisClusterConnection;
 import org.springframework.data.redis.connection.RedisConnection;
 
 import java.lang.reflect.Method;
@@ -36,8 +36,8 @@ import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.sentinel.redis.Constants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.redis.Constants.DEFAULT_ORIGIN;
 import static io.microsphere.sentinel.redis.Constants.PLUGIN_NAME;
+import static io.microsphere.sentinel.redis.Constants.SENTINEL_CONTEXT_ATTRIBUTE_NAME;
 import static io.microsphere.sentinel.util.SentinelUtils.buildResourceName;
-import static java.util.Collections.unmodifiableMap;
 import static org.springframework.util.ClassUtils.getAllInterfacesForClass;
 
 /**
@@ -46,13 +46,12 @@ import static org.springframework.util.ClassUtils.getAllInterfacesForClass;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin implements RedisConnectionInterceptor, InitializingBean, BeanClassLoaderAware {
+public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin implements RedisConnectionInterceptor,
+        InitializingBean, BeanClassLoaderAware {
 
     private static final Logger logger = getLogger(SentinelRedisCommandInterceptor.class);
 
-    private static final String CONTEXT_ATTRIBUTE_NAME = "sentinel-context";
-
-    private final Map<Method, String> methodResourceNamesCache = newFixedHashMap(256);
+    private final Map<Method, String> methodResourceNamesCache = newFixedHashMap(512);
 
     private ClassLoader classLoader;
 
@@ -69,47 +68,49 @@ public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin impl
 
     @Override
     public void beforeExecute(RedisMethodContext<RedisConnection> redisMethodContext) throws Throwable {
+        if (isEnabled()) {
+            Method method = redisMethodContext.getMethod();
 
-        Method method = redisMethodContext.getMethod();
+            String resourceName = getResourceName(method);
 
-        String resourceName = getResourceName(method);
+            if (resourceName == null) {
+                logger.trace("The RedisConnection method ['{}'] in the RedisTemplate Bean[name: '{}'] requires no interception",
+                        redisMethodContext.getSourceBeanName(), method);
+                return;
+            }
 
-        if (resourceName == null) {
-            logger.trace("The RedisConnection method ['{}'] in the RedisTemplate Bean[name: '{}'] requires no interception",
-                    redisMethodContext.getSourceBeanName(), method);
-            return;
+            SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
+            setContext(redisMethodContext, context);
         }
-
-        SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
-        setContext(redisMethodContext, context);
     }
 
     @Override
     public void afterExecute(RedisMethodContext<RedisConnection> redisMethodContext, Object result, Throwable failure) throws Throwable {
+        if (isEnabled()) {
+            SentinelContext sentinelContext = getSentinelContext(redisMethodContext);
 
-        SentinelContext sentinelContext = getSentinelContext(redisMethodContext);
+            if (sentinelContext == null) {
+                logger.trace("The SentinelContext can't be found in the RedisMethodContext[redisTemplateBeanName: '{}', method: '{}']",
+                        redisMethodContext.getSourceBeanName(), redisMethodContext.getMethod());
+                return;
+            }
 
-        if (sentinelContext == null) {
-            logger.trace("The SentinelContext can't be found in the RedisMethodContext[redisTemplateBeanName: '{}', method: '{}']",
-                    redisMethodContext.getSourceBeanName(), redisMethodContext.getMethod());
-            return;
+            sentinelContext.setResult(result);
+            sentinelContext.setFailure(failure);
+            this.sentinelOperations.end(sentinelContext);
         }
-
-        sentinelContext.setResult(result);
-        sentinelContext.setFailure(failure);
-        this.sentinelOperations.end(sentinelContext);
     }
 
     private String getResourceName(Method method) {
         return methodResourceNamesCache.get(method);
     }
 
-    private void setContext(RedisMethodContext context, SentinelContext sentinelContext) {
-        context.setAttribute(CONTEXT_ATTRIBUTE_NAME, sentinelContext);
+    public static void setContext(RedisMethodContext context, SentinelContext sentinelContext) {
+        context.setAttribute(SENTINEL_CONTEXT_ATTRIBUTE_NAME, sentinelContext);
     }
 
-    private SentinelContext getSentinelContext(RedisMethodContext context) {
-        return (SentinelContext) context.getAttribute(CONTEXT_ATTRIBUTE_NAME);
+    public static SentinelContext getSentinelContext(RedisMethodContext context) {
+        return (SentinelContext) context.getAttribute(SENTINEL_CONTEXT_ATTRIBUTE_NAME);
     }
 
     @Override
@@ -122,12 +123,8 @@ public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin impl
         initMethodResourceNamesCache();
     }
 
-    public Map<Method, String> getMethodResourceNamesCache() {
-        return unmodifiableMap(methodResourceNamesCache);
-    }
-
     private void initMethodResourceNamesCache() {
-        Class[] allInterfaceClasses = getAllInterfacesForClass(RedisCommands.class, classLoader);
+        Class[] allInterfaceClasses = getAllInterfacesForClass(RedisClusterConnection.class, classLoader);
         for (Class interfaceClass : allInterfaceClasses) {
             Method[] methods = interfaceClass.getMethods();
             for (Method method : methods) {

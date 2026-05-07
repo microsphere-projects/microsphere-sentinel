@@ -19,6 +19,8 @@ package io.microsphere.sentinel.redis;
 
 import io.microsphere.annotation.ConfigurationProperty;
 import io.microsphere.constants.PropertyConstants;
+import io.microsphere.redis.spring.interceptor.RedisMethodContext;
+import io.microsphere.sentinel.common.SentinelContext;
 
 import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.annotation.ConfigurationProperty.SYSTEM_PROPERTIES_SOURCE;
@@ -60,4 +62,12 @@ public interface Constants {
             }
     )
     String ENABLED_PROPERTY_NAME = PROPERTY_NAME_PREFIX + PLUGIN_NAME + DOT + PropertyConstants.ENABLED_PROPERTY_NAME;
+
+    /**
+     * The attribute name of {@link SentinelContext} in {@link RedisMethodContext}
+     *
+     * @see SentinelContext
+     * @see RedisMethodContext#getAttribute(String)
+     */
+    String SENTINEL_CONTEXT_ATTRIBUTE_NAME = "sentinel-context";
 }
