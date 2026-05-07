@@ -48,7 +48,7 @@ public interface Constants {
     String DEFAULT_ORIGIN = "Filter";
 
     /**
-     * The property name of the plugin of Sentinel x Hibernate enabled
+     * The property name of the plugin of Sentinel x Alibaba Druid enabled
      */
     @ConfigurationProperty(
             type = boolean.class,
