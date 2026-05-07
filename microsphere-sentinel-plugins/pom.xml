@@ -24,6 +24,7 @@
         <module>microsphere-sentinel-hibernate</module>
         <module>microsphere-sentinel-p6spy</module>
         <module>microsphere-sentinel-redis</module>
+        <module>microsphere-sentinel-spring-web</module>
     </modules>
 
 </project>
