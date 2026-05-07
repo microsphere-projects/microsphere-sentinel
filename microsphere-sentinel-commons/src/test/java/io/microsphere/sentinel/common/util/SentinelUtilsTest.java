@@ -1,4 +1,4 @@
-package io.microsphere.sentinel.util;
+package io.microsphere.sentinel.common.util;
 
 
 import org.junit.jupiter.api.Test;
@@ -11,19 +11,15 @@ import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_RPC;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_WEB;
 import static io.microsphere.reflect.MethodUtils.findMethod;
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME;
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME_PATTERN;
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
-import static io.microsphere.sentinel.util.SentinelUtils.FLOW_DATA_ID_PATTERN;
-import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
-import static io.microsphere.sentinel.util.SentinelUtils.buildResourceName;
-import static io.microsphere.sentinel.util.SentinelUtils.findSentinelMetricsTaskExecutor;
-import static io.microsphere.sentinel.util.SentinelUtils.getDefaultContextName;
-import static io.microsphere.sentinel.util.SentinelUtils.getFlowDataId;
-import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
-import static io.microsphere.sentinel.util.SentinelUtils.getResourceTypeAsString;
-import static io.microsphere.sentinel.util.SentinelUtils.getSentinelMetricsTaskExecutor;
-import static io.microsphere.sentinel.util.SentinelUtils.isPluginEnabled;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.common.util.SentinelUtils.buildResourceName;
+import static io.microsphere.sentinel.common.util.SentinelUtils.findSentinelMetricsTaskExecutor;
+import static io.microsphere.sentinel.common.util.SentinelUtils.getDefaultContextName;
+import static io.microsphere.sentinel.common.util.SentinelUtils.getFlowDataId;
+import static io.microsphere.sentinel.common.util.SentinelUtils.getPluginEnabledPropertyName;
+import static io.microsphere.sentinel.common.util.SentinelUtils.getResourceTypeAsString;
+import static io.microsphere.sentinel.common.util.SentinelUtils.getSentinelMetricsTaskExecutor;
+import static io.microsphere.sentinel.common.util.SentinelUtils.isPluginEnabled;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,15 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 1.0.0
  */
 class SentinelUtilsTest {
-
-    @Test
-    void testConstants() {
-        assertEquals("{}-flow-rules", FLOW_DATA_ID_PATTERN);
-        assertEquals("microsphere_sentinel_{}_context", DEFAULT_CONTEXT_NAME_PATTERN);
-        assertEquals("microsphere_sentinel_default_context", DEFAULT_CONTEXT_NAME);
-        assertEquals("", DEFAULT_ORIGIN);
-        assertEquals("microsphere.sentinel.", PROPERTY_NAME_PREFIX);
-    }
 
     @Test
     void testBuildResourceName() {

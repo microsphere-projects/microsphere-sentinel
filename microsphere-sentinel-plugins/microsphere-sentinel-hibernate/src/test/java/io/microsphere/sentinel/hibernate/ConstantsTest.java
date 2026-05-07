@@ -24,7 +24,7 @@ import static io.microsphere.sentinel.hibernate.Constants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.hibernate.Constants.DEFAULT_ORIGIN;
 import static io.microsphere.sentinel.hibernate.Constants.ENABLED_PROPERTY_NAME;
 import static io.microsphere.sentinel.hibernate.Constants.PLUGIN_NAME;
-import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
+import static io.microsphere.sentinel.common.util.SentinelUtils.getPluginEnabledPropertyName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**

@@ -1,4 +1,4 @@
-package io.microsphere.sentinel.util;
+package io.microsphere.sentinel.common.util;
 
 import com.alibaba.csp.sentinel.ResourceTypeConstants;
 import com.alibaba.csp.sentinel.concurrent.NamedThreadFactory;
@@ -18,6 +18,9 @@ import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
 import static io.microsphere.constants.SymbolConstants.DOT;
 import static io.microsphere.reflect.FieldUtils.getFieldValue;
 import static io.microsphere.reflect.FieldUtils.getStaticFieldValue;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME_PATTERN;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.FLOW_DATA_ID_PATTERN;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.PROPERTY_NAME_PREFIX;
 import static io.microsphere.text.FormatUtils.format;
 import static io.microsphere.util.ClassUtils.getSimpleName;
 import static io.microsphere.util.SystemUtils.getSystemProperty;
@@ -31,31 +34,6 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
  * @since 1.0.0
  */
 public abstract class SentinelUtils {
-
-    /***
-     * The Flow Data ID pattern
-     */
-    public static final String FLOW_DATA_ID_PATTERN = "{}-flow-rules";
-
-    /**
-     * The default Context name pattern
-     */
-    public static final String DEFAULT_CONTEXT_NAME_PATTERN = "microsphere_sentinel_{}_context";
-
-    /**
-     * The default Context name : "microsphere_sentinel_default_context"
-     */
-    public static final String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_default_context";
-
-    /**
-     * The default origin : ""
-     */
-    public static final String DEFAULT_ORIGIN = "";
-
-    /**
-     * The Property Name Prefix of Sentinel : "microsphere.sentinel."
-     */
-    public static final String PROPERTY_NAME_PREFIX = "microsphere.sentinel.";
 
     private static final Map<Integer, String> resourceTypeToLabelMapping = initResourceTypeToLabelMapping();
 

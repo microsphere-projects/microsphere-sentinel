@@ -15,33 +15,33 @@
  * limitations under the License.
  */
 
-package io.microsphere.sentinel.alibaba.druid;
+package io.microsphere.sentinel.common.constants;
 
 
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.sentinel.alibaba.druid.Constants.DEFAULT_CONTEXT_NAME;
-import static io.microsphere.sentinel.alibaba.druid.Constants.DEFAULT_ORIGIN;
-import static io.microsphere.sentinel.alibaba.druid.Constants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.sentinel.alibaba.druid.Constants.PLUGIN_NAME;
-import static io.microsphere.sentinel.common.util.SentinelUtils.getPluginEnabledPropertyName;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME_PATTERN;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.FLOW_DATA_ID_PATTERN;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.PROPERTY_NAME_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * {@link Constants} Test
+ * {@link SentinelConstants} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see Constants
+ * @see SentinelConstants
  * @since 1.0.0
  */
-class ConstantsTest {
+class SentinelConstantsTest {
 
     @Test
     void testConstants() {
-        assertEquals("alibaba-druid", PLUGIN_NAME);
-        assertEquals("microsphere_sentinel_alibaba_druid_context", DEFAULT_CONTEXT_NAME);
-        assertEquals("Filter", DEFAULT_ORIGIN);
-        assertEquals("microsphere.sentinel.alibaba-druid.enabled", ENABLED_PROPERTY_NAME);
-        assertEquals(getPluginEnabledPropertyName(PLUGIN_NAME), ENABLED_PROPERTY_NAME);
+        assertEquals("{}-flow-rules", FLOW_DATA_ID_PATTERN);
+        assertEquals("microsphere_sentinel_{}_context", DEFAULT_CONTEXT_NAME_PATTERN);
+        assertEquals("microsphere_sentinel_default_context", DEFAULT_CONTEXT_NAME);
+        assertEquals("", DEFAULT_ORIGIN);
+        assertEquals("microsphere.sentinel.", PROPERTY_NAME_PREFIX);
     }
 }
