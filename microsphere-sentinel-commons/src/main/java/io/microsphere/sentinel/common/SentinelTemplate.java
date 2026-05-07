@@ -61,7 +61,7 @@ public class SentinelTemplate implements SentinelOperations {
     }
 
     @Override
-    public SentinelContext begin(String resourceName, String contextName, String origin) throws Throwable {
+    public SentinelContext begin(String resourceName, String contextName, String origin) throws Exception {
         String actualContextName = isBlank(contextName) ? DEFAULT_CONTEXT_NAME : contextName;
         String actualOrigin = isBlank(origin) ? DEFAULT_ORIGIN : origin;
         if (logger.isTraceEnabled()) {
