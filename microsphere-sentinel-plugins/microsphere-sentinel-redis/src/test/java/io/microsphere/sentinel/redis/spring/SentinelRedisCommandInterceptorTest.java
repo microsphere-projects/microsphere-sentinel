@@ -19,6 +19,8 @@ package io.microsphere.sentinel.redis.spring;
 
 
 import io.microsphere.redis.spring.annotation.EnableRedisInterceptor;
+import io.microsphere.redis.spring.context.RedisContext;
+import io.microsphere.redis.spring.interceptor.RedisMethodContext;
 import io.microsphere.sentinel.redis.spring.test.RedisContextConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,14 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import java.lang.reflect.Method;
+
+import static io.microsphere.sentinel.redis.spring.SentinelRedisCommandInterceptor.DEFAULT_ORDER;
+import static io.microsphere.util.ArrayUtils.ofArray;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link SentinelRedisCommandInterceptor} Test
@@ -49,14 +58,38 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SentinelRedisCommandInterceptorTest {
 
     @Autowired
+    private RedisContext redisContext;
+
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private SentinelRedisCommandInterceptor interceptor;
 
     @Test
     void test() {
         String key = "key";
         String value = "value";
-        ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
+        ValueOperations<String, String> valueOperations = this.stringRedisTemplate.opsForValue();
         valueOperations.set(key, value);
         assertEquals(value, valueOperations.get(key));
+        assertEquals(DEFAULT_ORDER, interceptor.getOrder());
+    }
+
+    @Test
+    void testDisabled() {
+        this.interceptor.setEnabled(false);
+        assertFalse(this.interceptor.isEnabled());
+        test();
+        this.interceptor.setEnabled(true);
+        assertTrue(this.interceptor.isEnabled());
+    }
+
+    @Test
+    void testResourceNotFound() {
+        Method method = getClass().getMethods()[0];
+        RedisMethodContext context = new RedisMethodContext(this.stringRedisTemplate, method, ofArray(), this.redisContext);
+        assertDoesNotThrow(() -> this.interceptor.beforeExecute(context));
+        assertDoesNotThrow(() -> this.interceptor.afterExecute(context, null, null));
     }
 }
