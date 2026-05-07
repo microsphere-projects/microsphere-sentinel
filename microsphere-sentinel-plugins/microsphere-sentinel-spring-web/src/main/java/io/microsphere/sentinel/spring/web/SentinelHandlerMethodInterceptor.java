@@ -80,21 +80,25 @@ public class SentinelHandlerMethodInterceptor extends AbstractSentinelPlugin imp
 
     @Override
     public void beforeExecute(HandlerMethod handlerMethod, Object[] args, NativeWebRequest request) throws Exception {
-        String resourceName = getResourceName(handlerMethod);
-        SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
-        setSentinelContext(context, request);
+        if (isEnabled()) {
+            String resourceName = getResourceName(handlerMethod);
+            SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
+            setSentinelContext(context, request);
+        }
     }
 
     @Override
     public void afterExecute(HandlerMethod handlerMethod, Object[] args, Object returnValue, Throwable error, NativeWebRequest request) {
-        SentinelContext context = getSentinelContext(request);
-        if (context == null) {
-            logger.trace("The 'context' is null , please check whether the 'resilience4jFacade' is a 'ChainableResilience4jFacade'", error);
-            return;
+        if (isEnabled()) {
+            SentinelContext context = getSentinelContext(request);
+            if (context == null) {
+                logger.trace("The SentinelContext is not found in the request : {}", request);
+                return;
+            }
+            context.setResult(returnValue)
+                    .setFailure(error);
+            this.sentinelOperations.end(context);
         }
-        context.setResult(returnValue)
-                .setFailure(error);
-        this.sentinelOperations.end(context);
     }
 
     @Override
