@@ -24,6 +24,7 @@ import static io.microsphere.sentinel.redis.Constants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.redis.Constants.DEFAULT_ORIGIN;
 import static io.microsphere.sentinel.redis.Constants.ENABLED_PROPERTY_NAME;
 import static io.microsphere.sentinel.redis.Constants.PLUGIN_NAME;
+import static io.microsphere.sentinel.redis.Constants.SENTINEL_CONTEXT_ATTRIBUTE_NAME;
 import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,5 +44,6 @@ class ConstantsTest {
         assertEquals("RedisConnection", DEFAULT_ORIGIN);
         assertEquals("microsphere.sentinel.redis.enabled", ENABLED_PROPERTY_NAME);
         assertEquals(getPluginEnabledPropertyName(PLUGIN_NAME), ENABLED_PROPERTY_NAME);
+        assertEquals("sentinel-context", SENTINEL_CONTEXT_ATTRIBUTE_NAME);
     }
 }

@@ -49,6 +49,11 @@ import static org.springframework.util.ClassUtils.getAllInterfacesForClass;
 public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin implements RedisConnectionInterceptor,
         InitializingBean, BeanClassLoaderAware {
 
+    /**
+     * The default order
+     */
+    public static final int DEFAULT_ORDER = 9;
+
     private static final Logger logger = getLogger(SentinelRedisCommandInterceptor.class);
 
     private final Map<Method, String> methodResourceNamesCache = newFixedHashMap(512);
@@ -74,8 +79,7 @@ public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin impl
             String resourceName = getResourceName(method);
 
             if (resourceName == null) {
-                logger.trace("The RedisConnection method ['{}'] in the RedisTemplate Bean[name: '{}'] requires no interception",
-                        redisMethodContext.getSourceBeanName(), method);
+                logger.trace("The RedisConnection method['{}'] should not be intercepted in the {}", method, redisMethodContext);
                 return;
             }
 
@@ -85,13 +89,12 @@ public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin impl
     }
 
     @Override
-    public void afterExecute(RedisMethodContext<RedisConnection> redisMethodContext, Object result, Throwable failure) throws Throwable {
+    public void afterExecute(RedisMethodContext<RedisConnection> redisMethodContext, Object result, Throwable failure) {
         if (isEnabled()) {
             SentinelContext sentinelContext = getSentinelContext(redisMethodContext);
 
             if (sentinelContext == null) {
-                logger.trace("The SentinelContext can't be found in the RedisMethodContext[redisTemplateBeanName: '{}', method: '{}']",
-                        redisMethodContext.getSourceBeanName(), redisMethodContext.getMethod());
+                logger.trace("The SentinelContext can't be found in the {}", redisMethodContext);
                 return;
             }
 
@@ -136,6 +139,6 @@ public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin impl
 
     @Override
     public int getOrder() {
-        return 9;
+        return DEFAULT_ORDER;
     }
 }
