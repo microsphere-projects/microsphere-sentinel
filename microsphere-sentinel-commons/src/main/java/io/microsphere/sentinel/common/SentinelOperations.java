@@ -261,10 +261,10 @@ public interface SentinelOperations {
      * @param contextName  the name of the context
      * @param origin       the origin of the execution
      * @return {@link SentinelContext} with the entry and its name
-     * @throws Throwable any error caused by the execution of begin
+     * @throws Exception any error caused by the execution of begin
      */
     @Nonnull
-    SentinelContext begin(@Nonnull String resourceName, @Nullable String contextName, @Nullable String origin) throws Throwable;
+    SentinelContext begin(@Nonnull String resourceName, @Nullable String contextName, @Nullable String origin) throws Exception;
 
     /**
      * End the execution in the second phase.
