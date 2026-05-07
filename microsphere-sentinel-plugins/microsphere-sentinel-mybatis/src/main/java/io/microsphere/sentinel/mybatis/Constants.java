@@ -22,7 +22,7 @@ import io.microsphere.constants.PropertyConstants;
 
 import static io.microsphere.annotation.ConfigurationProperty.SYSTEM_PROPERTIES_SOURCE;
 import static io.microsphere.constants.SymbolConstants.DOT;
-import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.PROPERTY_NAME_PREFIX;
 
 /**
  * The interface to declare the constants of MyBatis

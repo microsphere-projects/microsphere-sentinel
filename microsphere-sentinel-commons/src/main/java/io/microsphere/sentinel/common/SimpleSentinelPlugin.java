@@ -19,8 +19,8 @@ package io.microsphere.sentinel.common;
 
 import com.alibaba.csp.sentinel.EntryType;
 
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME;
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORIGIN;
 
 /**
  * Simple {@link SentinelPlugin}

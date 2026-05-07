@@ -31,7 +31,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.lang.reflect.Method;
 
-import static io.microsphere.sentinel.redis.spring.SentinelRedisCommandInterceptor.DEFAULT_ORDER;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORDER;
 import static io.microsphere.util.ArrayUtils.ofArray;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

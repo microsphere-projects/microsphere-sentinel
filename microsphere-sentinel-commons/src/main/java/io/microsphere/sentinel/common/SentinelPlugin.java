@@ -19,8 +19,8 @@ package io.microsphere.sentinel.common;
 
 import io.microsphere.annotation.Nonnull;
 
-import static io.microsphere.sentinel.util.SentinelUtils.getDefaultContextName;
-import static io.microsphere.sentinel.util.SentinelUtils.isPluginEnabled;
+import static io.microsphere.sentinel.common.util.SentinelUtils.getDefaultContextName;
+import static io.microsphere.sentinel.common.util.SentinelUtils.isPluginEnabled;
 
 /**
  * The Plugin interface for Sentinel
