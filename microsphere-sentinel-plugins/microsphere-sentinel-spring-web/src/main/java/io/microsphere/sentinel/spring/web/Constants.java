@@ -19,14 +19,11 @@ package io.microsphere.sentinel.spring.web;
 
 import io.microsphere.annotation.ConfigurationProperty;
 import io.microsphere.constants.PropertyConstants;
-import io.microsphere.sentinel.common.SentinelContext;
-import io.microsphere.spring.web.util.WebScope;
-import org.springframework.web.context.request.NativeWebRequest;
 
 import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.annotation.ConfigurationProperty.SYSTEM_PROPERTIES_SOURCE;
 import static io.microsphere.constants.SymbolConstants.DOT;
-import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.PROPERTY_NAME_PREFIX;
 
 /**
  * The interface to declare the constants of Spring Web
@@ -63,13 +60,4 @@ public interface Constants {
             }
     )
     String ENABLED_PROPERTY_NAME = PROPERTY_NAME_PREFIX + PLUGIN_NAME + DOT + PropertyConstants.ENABLED_PROPERTY_NAME;
-
-    /**
-     * The attribute name of {@link SentinelContext} in {@link NativeWebRequest}
-     *
-     * @see SentinelContext
-     * @see NativeWebRequest#getAttribute(String, int)
-     * @see WebScope
-     */
-    String SENTINEL_CONTEXT_ATTRIBUTE_NAME = "sentinel-context";
 }

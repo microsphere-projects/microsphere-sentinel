@@ -25,8 +25,8 @@ import org.junit.jupiter.api.RepetitionInfo;
 import static com.alibaba.csp.sentinel.EntryType.IN;
 import static com.alibaba.csp.sentinel.EntryType.OUT;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_CONTEXT_NAME;
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

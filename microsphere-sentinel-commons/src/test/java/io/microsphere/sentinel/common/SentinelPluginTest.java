@@ -21,7 +21,7 @@ package io.microsphere.sentinel.common;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.sentinel.util.SentinelUtils.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -20,12 +20,11 @@ package io.microsphere.sentinel.spring.web;
 
 import org.junit.jupiter.api.Test;
 
+import static io.microsphere.sentinel.common.util.SentinelUtils.getPluginEnabledPropertyName;
 import static io.microsphere.sentinel.spring.web.Constants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.spring.web.Constants.DEFAULT_ORIGIN;
 import static io.microsphere.sentinel.spring.web.Constants.ENABLED_PROPERTY_NAME;
 import static io.microsphere.sentinel.spring.web.Constants.PLUGIN_NAME;
-import static io.microsphere.sentinel.spring.web.Constants.SENTINEL_CONTEXT_ATTRIBUTE_NAME;
-import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -44,6 +43,5 @@ class ConstantsTest {
         assertEquals("HandlerMethod", DEFAULT_ORIGIN);
         assertEquals("microsphere.sentinel.spring-web.enabled", ENABLED_PROPERTY_NAME);
         assertEquals(getPluginEnabledPropertyName(PLUGIN_NAME), ENABLED_PROPERTY_NAME);
-        assertEquals("sentinel-context", SENTINEL_CONTEXT_ATTRIBUTE_NAME);
     }
 }

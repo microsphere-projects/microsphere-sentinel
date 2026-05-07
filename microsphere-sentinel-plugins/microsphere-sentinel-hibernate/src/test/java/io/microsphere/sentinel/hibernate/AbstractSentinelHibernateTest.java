@@ -29,7 +29,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.sentinel.hibernate.Constants.PLUGIN_NAME;
-import static io.microsphere.sentinel.util.SentinelUtils.getPluginEnabledPropertyName;
+import static io.microsphere.sentinel.common.util.SentinelUtils.getPluginEnabledPropertyName;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.System.setProperty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
