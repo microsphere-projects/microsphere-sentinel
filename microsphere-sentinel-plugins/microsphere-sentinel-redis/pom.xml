@@ -11,12 +11,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-hibernate</artifactId>
+    <artifactId>microsphere-sentinel-redis</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Plugins :: Hibernate</name>
-    <description>Microsphere Alibaba Sentinel Plugin for Hibernate</description>
+    <name>Microsphere :: Alibaba Sentinel :: Plugins :: Redis</name>
+    <description>Microsphere Alibaba Sentinel Plugin for Redis</description>
 
     <dependencies>
 
@@ -34,10 +34,17 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Hibernate -->
+        <!-- Microsphere Redis Spring -->
         <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-redis-spring</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Spring Data Redis -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -48,19 +55,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- Logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -68,24 +62,24 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Alibaba Druid -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Microsphere Alibaba Druid Test -->
+        <!-- Microsphere Spring Test -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-alibaba-druid-test</artifactId>
+            <artifactId>microsphere-spring-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- H2 -->
+        <!-- Lettuce -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Commons Pool2 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
             <scope>test</scope>
         </dependency>
 

@@ -15,17 +15,18 @@
  * limitations under the License.
  */
 
-package io.microsphere.sentinel.alibaba.druid;
+package io.microsphere.sentinel.redis;
 
 import io.microsphere.annotation.ConfigurationProperty;
 import io.microsphere.constants.PropertyConstants;
 
+import static io.microsphere.annotation.ConfigurationProperty.APPLICATION_SOURCE;
 import static io.microsphere.annotation.ConfigurationProperty.SYSTEM_PROPERTIES_SOURCE;
 import static io.microsphere.constants.SymbolConstants.DOT;
 import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
 
 /**
- * The interface to declare the constants of Alibaba Druid
+ * The interface to declare the constants of Redis
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
@@ -33,27 +34,30 @@ import static io.microsphere.sentinel.util.SentinelUtils.PROPERTY_NAME_PREFIX;
 public interface Constants {
 
     /**
-     * The plugin name of Sentinel x Alibaba Druid
+     * The plugin name of Sentinel x Redis
      */
-    String PLUGIN_NAME = "alibaba-druid";
+    String PLUGIN_NAME = "redis";
 
     /**
-     * The default context name of Sentinel x Alibaba Druid
+     * The default context name of Sentinel x Redis
      */
-    String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_alibaba_druid_context";
+    String DEFAULT_CONTEXT_NAME = "microsphere_sentinel_redis_context";
 
     /**
-     * The default origin of Sentinel x Alibaba Druid
+     * The default origin of Sentinel x Redis
      */
-    String DEFAULT_ORIGIN = "Filter";
+    String DEFAULT_ORIGIN = "RedisConnection";
 
     /**
-     * The property name of the plugin of Sentinel x Alibaba Druid enabled
+     * The property name of the plugin of Sentinel x Redis enabled
      */
     @ConfigurationProperty(
             type = boolean.class,
             defaultValue = "true",
-            source = SYSTEM_PROPERTIES_SOURCE
+            source = {
+                    SYSTEM_PROPERTIES_SOURCE,
+                    APPLICATION_SOURCE
+            }
     )
     String ENABLED_PROPERTY_NAME = PROPERTY_NAME_PREFIX + PLUGIN_NAME + DOT + PropertyConstants.ENABLED_PROPERTY_NAME;
 }

@@ -23,6 +23,7 @@
         <module>microsphere-sentinel-mybatis</module>
         <module>microsphere-sentinel-hibernate</module>
         <module>microsphere-sentinel-p6spy</module>
+        <module>microsphere-sentinel-redis</module>
     </modules>
 
 </project>
