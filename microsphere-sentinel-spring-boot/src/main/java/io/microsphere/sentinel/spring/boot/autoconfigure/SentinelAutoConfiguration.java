@@ -1,16 +1,7 @@
 package io.microsphere.sentinel.spring.boot.autoconfigure;
 
 import io.microsphere.sentinel.spring.boot.condition.ConditionalOnSentinelEnabled;
-import io.microsphere.sentinel.spring.redis.SentinelRedisCommandInterceptor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-
-import static io.microsphere.constants.PropertyConstants.ENABLED_PROPERTY_NAME;
-import static io.microsphere.sentinel.spring.boot.condition.ConditionalOnSentinelEnabled.PREFIX;
 
 /**
  * Microsphere Sentinel Spring Boot Auto-Configuration
@@ -25,28 +16,25 @@ import static io.microsphere.sentinel.spring.boot.condition.ConditionalOnSentine
         "org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration",
         "com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration",
 })
-@Import(value = {
-        SentinelAutoConfiguration.RedisConfiguration.class
-})
 public class SentinelAutoConfiguration {
 
-    @ConditionalOnProperty(
-            prefix = PREFIX + "redis",
-            name = ENABLED_PROPERTY_NAME,
-            matchIfMissing = true
-    )
-    @ConditionalOnClass(name = {
-            "org.springframework.data.redis.connection.RedisConnection",
-            "io.microsphere.redis.spring.interceptor.RedisConnectionInterceptor"
-    })
-    static class RedisConfiguration {
-
-        @Bean
-        @ConditionalOnMissingBean
-        public SentinelRedisCommandInterceptor sentinelRedisCommandInterceptor() {
-            return new SentinelRedisCommandInterceptor();
-        }
-    }
+//    @ConditionalOnProperty(
+//            prefix = PREFIX + "redis",
+//            name = ENABLED_PROPERTY_NAME,
+//            matchIfMissing = true
+//    )
+//    @ConditionalOnClass(name = {
+//            "org.springframework.data.redis.connection.RedisConnection",
+//            "io.microsphere.redis.spring.interceptor.RedisConnectionInterceptor"
+//    })
+//    static class RedisConfiguration {
+//
+//        @Bean
+//        @ConditionalOnMissingBean
+//        public SentinelRedisCommandInterceptor sentinelRedisCommandInterceptor() {
+//            return new SentinelRedisCommandInterceptor();
+//        }
+//    }
 
 //    @ConditionalOnProperty(
 //            prefix = PREFIX + "hibernate",

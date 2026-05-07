@@ -14,31 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.sentinel.spring.redis;
+package io.microsphere.sentinel.redis.spring;
 
-import com.alibaba.csp.sentinel.Entry;
-import com.alibaba.csp.sentinel.EntryType;
-import com.alibaba.csp.sentinel.ResourceTypeConstants;
-import com.alibaba.csp.sentinel.SphU;
-import com.alibaba.csp.sentinel.Tracer;
-import com.alibaba.csp.sentinel.context.ContextUtil;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
 import io.microsphere.logging.Logger;
 import io.microsphere.redis.spring.interceptor.RedisConnectionInterceptor;
 import io.microsphere.redis.spring.interceptor.RedisMethodContext;
+import io.microsphere.sentinel.common.AbstractSentinelPlugin;
+import io.microsphere.sentinel.common.SentinelContext;
+import io.microsphere.sentinel.common.SentinelOperations;
+import io.microsphere.sentinel.common.SentinelTemplate;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.connection.RedisCommands;
 import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
+import static io.microsphere.collection.MapUtils.newFixedHashMap;
 import static io.microsphere.logging.LoggerFactory.getLogger;
+import static io.microsphere.sentinel.redis.Constants.DEFAULT_CONTEXT_NAME;
+import static io.microsphere.sentinel.redis.Constants.DEFAULT_ORIGIN;
+import static io.microsphere.sentinel.redis.Constants.PLUGIN_NAME;
 import static io.microsphere.sentinel.util.SentinelUtils.buildResourceName;
+import static java.util.Collections.unmodifiableMap;
+import static org.springframework.util.ClassUtils.getAllInterfacesForClass;
 
 /**
  * {@link RedisConnectionInterceptor} for Sentinel
@@ -46,90 +46,70 @@ import static io.microsphere.sentinel.util.SentinelUtils.buildResourceName;
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since 1.0.0
  */
-public class SentinelRedisCommandInterceptor implements RedisConnectionInterceptor, InitializingBean, BeanClassLoaderAware {
+public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin implements RedisConnectionInterceptor, InitializingBean, BeanClassLoaderAware {
 
     private static final Logger logger = getLogger(SentinelRedisCommandInterceptor.class);
 
-    private static final String ENTRY_ATTRIBUTE_NAME = "sentinel.entry";
+    private static final String CONTEXT_ATTRIBUTE_NAME = "sentinel-context";
 
-    private final Map<Method, String> methodResourceNamesCache = new HashMap<>(256, 1.0f);
+    private final Map<Method, String> methodResourceNamesCache = newFixedHashMap(256);
 
     private ClassLoader classLoader;
 
+    private final SentinelOperations sentinelOperations;
+
+    public SentinelRedisCommandInterceptor() {
+        this(DEFAULT_CONTEXT_NAME, DEFAULT_ORIGIN);
+    }
+
+    public SentinelRedisCommandInterceptor(String contextName, String origin) {
+        super(PLUGIN_NAME, contextName, origin);
+        this.sentinelOperations = new SentinelTemplate(getResourceType(), getTrafficType());
+    }
+
     @Override
-    public void beforeExecute(RedisMethodContext<RedisConnection> redisMethodContext) {
+    public void beforeExecute(RedisMethodContext<RedisConnection> redisMethodContext) throws Throwable {
 
         Method method = redisMethodContext.getMethod();
-
-        String redisTemplateBeanName = redisMethodContext.getSourceBeanName();
 
         String resourceName = getResourceName(method);
 
         if (resourceName == null) {
-            logger.trace("The RedisConnection method ['{}'] in the RedisTemplate Bean[name: '{}'] requires no interception", redisTemplateBeanName, method);
+            logger.trace("The RedisConnection method ['{}'] in the RedisTemplate Bean[name: '{}'] requires no interception",
+                    redisMethodContext.getSourceBeanName(), method);
             return;
         }
 
-        RedisConnection redisConnection = redisMethodContext.getTarget();
-
-        String origin = getOrigin(redisConnection);
-
-        String contextName = getContextName(resourceName);
-
-        ContextUtil.enter(contextName, origin);
-
-        entranceEntry(redisMethodContext, resourceName);
-
+        SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
+        setContext(redisMethodContext, context);
     }
 
     @Override
     public void afterExecute(RedisMethodContext<RedisConnection> redisMethodContext, Object result, Throwable failure) throws Throwable {
 
-        Entry entry = getEntry(redisMethodContext);
+        SentinelContext sentinelContext = getSentinelContext(redisMethodContext);
 
-        if (entry == null) {
-            logger.debug("The Sentinel entry can't be found in the current thread[redisTemplateBeanName: '{}', method: '{}']",
+        if (sentinelContext == null) {
+            logger.trace("The SentinelContext can't be found in the RedisMethodContext[redisTemplateBeanName: '{}', method: '{}']",
                     redisMethodContext.getSourceBeanName(), redisMethodContext.getMethod());
             return;
         }
 
-        if (failure != null) {
-            Tracer.traceEntry(failure, entry);
-        }
-
-        entry.exit();
-
-        ContextUtil.exit();
+        sentinelContext.setResult(result);
+        sentinelContext.setFailure(failure);
+        this.sentinelOperations.end(sentinelContext);
     }
-
 
     private String getResourceName(Method method) {
         return methodResourceNamesCache.get(method);
     }
 
-    private String getOrigin(RedisConnection redisConnection) {
-        return "RedisConnection";
+    private void setContext(RedisMethodContext context, SentinelContext sentinelContext) {
+        context.setAttribute(CONTEXT_ATTRIBUTE_NAME, sentinelContext);
     }
 
-    private String getContextName(String resourceName) {
-        return "sentinel_microsphere_redis_context";
-    }
-
-    private void entranceEntry(RedisMethodContext<RedisConnection> context, String resourceName) {
-        try {
-            Entry entry = SphU.entry(resourceName, ResourceTypeConstants.COMMON, EntryType.IN);
-            setEntry(context, entry);
-        } catch (BlockException e) {
-            logger.info("Redis Sentinel Resource[bean: '{}', name: '{}'] is restricted", context.getSourceBeanName(), resourceName, e);
-        }
-    }
-
-    private void setEntry(RedisMethodContext context, Entry entry) {
-        context.setAttribute(ENTRY_ATTRIBUTE_NAME, entry);
-    }
-
-    private Entry getEntry(RedisMethodContext context) {
-        return (Entry) context.getAttribute(ENTRY_ATTRIBUTE_NAME);
+    private SentinelContext getSentinelContext(RedisMethodContext context) {
+        return (SentinelContext) context.getAttribute(CONTEXT_ATTRIBUTE_NAME);
     }
 
     @Override
@@ -138,16 +118,16 @@ public class SentinelRedisCommandInterceptor implements RedisConnectionIntercept
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         initMethodResourceNamesCache();
     }
 
     public Map<Method, String> getMethodResourceNamesCache() {
-        return Collections.unmodifiableMap(methodResourceNamesCache);
+        return unmodifiableMap(methodResourceNamesCache);
     }
 
     private void initMethodResourceNamesCache() {
-        Class[] allInterfaceClasses = ClassUtils.getAllInterfacesForClass(RedisCommands.class, classLoader);
+        Class[] allInterfaceClasses = getAllInterfacesForClass(RedisCommands.class, classLoader);
         for (Class interfaceClass : allInterfaceClasses) {
             Method[] methods = interfaceClass.getMethods();
             for (Method method : methods) {
