@@ -257,10 +257,13 @@ public class SentinelContext {
     }
 
     /**
-     * Set the current {@link SentinelContext}
+     * Set the current {@link SentinelContext} into {@link ThreadLocal}.
+     *
+     * @return {@link SentinelContext} itself
      */
-    public void setContext() {
+    public SentinelContext withinContext() {
         setContext(this);
+        return this;
     }
 
     @Override
