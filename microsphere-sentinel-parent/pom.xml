@@ -22,7 +22,7 @@
         <!-- BOM versions -->
         <microsphere-spring-cloud.version>0.2.12</microsphere-spring-cloud.version>
         <microsphere-redis.version>0.2.3</microsphere-redis.version>
-        <microsphere-alibaba-druid.version>0.2.5</microsphere-alibaba-druid.version>
+        <microsphere-alibaba-druid.version>0.2.10</microsphere-alibaba-druid.version>
         <microsphere-mybatis.version>0.2.3</microsphere-mybatis.version>
         <!-- Third-party versions -->
         <sentinel.version>1.8.9</sentinel.version>
