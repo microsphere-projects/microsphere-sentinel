@@ -15,14 +15,31 @@
  * limitations under the License.
  */
 
-package io.microsphere.sentinel.hibernate;
+package io.microsphere.sentinel.hibernate.entity;
+
+import io.microsphere.hibernate.test.AbstractHibernateH2Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+
+import static io.microsphere.sentinel.hibernate.Constants.ENABLED_PROPERTY_NAME;
+import static java.lang.System.setProperty;
 
 /**
- * {@link SentinelHibernateIntegrator} Test
+ * {@link SentinelHibernateEntityCallback} Test for disabled
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @see SentinelHibernateIntegrator
+ * @see SentinelHibernateEntityCallback
  * @since 1.0.0
  */
-class SentinelHibernateIntegratorTest extends AbstractSentinelHibernateTest {
+class SentinelHibernateEntityCallbackDisabledTest extends AbstractHibernateH2Test {
+
+    @BeforeAll
+    static void beforeAll() {
+        setProperty(ENABLED_PROPERTY_NAME, "false");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        setProperty(ENABLED_PROPERTY_NAME, "true");
+    }
 }

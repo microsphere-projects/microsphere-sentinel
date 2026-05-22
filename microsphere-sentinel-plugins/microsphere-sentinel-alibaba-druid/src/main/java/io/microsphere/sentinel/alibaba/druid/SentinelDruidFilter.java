@@ -62,7 +62,7 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
     protected void beforeExecute(StatementProxy statement, String resourceName) throws Throwable {
         if (isEnabled()) {
             SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
-            context.setContext();
+            context.withinContext();
         }
     }
 

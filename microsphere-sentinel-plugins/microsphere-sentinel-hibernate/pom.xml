@@ -27,6 +27,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- Microsphere Hibernate Core -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-hibernate-core</artifactId>
+        </dependency>
+
         <!-- Microsphere Annotation Processor -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
@@ -68,24 +74,16 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Microsphere Hibernate Test -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-hibernate-test</artifactId>
+        </dependency>
+
         <!-- Logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Alibaba Druid -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Microsphere Alibaba Druid Test -->
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-alibaba-druid-test</artifactId>
             <scope>test</scope>
         </dependency>
 
