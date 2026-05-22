@@ -519,7 +519,7 @@ public class SentinelContextTest {
     @DisplayName("Context Holder: set, get and remove")
     public void testContextHolder() {
         assertNull(getContext());
-        this.context.setContext();
+        assertSame(this.context, this.context.withinContext());
         assertSame(this.context, getContext());
         assertSame(this.context, SentinelContext.removeContext());
         assertNull(getContext());
@@ -531,7 +531,7 @@ public class SentinelContextTest {
         doInContext(context -> contextHolder.setValue(context));
         assertNull(contextHolder.getValue());
 
-        this.context.setContext();
+        assertSame(this.context, this.context.withinContext());
         doInContext(context -> assertSame(this.context, context));
         doInContext(context -> assertSame(this.context, context), true);
     }

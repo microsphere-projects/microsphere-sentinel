@@ -67,7 +67,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener implement
                 execute(() -> {
                     String resourceName = getResourceName(statementInformation);
                     SentinelContext context = this.sentinelOperations.begin(resourceName, getContextName(), getOrigin());
-                    context.setContext();
+                    context.withinContext();
                 });
             }
         }

@@ -21,9 +21,10 @@
     <properties>
         <!-- BOM versions -->
         <microsphere-spring-cloud.version>0.2.12</microsphere-spring-cloud.version>
-        <microsphere-redis.version>0.2.3</microsphere-redis.version>
-        <microsphere-alibaba-druid.version>0.2.5</microsphere-alibaba-druid.version>
-        <microsphere-mybatis.version>0.2.3</microsphere-mybatis.version>
+        <microsphere-alibaba-druid.version>0.2.10</microsphere-alibaba-druid.version>
+        <microsphere-mybatis.version>0.2.6</microsphere-mybatis.version>
+        <microsphere-hibernate.version>0.2.2</microsphere-hibernate.version>
+        <microsphere-redis.version>0.2.5</microsphere-redis.version>
         <!-- Third-party versions -->
         <sentinel.version>1.8.9</sentinel.version>
         <fastjson.version>2.0.62</fastjson.version>
@@ -52,15 +53,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Microsphere Redis -->
-            <dependency>
-                <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-redis-dependencies</artifactId>
-                <version>${microsphere-redis.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- Microsphere Alibaba Druid -->
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
@@ -75,6 +67,24 @@
                 <groupId>io.github.microsphere-projects</groupId>
                 <artifactId>microsphere-mybatis-dependencies</artifactId>
                 <version>${microsphere-mybatis.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Microsphere Hibernate -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-hibernate-dependencies</artifactId>
+                <version>${microsphere-hibernate.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Microsphere Redis -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-redis-dependencies</artifactId>
+                <version>${microsphere-redis.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
