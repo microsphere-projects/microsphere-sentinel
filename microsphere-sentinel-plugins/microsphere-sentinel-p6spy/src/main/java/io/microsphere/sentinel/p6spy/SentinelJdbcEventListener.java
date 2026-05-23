@@ -16,6 +16,7 @@
  */
 package io.microsphere.sentinel.p6spy;
 
+import com.alibaba.csp.sentinel.EntryType;
 import com.p6spy.engine.common.PreparedStatementInformation;
 import com.p6spy.engine.common.StatementInformation;
 import com.p6spy.engine.event.JdbcEventListener;
@@ -29,6 +30,7 @@ import io.microsphere.sentinel.common.SimpleSentinelPlugin;
 
 import java.sql.SQLException;
 
+import static com.alibaba.csp.sentinel.EntryType.IN;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
 import static io.microsphere.lang.function.ThrowableAction.execute;
 import static io.microsphere.logging.LoggerFactory.getLogger;
@@ -57,7 +59,7 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener implement
 
     public SentinelJdbcEventListener(String contextName, String origin) {
         this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin);
-        this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
+        this.sentinelOperations = new SentinelTemplate(getResourceType(), getTrafficType());
     }
 
     @Override
@@ -124,5 +126,15 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener implement
     @Override
     public String getOrigin() {
         return this.delegate.getOrigin();
+    }
+
+    @Override
+    public int getResourceType() {
+        return COMMON_DB_SQL;
+    }
+
+    @Override
+    public EntryType getTrafficType() {
+        return IN;
     }
 }

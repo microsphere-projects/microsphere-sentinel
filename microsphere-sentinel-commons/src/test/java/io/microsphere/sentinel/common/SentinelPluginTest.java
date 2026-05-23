@@ -18,9 +18,11 @@
 package io.microsphere.sentinel.common;
 
 
+import com.alibaba.csp.sentinel.EntryType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.alibaba.csp.sentinel.EntryType.OUT;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,6 +54,16 @@ class SentinelPluginTest {
             @Override
             public String getOrigin() {
                 return "";
+            }
+
+            @Override
+            public int getResourceType() {
+                return 0;
+            }
+
+            @Override
+            public EntryType getTrafficType() {
+                return OUT;
             }
         };
     }
