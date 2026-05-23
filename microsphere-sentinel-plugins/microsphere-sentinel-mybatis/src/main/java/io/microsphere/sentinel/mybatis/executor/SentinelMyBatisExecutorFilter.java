@@ -21,7 +21,6 @@ import io.microsphere.mybatis.executor.ExecutorFilter;
 import io.microsphere.mybatis.executor.ExecutorFilterChain;
 import io.microsphere.sentinel.common.AbstractSentinelPlugin;
 import io.microsphere.sentinel.common.SentinelOperations;
-import io.microsphere.sentinel.common.SentinelPlugin;
 import io.microsphere.sentinel.common.SentinelTemplate;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.mapping.BoundSql;
@@ -46,7 +45,7 @@ import static io.microsphere.util.ExceptionUtils.throwTarget;
  * @see ExecutorFilter
  * @since 1.0.0
  */
-public class SentinelMyBatisExecutorFilter extends AbstractSentinelPlugin implements ExecutorFilter, SentinelPlugin {
+public class SentinelMyBatisExecutorFilter extends AbstractSentinelPlugin implements ExecutorFilter {
 
     private final SentinelOperations sentinelOperations;
 
@@ -56,7 +55,7 @@ public class SentinelMyBatisExecutorFilter extends AbstractSentinelPlugin implem
 
     public SentinelMyBatisExecutorFilter(String contextName, String origin) {
         super(PLUGIN_NAME, contextName, origin, COMMON_DB_SQL);
-        this.sentinelOperations = new SentinelTemplate(getResourceType());
+        this.sentinelOperations = new SentinelTemplate(getResourceType(), getTrafficType());
     }
 
     @Override
