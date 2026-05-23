@@ -46,10 +46,18 @@ class SimpleSentinelPluginTest {
         int currentRepetition = repetitionInfo.getCurrentRepetition();
         String value = value(currentRepetition);
         switch (currentRepetition) {
-            case 1 -> this.plugin = new SimpleSentinelPlugin(value);
-            case 2 -> this.plugin = new SimpleSentinelPlugin(value, value, value(currentRepetition));
-            case 3 -> this.plugin = new SimpleSentinelPlugin(value, value, value, currentRepetition);
-            case 4 -> this.plugin = new SimpleSentinelPlugin(value, value, value, currentRepetition, OUT);
+            case 1:
+                this.plugin = new SimpleSentinelPlugin(value);
+                break;
+            case 2:
+                this.plugin = new SimpleSentinelPlugin(value, value, value(currentRepetition));
+                break;
+            case 3:
+                this.plugin = new SimpleSentinelPlugin(value, value, value, currentRepetition);
+                break;
+            case 4:
+                this.plugin = new SimpleSentinelPlugin(value, value, value, currentRepetition, OUT);
+                break;
         }
     }
 
@@ -61,30 +69,30 @@ class SimpleSentinelPluginTest {
         assertEquals(value, plugin.getName());
 
         switch (currentRepetition) {
-            case 1 -> {
+            case 1:
                 assertEquals(DEFAULT_CONTEXT_NAME, plugin.getContextName());
                 assertEquals(DEFAULT_ORIGIN, plugin.getOrigin());
                 assertEquals(COMMON, plugin.getResourceType());
                 assertEquals(IN, plugin.getTrafficType());
-            }
-            case 2 -> {
+                break;
+            case 2:
                 assertEquals(value, plugin.getContextName());
                 assertEquals(value, plugin.getOrigin());
                 assertEquals(COMMON, plugin.getResourceType());
                 assertEquals(IN, plugin.getTrafficType());
-            }
-            case 3 -> {
+                break;
+            case 3:
                 assertEquals(value, plugin.getContextName());
                 assertEquals(value, plugin.getOrigin());
                 assertEquals(currentRepetition, plugin.getResourceType());
                 assertEquals(IN, plugin.getTrafficType());
-            }
-            case 4 -> {
+                break;
+            case 4:
                 assertEquals(value, plugin.getContextName());
                 assertEquals(value, plugin.getOrigin());
                 assertEquals(currentRepetition, plugin.getResourceType());
                 assertEquals(OUT, plugin.getTrafficType());
-            }
+                break;
         }
     }
 
