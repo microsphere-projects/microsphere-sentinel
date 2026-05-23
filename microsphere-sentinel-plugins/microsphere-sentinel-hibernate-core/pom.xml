@@ -11,12 +11,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-hibernate</artifactId>
+    <artifactId>microsphere-sentinel-hibernate-core</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Plugins :: Hibernate</name>
-    <description>Microsphere Alibaba Sentinel Plugin for Hibernate</description>
+    <name>Microsphere :: Alibaba Sentinel :: Plugins :: Hibernate Core</name>
+    <description>Microsphere Alibaba Sentinel Plugin for Hibernate Core</description>
 
     <dependencies>
 
