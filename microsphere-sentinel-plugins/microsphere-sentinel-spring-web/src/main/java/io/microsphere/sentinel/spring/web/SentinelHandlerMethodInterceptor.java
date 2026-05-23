@@ -58,7 +58,7 @@ import static io.microsphere.spring.web.util.WebScope.REQUEST;
 public class SentinelHandlerMethodInterceptor extends AbstractSentinelPlugin implements HandlerMethodInterceptor,
         ApplicationListener<WebEndpointMappingsReadyEvent>, Ordered {
 
-    public static final String BEAN_NAME = "rentinelHandlerMethodInterceptor";
+    public static final String BEAN_NAME = "sentinelHandlerMethodInterceptor";
 
     private static final Logger logger = getLogger(SentinelHandlerMethodInterceptor.class);
 
@@ -150,10 +150,16 @@ public class SentinelHandlerMethodInterceptor extends AbstractSentinelPlugin imp
             Object endpoint = webEndpointMapping.getEndpoint();
             if (endpoint instanceof HandlerMethod) {
                 HandlerMethod handlerMethod = (HandlerMethod) endpoint;
-                String entryName = getResourceName(handlerMethod);
-                logger.trace("Create the entryName : '{}' for HandlerMethod : {}", entryName, handlerMethod);
+                String resourceName = buildResourceName(handlerMethod, webEndpointMapping);
+                Method method = handlerMethod.getMethod();
+                methodEntryNamesCache.put(method, resourceName);
+                logger.trace("Create the resourceName : '{}' for HandlerMethod : {}", resourceName, handlerMethod);
             }
         }
+    }
+
+    protected String buildResourceName(HandlerMethod handlerMethod, WebEndpointMapping webEndpointMapping) {
+        return webEndpointMapping.toExpression() + "#" + handlerMethod;
     }
 
     /**

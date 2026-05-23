@@ -18,25 +18,21 @@
 package io.microsphere.sentinel.spring.web;
 
 
-import io.microsphere.spring.test.web.controller.TestController;
+import io.microsphere.spring.test.web.context.request.MockServletWebRequest;
+import io.microsphere.spring.test.webmvc.AbstractWebMvcTest;
 import io.microsphere.spring.webmvc.annotation.EnableWebMvcExtension;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import static io.microsphere.sentinel.spring.web.SentinelHandlerMethodInterceptor.BEAN_NAME;
+import static io.microsphere.sentinel.spring.web.SentinelHandlerMethodInterceptor.getSentinelContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * {@link SentinelHandlerMethodInterceptor} Test
@@ -45,31 +41,21 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * @see SentinelHandlerMethodInterceptor
  * @since 1.0.0
  */
-@SpringJUnitConfig
 @WebAppConfiguration
-@ContextConfiguration(classes = {
-        TestController.class,
+@SpringJUnitConfig(classes = {
         SentinelHandlerMethodInterceptor.class,
         SentinelHandlerMethodInterceptorTest.class
 })
 @EnableWebMvc
 @EnableWebMvcExtension(registerHandlerInterceptors = true)
-class SentinelHandlerMethodInterceptorTest {
-
-    @Autowired
-    protected ConfigurableWebApplicationContext context;
-
-    @Autowired
-    private TestController testController;
+class SentinelHandlerMethodInterceptorTest extends AbstractWebMvcTest {
 
     @Autowired
     private SentinelHandlerMethodInterceptor interceptor;
 
-    protected MockMvc mockMvc;
-
-    @BeforeEach
-    protected void setUp() {
-        this.mockMvc = webAppContextSetup(this.context).build();
+    @Test
+    void testConstants() {
+        assertEquals("sentinelHandlerMethodInterceptor", BEAN_NAME);
     }
 
     @Test
@@ -87,27 +73,10 @@ class SentinelHandlerMethodInterceptorTest {
         assertTrue(this.interceptor.isEnabled());
     }
 
-    /**
-     * Test {@link TestController#helloWorld()}
-     *
-     * @throws Exception If failed to execute {@link MockMvc#perform(RequestBuilder)}
-     */
-    protected void testHelloWorld() throws Exception {
-        this.mockMvc.perform(get("/test/helloworld"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(this.testController.helloWorld()));
-    }
-
-    /**
-     * Test {@link TestController#helloWorld()}
-     *
-     * @throws Exception If failed to execute {@link MockMvc#perform(RequestBuilder)}
-     */
-    protected void testGreeting() throws Exception {
-        String pattern = "/test/greeting/{message}";
-        String message = "Mercy";
-        this.mockMvc.perform(get(pattern, message))
-                .andExpect(status().isOk())
-                .andExpect(content().string(this.testController.greeting(message)));
+    @Test
+    void testAfterExecuteWithoutSentinelContext() {
+        MockServletWebRequest request = new MockServletWebRequest();
+        this.interceptor.afterExecute(null, null, null, null, request);
+        assertNull(getSentinelContext(request));
     }
 }
