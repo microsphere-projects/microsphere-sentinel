@@ -18,10 +18,15 @@
 package io.microsphere.sentinel.common;
 
 import com.alibaba.csp.sentinel.EntryType;
+import com.alibaba.csp.sentinel.ResourceTypeConstants;
 import io.microsphere.annotation.Nonnull;
+import io.microsphere.sentinel.common.constants.SentinelConstants;
+import io.microsphere.sentinel.common.util.SentinelUtils;
 
+import static io.microsphere.sentinel.common.SentinelPluginRepository.INSTANCE;
 import static io.microsphere.sentinel.common.util.SentinelUtils.getDefaultContextName;
 import static io.microsphere.sentinel.common.util.SentinelUtils.isPluginEnabled;
+import static io.microsphere.util.ShutdownHookUtils.addShutdownHookCallback;
 
 /**
  * The Plugin interface for Sentinel
@@ -30,6 +35,13 @@ import static io.microsphere.sentinel.common.util.SentinelUtils.isPluginEnabled;
  * @since 1.0.0
  */
 public interface SentinelPlugin {
+
+    /**
+     * Is auto installed this {@link SentinelPlugin Sentinel Plugin}?
+     *
+     * @return If auto installed, return <code>true</code>
+     */
+    boolean isAutoInstalled();
 
     /**
      * Determine whether the plugin is enabled
@@ -48,7 +60,7 @@ public interface SentinelPlugin {
     void setEnabled(boolean enabled);
 
     /**
-     * The plugin name of Sentinel
+     * The plugin name of Sentinel, the name must be unique in the application
      *
      * @return non-null
      */
@@ -59,6 +71,7 @@ public interface SentinelPlugin {
      * The context name that Sentinel Plugin belongs to
      *
      * @return non-null
+     * @see SentinelUtils#getDefaultContextName(String)
      */
     @Nonnull
     default String getContextName() {
@@ -69,22 +82,38 @@ public interface SentinelPlugin {
      * The origin that Sentinel Plugin belongs to
      *
      * @return non-null
+     * @see SentinelConstants#DEFAULT_ORIGIN
      */
     @Nonnull
     String getOrigin();
 
     /**
-     * Get the resource type of this {@link SentinelPlugin}
+     * The resource that Sentinel Plugin belongs to
      *
-     * @return the resource type of this {@link SentinelPlugin}
+     * @return the resource that Sentinel Plugin belongs to
+     * @see ResourceTypeConstants
      */
     int getResourceType();
 
     /**
-     * Get the traffic type of this {@link SentinelPlugin}
+     * The traffic that Sentinel Plugin belongs to
      *
-     * @return the traffic type of this {@link SentinelPlugin}
+     * @return non-null
      */
     @Nonnull
     EntryType getTrafficType();
+
+    /**
+     * Install this {@link SentinelPlugin}
+     *
+     * @param plugin the {@link SentinelPlugin} to be installed
+     * @throws NullPointerException if the {@link SentinelPlugin} is null
+     */
+    static void install(SentinelPlugin plugin) throws NullPointerException {
+        SentinelPluginRepository repository = INSTANCE;
+        // Install this SentinelPlugin
+        repository.install(plugin);
+        // Uninstall this SentinelPlugin when JVM shutdown
+        addShutdownHookCallback(() -> repository.uninstall(plugin));
+    }
 }

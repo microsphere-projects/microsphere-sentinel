@@ -35,6 +35,7 @@ import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
 import static io.microsphere.lang.function.ThrowableAction.execute;
 import static io.microsphere.logging.LoggerFactory.getLogger;
 import static io.microsphere.sentinel.common.SentinelContext.doInContext;
+import static io.microsphere.sentinel.common.SentinelPlugin.install;
 import static io.microsphere.sentinel.p6spy.Constants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.p6spy.Constants.DEFAULT_ORIGIN;
 import static io.microsphere.sentinel.p6spy.Constants.PLUGIN_NAME;
@@ -58,8 +59,9 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener implement
     }
 
     public SentinelJdbcEventListener(String contextName, String origin) {
-        this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin);
+        this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin, COMMON_DB_SQL, IN, false);
         this.sentinelOperations = new SentinelTemplate(getResourceType(), getTrafficType());
+        install(this);
     }
 
     @Override
@@ -101,6 +103,11 @@ public class SentinelJdbcEventListener extends SimpleJdbcEventListener implement
      */
     protected boolean isEligibleStatement(StatementInformation statementInformation) {
         return statementInformation instanceof PreparedStatementInformation;
+    }
+
+    @Override
+    public boolean isAutoInstalled() {
+        return this.delegate.isAutoInstalled();
     }
 
     @Override

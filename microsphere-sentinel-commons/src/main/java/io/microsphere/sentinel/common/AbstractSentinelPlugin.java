@@ -18,21 +18,13 @@
 package io.microsphere.sentinel.common;
 
 import com.alibaba.csp.sentinel.EntryType;
-import io.microsphere.lang.function.ThrowableBiFunction;
-
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-import javax.management.StandardMBean;
 
 import static com.alibaba.csp.sentinel.EntryType.IN;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
-import static io.microsphere.lang.function.ThrowableSupplier.execute;
-import static io.microsphere.text.FormatUtils.format;
-import static io.microsphere.util.ShutdownHookUtils.addShutdownHookCallback;
-import static java.lang.management.ManagementFactory.getPlatformMBeanServer;
+import static io.microsphere.sentinel.common.SentinelPlugin.install;
 
 /**
- * Abstract {@link SentinelPlugin} class
+ * Abstract {@link SentinelPlugin Sentinel Plugin} class
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @see SentinelPlugin
@@ -50,7 +42,7 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
 
     protected final EntryType trafficType;
 
-    protected final boolean autoRegisterMBean;
+    protected final boolean autoInstalled;
 
     private volatile boolean enabled;
 
@@ -66,36 +58,35 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
         this(name, contextName, origin, resourceType, trafficType, true);
     }
 
-    protected AbstractSentinelPlugin(String name, String contextName, String origin, int resourceType, EntryType trafficType, boolean autoRegisterMBean) {
+    protected AbstractSentinelPlugin(String name, String contextName, String origin, int resourceType, EntryType trafficType, boolean autoInstalled) {
         this.name = name;
         this.contextName = contextName;
         this.origin = origin;
         this.resourceType = resourceType;
         this.trafficType = trafficType;
-        this.autoRegisterMBean = autoRegisterMBean;
+        this.autoInstalled = autoInstalled;
         this.enabled = SentinelPlugin.super.isEnabled();
-        if (autoRegisterMBean) {
-            registerMBean();
-            addShutdownHookCallback(this::unregisterMBean);
+        if (autoInstalled) {
+            install(this);
         }
     }
 
     /**
-     * Enable this {@link SentinelPlugin}
+     * Enable this {@link SentinelPlugin Sentinel Plugin}
      */
     public void enable() {
         setEnabled(true);
     }
 
     /**
-     * Disable this {@link SentinelPlugin}
+     * Disable this {@link SentinelPlugin Sentinel Plugin}
      */
     public void disable() {
         setEnabled(false);
     }
 
     /**
-     * Is this {@link SentinelPlugin} enabled ?
+     * Is this {@link SentinelPlugin Sentinel Plugin} enabled ?
      *
      * @return If enabled, return <code>true</code>
      */
@@ -105,7 +96,7 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
     }
 
     /**
-     * Set whether this {@link SentinelPlugin} enabled or not
+     * Set whether this {@link SentinelPlugin Sentinel Plugin} enabled or not
      *
      * @param enabled If enabled, set <code>true</code>
      */
@@ -115,9 +106,9 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
     }
 
     /**
-     * Get the name of this {@link SentinelPlugin}
+     * Get the name of this {@link SentinelPlugin Sentinel Plugin}
      *
-     * @return the name of this {@link SentinelPlugin}
+     * @return the name of this {@link SentinelPlugin Sentinel Plugin}
      */
     @Override
     public String getName() {
@@ -125,9 +116,9 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
     }
 
     /**
-     * Get the context name of this {@link SentinelPlugin}
+     * Get the context name of this {@link SentinelPlugin Sentinel Plugin}
      *
-     * @return the context name of this {@link SentinelPlugin}
+     * @return the context name of this {@link SentinelPlugin Sentinel Plugin}
      */
     @Override
     public String getContextName() {
@@ -135,9 +126,9 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
     }
 
     /**
-     * Get the origin of this {@link SentinelPlugin}
+     * Get the origin of this {@link SentinelPlugin Sentinel Plugin}
      *
-     * @return the origin of this {@link SentinelPlugin}
+     * @return the origin of this {@link SentinelPlugin Sentinel Plugin}
      */
     @Override
     public String getOrigin() {
@@ -145,84 +136,43 @@ public abstract class AbstractSentinelPlugin implements SentinelPlugin {
     }
 
     /**
-     * Get the resource type of this {@link SentinelPlugin}
+     * Get the resource type of this {@link SentinelPlugin Sentinel Plugin}
      *
-     * @return the resource type of this {@link SentinelPlugin}
+     * @return the resource type of this {@link SentinelPlugin Sentinel Plugin}
      */
     public int getResourceType() {
         return this.resourceType;
     }
 
     /**
-     * Get the traffic type of this {@link SentinelPlugin}
+     * Get the traffic type of this {@link SentinelPlugin Sentinel Plugin}
      *
-     * @return the traffic type of this {@link SentinelPlugin}
+     * @return the traffic type of this {@link SentinelPlugin Sentinel Plugin}
      */
     public EntryType getTrafficType() {
         return this.trafficType;
     }
 
     /**
-     * Is auto register MBean ?
+     * Is auto installed this {@link SentinelPlugin Sentinel Plugin}?
      *
-     * @return If auto register MBean, return <code>true</code>
+     * @return If auto installed, return <code>true</code>
      */
-    public boolean isAutoRegisterMBean() {
-        return this.autoRegisterMBean;
+    public boolean isAutoInstalled() {
+        return this.autoInstalled;
     }
 
-    /**
-     * Is registered MBean ?
-     *
-     * @return If registered MBean, return <code>true</code>
-     */
-    public boolean isRegisteredMBean() {
-        return doInMBeanServer((mBeanServer, objectName) -> mBeanServer.isRegistered(objectName));
-    }
-
-    /**
-     * Register MBean for this {@link SentinelPlugin}
-     *
-     * @return If registered MBean, return <code>true</code>
-     */
-    public boolean registerMBean() {
-        return doInMBeanServer((mBeanServer, objectName) -> {
-            if (mBeanServer.isRegistered(objectName)) {
-                return false;
-            }
-            StandardMBean mBean = new StandardMBean(this, SentinelPlugin.class);
-            mBeanServer.registerMBean(mBean, objectName);
-            return true;
-        });
-    }
-
-    /**
-     * Unregister MBean for this {@link SentinelPlugin}
-     *
-     * @return If unregistered MBean, return <code>true</code>
-     */
-    public boolean unregisterMBean() {
-        return doInMBeanServer((mBeanServer, objectName) -> {
-            if (mBeanServer.isRegistered(objectName)) {
-                mBeanServer.unregisterMBean(objectName);
-                return true;
-            }
-            return false;
-        });
-    }
-
-    protected ObjectName newObjectName() throws Exception {
-        String name = format("io.microsphere.sentinel:type=SentinelPlugin,name={},contextName={},origin={}"
-                , getName(), getContextName(), getOrigin());
-        return new ObjectName(name);
-    }
-
-    protected <R> R doInMBeanServer(ThrowableBiFunction<MBeanServer, ObjectName, R> consumer) {
-        MBeanServer mBeanServer = getPlatformMBeanServer();
-        return execute(() -> {
-            ObjectName objectName = newObjectName();
-            return consumer.apply(mBeanServer, objectName);
-        });
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+                "name='" + name + '\'' +
+                ", contextName='" + contextName + '\'' +
+                ", origin='" + origin + '\'' +
+                ", resourceType=" + resourceType +
+                ", trafficType=" + trafficType +
+                ", autoRegisterMBean=" + autoInstalled +
+                ", enabled=" + enabled +
+                '}';
     }
 
 }

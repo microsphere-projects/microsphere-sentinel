@@ -42,6 +42,11 @@ class SentinelPluginTest {
     void setUp() {
         this.plugin = new SentinelPlugin() {
             @Override
+            public boolean isAutoInstalled() {
+                return false;
+            }
+
+            @Override
             public void setEnabled(boolean enabled) {
 
             }

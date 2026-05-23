@@ -18,11 +18,13 @@
 package io.microsphere.sentinel.common;
 
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.alibaba.csp.sentinel.EntryType.IN;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
+import static io.microsphere.sentinel.common.SentinelPluginRepository.INSTANCE;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,6 +45,11 @@ class AbstractSentinelPluginTest {
     @BeforeEach
     void setUp() {
         this.plugin = new SimpleSentinelPlugin("default");
+    }
+
+    @AfterEach
+    void tearDown() {
+        INSTANCE.clear();
     }
 
     @Test
