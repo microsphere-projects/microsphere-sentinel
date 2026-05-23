@@ -37,9 +37,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_WEB;
 import static io.microsphere.collection.MapUtils.newFixedHashMap;
 import static io.microsphere.logging.LoggerFactory.getLogger;
-import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORDER;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_PRIORITY;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.SENTINEL_CONTEXT_ATTRIBUTE_NAME;
 import static io.microsphere.sentinel.spring.web.Constants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.spring.web.Constants.DEFAULT_ORIGIN;
@@ -73,9 +74,9 @@ public class SentinelHandlerMethodInterceptor extends AbstractSentinelPlugin imp
     }
 
     public SentinelHandlerMethodInterceptor(String contextName, String origin) {
-        super(PLUGIN_NAME, contextName, origin);
+        super(PLUGIN_NAME, contextName, origin, COMMON_WEB);
         this.sentinelOperations = new SentinelTemplate(getResourceType(), getTrafficType());
-        this.setOrder(DEFAULT_ORDER);
+        this.setOrder(DEFAULT_PRIORITY);
     }
 
     @Override

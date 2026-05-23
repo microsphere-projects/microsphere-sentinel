@@ -17,6 +17,7 @@
 
 package io.microsphere.sentinel.hibernate.entity;
 
+import com.alibaba.csp.sentinel.EntryType;
 import io.microsphere.annotation.Nonnull;
 import io.microsphere.hibernate.entity.EntityCallback;
 import io.microsphere.sentinel.common.SentinelContext;
@@ -28,9 +29,11 @@ import org.hibernate.type.Type;
 
 import java.util.Optional;
 
+import static com.alibaba.csp.sentinel.EntryType.IN;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON_DB_SQL;
 import static io.microsphere.lang.function.ThrowableSupplier.execute;
 import static io.microsphere.sentinel.common.SentinelContext.doInContext;
+import static io.microsphere.sentinel.common.SentinelPlugin.install;
 import static io.microsphere.sentinel.hibernate.Constants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.hibernate.Constants.DEFAULT_ORIGIN;
 import static io.microsphere.sentinel.hibernate.Constants.PLUGIN_NAME;
@@ -44,7 +47,7 @@ import static java.util.Optional.of;
  * @see EntityCallback
  * @since 1.0.0
  */
-public class SentinelHibernateEntityCallback implements EntityCallback {
+public class SentinelHibernateEntityCallback implements EntityCallback, SentinelPlugin {
 
     private final SentinelPlugin delegate;
 
@@ -55,8 +58,9 @@ public class SentinelHibernateEntityCallback implements EntityCallback {
     }
 
     public SentinelHibernateEntityCallback(@Nonnull String contextName, @Nonnull String origin) {
-        this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin);
-        this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
+        this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin, COMMON_DB_SQL, IN, false);
+        this.sentinelOperations = new SentinelTemplate(getResourceType(), getTrafficType());
+        install(this);
     }
 
     @Override
@@ -99,6 +103,50 @@ public class SentinelHibernateEntityCallback implements EntityCallback {
         end();
     }
 
+    @Override
+    public boolean isAutoInstalled() {
+        return this.delegate.isAutoInstalled();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.delegate.isEnabled();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.delegate.setEnabled(enabled);
+    }
+
+    @Nonnull
+    @Override
+    public String getName() {
+        return this.delegate.getName();
+    }
+
+    @Nonnull
+    @Override
+    public String getContextName() {
+        return this.delegate.getContextName();
+    }
+
+    @Nonnull
+    @Override
+    public String getOrigin() {
+        return this.delegate.getOrigin();
+    }
+
+    @Override
+    public int getResourceType() {
+        return this.delegate.getResourceType();
+    }
+
+    @Nonnull
+    @Override
+    public EntryType getTrafficType() {
+        return this.delegate.getTrafficType();
+    }
+
     protected Optional<SentinelContext> begin(Object entity, String action) {
         if (isEnabled()) {
             String resourceName = getSentinelResourceName(entity, action);
@@ -113,10 +161,6 @@ public class SentinelHibernateEntityCallback implements EntityCallback {
         if (isEnabled()) {
             doInContext(this.sentinelOperations::end, true);
         }
-    }
-
-    protected boolean isEnabled() {
-        return delegate.isEnabled();
     }
 
     protected String getSentinelResourceName(Object entity, String action) {
