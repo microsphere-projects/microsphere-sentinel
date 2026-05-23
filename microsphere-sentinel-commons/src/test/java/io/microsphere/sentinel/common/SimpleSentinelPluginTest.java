@@ -26,11 +26,12 @@ import org.junit.jupiter.api.RepetitionInfo;
 import static com.alibaba.csp.sentinel.EntryType.IN;
 import static com.alibaba.csp.sentinel.EntryType.OUT;
 import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
+import static io.microsphere.sentinel.common.SentinelPluginRepository.INSTANCE;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -59,7 +60,7 @@ class SimpleSentinelPluginTest {
 
     @AfterEach
     void tearDown(RepetitionInfo repetitionInfo) {
-        this.plugin.unregisterMBean();
+        INSTANCE.clear();
     }
 
     @RepeatedTest(value = 5, name = "Test SimpleSentinelPlugin with {currentRepetition} constructor argument(s)")
@@ -75,8 +76,7 @@ class SimpleSentinelPluginTest {
                 assertEquals(DEFAULT_ORIGIN, this.plugin.getOrigin());
                 assertEquals(COMMON, this.plugin.getResourceType());
                 assertEquals(IN, this.plugin.getTrafficType());
-                assertTrue(this.plugin.isAutoRegisterMBean());
-                assertTrue(this.plugin.isRegisteredMBean());
+                assertTrue(this.plugin.isAutoInstalled());
                 assertTrue(this.plugin.isEnabled());
             }
             case 2 -> {
@@ -84,32 +84,28 @@ class SimpleSentinelPluginTest {
                 assertEquals(value, this.plugin.getOrigin());
                 assertEquals(COMMON, this.plugin.getResourceType());
                 assertEquals(IN, this.plugin.getTrafficType());
-                assertTrue(this.plugin.isAutoRegisterMBean());
-                assertTrue(this.plugin.isRegisteredMBean());
+                assertTrue(this.plugin.isAutoInstalled());
             }
             case 3 -> {
                 assertEquals(value, this.plugin.getContextName());
                 assertEquals(value, this.plugin.getOrigin());
                 assertEquals(currentRepetition, this.plugin.getResourceType());
                 assertEquals(IN, this.plugin.getTrafficType());
-                assertTrue(this.plugin.isAutoRegisterMBean());
-                assertTrue(this.plugin.isRegisteredMBean());
+                assertTrue(this.plugin.isAutoInstalled());
             }
             case 4 -> {
                 assertEquals(value, this.plugin.getContextName());
                 assertEquals(value, this.plugin.getOrigin());
                 assertEquals(currentRepetition, this.plugin.getResourceType());
                 assertEquals(OUT, this.plugin.getTrafficType());
-                assertTrue(this.plugin.isAutoRegisterMBean());
-                assertTrue(this.plugin.isRegisteredMBean());
+                assertTrue(this.plugin.isAutoInstalled());
             }
             case 5 -> {
                 assertEquals(value, this.plugin.getContextName());
                 assertEquals(value, this.plugin.getOrigin());
                 assertEquals(currentRepetition, this.plugin.getResourceType());
                 assertEquals(OUT, this.plugin.getTrafficType());
-                assertFalse(this.plugin.isAutoRegisterMBean());
-                assertFalse(this.plugin.isRegisteredMBean());
+                assertFalse(this.plugin.isAutoInstalled());
             }
         }
 
@@ -119,7 +115,7 @@ class SimpleSentinelPluginTest {
         this.plugin.enable();
         assertTrue(this.plugin.isEnabled());
 
-        assertNotEquals(this.plugin.isRegisteredMBean(), this.plugin.registerMBean());
+        assertNotNull(this.plugin.toString());
     }
 
     String value(int currentRepetition) {

@@ -21,7 +21,7 @@
     <modules>
         <module>microsphere-sentinel-alibaba-druid</module>
         <module>microsphere-sentinel-mybatis</module>
-        <module>microsphere-sentinel-hibernate</module>
+        <module>microsphere-sentinel-hibernate-core</module>
         <module>microsphere-sentinel-p6spy</module>
         <module>microsphere-sentinel-redis</module>
         <module>microsphere-sentinel-spring-web</module>
