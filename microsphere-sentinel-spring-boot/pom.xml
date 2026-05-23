@@ -111,9 +111,5 @@
             <artifactId>commons-pool2</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-        </dependency>
     </dependencies>
 </project>
