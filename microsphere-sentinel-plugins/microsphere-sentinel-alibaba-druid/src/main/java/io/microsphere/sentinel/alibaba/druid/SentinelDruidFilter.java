@@ -16,6 +16,7 @@
  */
 package io.microsphere.sentinel.alibaba.druid;
 
+import com.alibaba.csp.sentinel.EntryType;
 import com.alibaba.druid.filter.AutoLoad;
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.FilterAdapter;
@@ -55,7 +56,7 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
 
     public SentinelDruidFilter(String contextName, String origin) {
         this.delegate = new SimpleSentinelPlugin(PLUGIN_NAME, contextName, origin, COMMON_DB_SQL, IN);
-        this.sentinelOperations = new SentinelTemplate(COMMON_DB_SQL);
+        this.sentinelOperations = new SentinelTemplate(getResourceType(), getTrafficType());
     }
 
     @Override
@@ -100,5 +101,15 @@ public class SentinelDruidFilter extends AbstractStatementFilter implements Sent
     @Override
     public String getOrigin() {
         return this.delegate.getOrigin();
+    }
+
+    @Override
+    public int getResourceType() {
+        return this.delegate.getResourceType();
+    }
+
+    @Override
+    public EntryType getTrafficType() {
+        return this.delegate.getTrafficType();
     }
 }
