@@ -60,7 +60,7 @@ public interface SentinelConstants {
     String SENTINEL_CONTEXT_ATTRIBUTE_NAME = "sentinel-context";
 
     /**
-     * The default order for Sentinel Plugins
+     * The default priority for Sentinel Plugins
      */
-    int DEFAULT_ORDER = 9;
+    int DEFAULT_PRIORITY = 9;
 }

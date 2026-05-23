@@ -31,7 +31,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.lang.reflect.Method;
 
-import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORDER;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_PRIORITY;
 import static io.microsphere.util.ArrayUtils.ofArray;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,7 +73,7 @@ class SentinelRedisCommandInterceptorTest {
         ValueOperations<String, String> valueOperations = this.stringRedisTemplate.opsForValue();
         valueOperations.set(key, value);
         assertEquals(value, valueOperations.get(key));
-        assertEquals(DEFAULT_ORDER, interceptor.getOrder());
+        assertEquals(DEFAULT_PRIORITY, interceptor.getOrder());
     }
 
     @Test

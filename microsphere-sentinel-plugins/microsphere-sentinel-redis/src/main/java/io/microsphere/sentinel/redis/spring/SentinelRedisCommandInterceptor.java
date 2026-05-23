@@ -33,7 +33,7 @@ import java.util.Map;
 
 import static io.microsphere.collection.MapUtils.newFixedHashMap;
 import static io.microsphere.logging.LoggerFactory.getLogger;
-import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORDER;
+import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_PRIORITY;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.SENTINEL_CONTEXT_ATTRIBUTE_NAME;
 import static io.microsphere.sentinel.common.util.SentinelUtils.buildResourceName;
 import static io.microsphere.sentinel.redis.Constants.DEFAULT_CONTEXT_NAME;
@@ -135,6 +135,6 @@ public class SentinelRedisCommandInterceptor extends AbstractSentinelPlugin impl
 
     @Override
     public int getOrder() {
-        return DEFAULT_ORDER;
+        return DEFAULT_PRIORITY;
     }
 }
