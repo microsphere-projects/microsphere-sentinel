@@ -18,6 +18,7 @@
 package io.microsphere.sentinel.common;
 
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
@@ -28,6 +29,8 @@ import static com.alibaba.csp.sentinel.ResourceTypeConstants.COMMON;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME;
 import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_ORIGIN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -58,42 +61,73 @@ class SimpleSentinelPluginTest {
             case 4:
                 this.plugin = new SimpleSentinelPlugin(value, value, value, currentRepetition, OUT);
                 break;
+            case 5:
+                this.plugin = new SimpleSentinelPlugin(value, value, value, currentRepetition, OUT, false);
+                break;
         }
     }
 
-    @RepeatedTest(value = 4, name = "Test SimpleSentinelPlugin with {currentRepetition} constructor argument(s)")
-    void test(RepetitionInfo repetitionInfo) {
+    @AfterEach
+    void tearDown(RepetitionInfo repetitionInfo) {
+        this.plugin.unregisterMBean();
+    }
+
+    @RepeatedTest(value = 5, name = "Test SimpleSentinelPlugin with {currentRepetition} constructor argument(s)")
+    void test(RepetitionInfo repetitionInfo) throws Exception {
         String value = value(repetitionInfo.getCurrentRepetition());
         int currentRepetition = repetitionInfo.getCurrentRepetition();
-        assertTrue(plugin.isEnabled());
-        assertEquals(value, plugin.getName());
+        assertTrue(this.plugin.isEnabled());
+        assertEquals(value, this.plugin.getName());
 
         switch (currentRepetition) {
             case 1:
-                assertEquals(DEFAULT_CONTEXT_NAME, plugin.getContextName());
-                assertEquals(DEFAULT_ORIGIN, plugin.getOrigin());
-                assertEquals(COMMON, plugin.getResourceType());
-                assertEquals(IN, plugin.getTrafficType());
+                assertEquals(DEFAULT_CONTEXT_NAME, this.plugin.getContextName());
+                assertEquals(DEFAULT_ORIGIN, this.plugin.getOrigin());
+                assertEquals(COMMON, this.plugin.getResourceType());
+                assertEquals(IN, this.plugin.getTrafficType());
+                assertTrue(this.plugin.isAutoRegisterMBean());
+                assertTrue(this.plugin.isRegisteredMBean());
                 break;
             case 2:
-                assertEquals(value, plugin.getContextName());
-                assertEquals(value, plugin.getOrigin());
-                assertEquals(COMMON, plugin.getResourceType());
+                assertEquals(value, this.plugin.getContextName());
+                assertEquals(value, this.plugin.getOrigin());
+                assertEquals(COMMON, this.plugin.getResourceType());
                 assertEquals(IN, plugin.getTrafficType());
+                assertTrue(this.plugin.isAutoRegisterMBean());
+                assertTrue(this.plugin.isRegisteredMBean());
                 break;
             case 3:
-                assertEquals(value, plugin.getContextName());
-                assertEquals(value, plugin.getOrigin());
-                assertEquals(currentRepetition, plugin.getResourceType());
-                assertEquals(IN, plugin.getTrafficType());
+                assertEquals(value, this.plugin.getContextName());
+                assertEquals(value, this.plugin.getOrigin());
+                assertEquals(currentRepetition, this.plugin.getResourceType());
+                assertEquals(IN, this.plugin.getTrafficType());
+                assertTrue(this.plugin.isAutoRegisterMBean());
+                assertTrue(this.plugin.isRegisteredMBean());
                 break;
             case 4:
-                assertEquals(value, plugin.getContextName());
-                assertEquals(value, plugin.getOrigin());
-                assertEquals(currentRepetition, plugin.getResourceType());
-                assertEquals(OUT, plugin.getTrafficType());
+                assertEquals(value, this.plugin.getContextName());
+                assertEquals(value, this.plugin.getOrigin());
+                assertEquals(currentRepetition, this.plugin.getResourceType());
+                assertEquals(OUT, this.plugin.getTrafficType());
+                assertTrue(this.plugin.isAutoRegisterMBean());
+                assertTrue(this.plugin.isRegisteredMBean());
                 break;
+            case 5:
+                assertEquals(value, this.plugin.getContextName());
+                assertEquals(value, this.plugin.getOrigin());
+                assertEquals(currentRepetition, this.plugin.getResourceType());
+                assertEquals(OUT, this.plugin.getTrafficType());
+                assertFalse(this.plugin.isAutoRegisterMBean());
+                assertFalse(this.plugin.isRegisteredMBean());
         }
+
+        assertTrue(this.plugin.isEnabled());
+        this.plugin.disable();
+        assertFalse(this.plugin.isEnabled());
+        this.plugin.enable();
+        assertTrue(this.plugin.isEnabled());
+
+        assertNotEquals(this.plugin.isRegisteredMBean(), this.plugin.registerMBean());
     }
 
     String value(int currentRepetition) {

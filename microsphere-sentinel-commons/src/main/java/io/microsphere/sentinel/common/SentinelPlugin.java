@@ -17,6 +17,7 @@
 
 package io.microsphere.sentinel.common;
 
+import com.alibaba.csp.sentinel.EntryType;
 import io.microsphere.annotation.Nonnull;
 
 import static io.microsphere.sentinel.common.util.SentinelUtils.getDefaultContextName;
@@ -71,4 +72,19 @@ public interface SentinelPlugin {
      */
     @Nonnull
     String getOrigin();
+
+    /**
+     * Get the resource type of this {@link SentinelPlugin}
+     *
+     * @return the resource type of this {@link SentinelPlugin}
+     */
+    int getResourceType();
+
+    /**
+     * Get the traffic type of this {@link SentinelPlugin}
+     *
+     * @return the traffic type of this {@link SentinelPlugin}
+     */
+    @Nonnull
+    EntryType getTrafficType();
 }
