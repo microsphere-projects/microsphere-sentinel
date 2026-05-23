@@ -20,15 +20,14 @@
 
     <properties>
         <!-- BOM versions -->
-        <spring-boot.version>2.7.18</spring-boot.version>
-        <microsphere-spring-cloud.version>0.0.1</microsphere-spring-cloud.version>
-        <microsphere-redis.version>0.0.1</microsphere-redis.version>
+        <microsphere-spring-cloud.version>0.2.12</microsphere-spring-cloud.version>
+        <microsphere-alibaba-druid.version>0.2.10</microsphere-alibaba-druid.version>
+        <microsphere-mybatis.version>0.2.6</microsphere-mybatis.version>
+        <microsphere-hibernate.version>0.2.2</microsphere-hibernate.version>
+        <microsphere-redis.version>0.2.5</microsphere-redis.version>
         <!-- Third-party versions -->
-        <mybatis.version>3.5.11</mybatis.version>
-        <mybatis-spring.version>2.1.2</mybatis-spring.version>
-        <mybatis-spring-boot.version>2.3.2</mybatis-spring-boot.version>
-        <druid.version>1.2.20</druid.version>
-        <fastjson.version>2.0.39</fastjson.version>
+        <sentinel.version>1.8.10</sentinel.version>
+        <fastjson.version>2.0.62</fastjson.version>
         <apollo.client.version>1.9.2</apollo.client.version>
         <apollo.openapi.version>1.7.0</apollo.openapi.version>
     </properties>
@@ -45,7 +44,43 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Microsphere Redis Dependencies -->
+            <!-- Microsphere Spring Cloud Dependencies -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-spring-cloud-dependencies</artifactId>
+                <version>${microsphere-spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Microsphere Alibaba Druid -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-alibaba-druid-dependencies</artifactId>
+                <version>${microsphere-alibaba-druid.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Microsphere MyBatis -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-mybatis-dependencies</artifactId>
+                <version>${microsphere-mybatis.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Microsphere Hibernate -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-hibernate-dependencies</artifactId>
+                <version>${microsphere-hibernate.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Microsphere Redis -->
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
                 <artifactId>microsphere-redis-dependencies</artifactId>
@@ -54,36 +89,17 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- Mybatis -->
+            <!-- Alibaba Sentinel -->
             <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-starter.version}</version>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-core</artifactId>
+                <version>${sentinel.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis-spring</artifactId>
-                <version>${mybatis-spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-autoconfigure</artifactId>
-                <version>${mybatis-spring-boot.version}</version>
-            </dependency>
-
-            <!-- Alibaba Druid -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
-                <version>${druid.version}</version>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-transport-simple-http</artifactId>
+                <version>${sentinel.version}</version>
             </dependency>
 
             <!-- Alibaba Fastjson -->

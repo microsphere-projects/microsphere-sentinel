@@ -23,7 +23,7 @@
         <!-- Microsphere Sentinel Core -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-core</artifactId>
+            <artifactId>microsphere-sentinel-commons</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -58,7 +58,7 @@
 
         <!-- Hibernate -->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <optional>true</optional>
         </dependency>
@@ -82,7 +82,6 @@
             <artifactId>mybatis-spring</artifactId>
             <optional>true</optional>
         </dependency>
-
 
         <!-- Testing -->
         <dependency>
