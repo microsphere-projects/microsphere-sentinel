@@ -1,1 +1,1 @@
-io.microsphere.sentinel.hibernate.entity.SentinelHibernateEntityCallback
+io.microsphere.alibaba.sentinel.hibernate.entity.SentinelHibernateEntityCallback
