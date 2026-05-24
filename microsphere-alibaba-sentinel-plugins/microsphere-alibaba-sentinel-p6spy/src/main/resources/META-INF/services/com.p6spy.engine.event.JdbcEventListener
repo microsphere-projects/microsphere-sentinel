@@ -1,1 +1,1 @@
-io.microsphere.sentinel.p6spy.SentinelJdbcEventListener
+io.microsphere.alibaba.sentinel.p6spy.SentinelJdbcEventListener
