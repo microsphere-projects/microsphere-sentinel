@@ -4,33 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.github.microsphere-projects</groupId>
-        <artifactId>microsphere-sentinel-parent</artifactId>
+        <artifactId>microsphere-alibaba-sentinel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../microsphere-sentinel-parent/pom.xml</relativePath>
+        <relativePath>../../microsphere-alibaba-sentinel-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-hibernate-core</artifactId>
+    <artifactId>microsphere-alibaba-sentinel-mybatis</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Plugins :: Hibernate Core</name>
-    <description>Microsphere Alibaba Sentinel Plugin for Hibernate Core</description>
+    <name>Microsphere :: Alibaba Sentinel :: Plugins :: MyBatis</name>
+    <description>Microsphere Alibaba Sentinel Plugin for MyBatis</description>
 
     <dependencies>
 
         <!-- Microsphere Sentinel Commons -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-commons</artifactId>
+            <artifactId>microsphere-alibaba-sentinel-commons</artifactId>
             <version>${revision}</version>
-        </dependency>
-
-        <!-- Microsphere Hibernate Core -->
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-hibernate-core</artifactId>
         </dependency>
 
         <!-- Microsphere Annotation Processor -->
@@ -47,10 +41,16 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Hibernate -->
+        <!-- Microsphere MyBatis Core -->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-mybatis-core</artifactId>
+        </dependency>
+
+        <!-- MyBatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -61,29 +61,17 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Microsphere Hibernate Test -->
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-hibernate-test</artifactId>
-        </dependency>
-
         <!-- Logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Microsphere MyBatis Test -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-mybatis-test</artifactId>
             <scope>test</scope>
         </dependency>
 

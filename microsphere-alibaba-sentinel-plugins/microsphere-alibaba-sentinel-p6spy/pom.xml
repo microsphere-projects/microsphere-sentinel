@@ -4,26 +4,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.github.microsphere-projects</groupId>
-        <artifactId>microsphere-sentinel-parent</artifactId>
+        <artifactId>microsphere-alibaba-sentinel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../microsphere-sentinel-parent/pom.xml</relativePath>
+        <relativePath>../../microsphere-alibaba-sentinel-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-mybatis</artifactId>
+    <artifactId>microsphere-alibaba-sentinel-p6spy</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Plugins :: MyBatis</name>
-    <description>Microsphere Alibaba Sentinel Plugin for MyBatis</description>
+    <name>Microsphere :: Alibaba Sentinel :: Plugins :: P6Spy</name>
+    <description>Microsphere Alibaba Sentinel Plugin for P6Spy</description>
 
     <dependencies>
 
         <!-- Microsphere Sentinel Commons -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-commons</artifactId>
+            <artifactId>microsphere-alibaba-sentinel-commons</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -41,16 +41,10 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Microsphere MyBatis Core -->
+        <!-- P6spy -->
         <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-mybatis-core</artifactId>
-        </dependency>
-
-        <!-- MyBatis -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -68,10 +62,16 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Microsphere MyBatis Test -->
+        <!-- Microsphere Alibaba Druid Test -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-mybatis-test</artifactId>
+            <artifactId>microsphere-alibaba-druid-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
             <scope>test</scope>
         </dependency>
 

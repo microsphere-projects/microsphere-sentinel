@@ -4,27 +4,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.github.microsphere-projects</groupId>
-        <artifactId>microsphere-sentinel-parent</artifactId>
+        <artifactId>microsphere-alibaba-sentinel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../microsphere-sentinel-parent/pom.xml</relativePath>
+        <relativePath>../../microsphere-alibaba-sentinel-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-p6spy</artifactId>
+    <artifactId>microsphere-alibaba-sentinel-alibaba-druid</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Plugins :: P6Spy</name>
-    <description>Microsphere Alibaba Sentinel Plugin for P6Spy</description>
+    <name>Microsphere :: Alibaba Sentinel :: Plugins :: Alibaba Druid</name>
+    <description>Microsphere Alibaba Sentinel Plugin for Alibaba Druid</description>
 
     <dependencies>
 
         <!-- Microsphere Sentinel Commons -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-commons</artifactId>
+            <artifactId>microsphere-alibaba-sentinel-commons</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <!-- Microsphere Alibaba Druid -->
+        <dependency>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-alibaba-druid-core</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- Microsphere Annotation Processor -->
@@ -34,17 +41,17 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Alibaba Druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Alibaba Sentinel -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-core</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- P6spy -->
-        <dependency>
-            <groupId>p6spy</groupId>
-            <artifactId>p6spy</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -66,12 +73,6 @@
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
             <artifactId>microsphere-alibaba-druid-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
             <scope>test</scope>
         </dependency>
 

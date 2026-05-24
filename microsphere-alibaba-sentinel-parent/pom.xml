@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.github.microsphere-projects</groupId>
-        <artifactId>microsphere-sentinel</artifactId>
+        <artifactId>microsphere-alibaba-sentinel</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-parent</artifactId>
+    <artifactId>microsphere-alibaba-sentinel-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 

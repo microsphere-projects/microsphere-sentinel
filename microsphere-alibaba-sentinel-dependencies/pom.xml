@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.github.microsphere-projects</groupId>
-        <artifactId>microsphere-sentinel-parent</artifactId>
+        <artifactId>microsphere-alibaba-sentinel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../microsphere-sentinel-parent/pom.xml</relativePath>
+        <relativePath>../microsphere-alibaba-sentinel-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-dependencies</artifactId>
+    <artifactId>microsphere-alibaba-sentinel-dependencies</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -23,55 +23,55 @@
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-commons</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-commons</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-alibaba-druid</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-alibaba-druid</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-mybatis</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-mybatis</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-hibernate-core</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-hibernate-core</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-p6spy</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-p6spy</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-redis</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-redis</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-spring-web</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-spring-web</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-spring</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-spring</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-spring-boot</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-spring-boot</artifactId>
                 <version>${revision}</version>
             </dependency>
 
