@@ -6,7 +6,7 @@
         <groupId>io.github.microsphere-projects</groupId>
         <artifactId>microsphere-alibaba-sentinel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../microsphere-sentinel-parent/pom.xml</relativePath>
+        <relativePath>../microsphere-alibaba-sentinel-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,12 +19,12 @@
     <description>Microsphere Alibaba Sentinel Plugins</description>
 
     <modules>
-        <module>microsphere-sentinel-alibaba-druid</module>
-        <module>microsphere-sentinel-mybatis</module>
-        <module>microsphere-sentinel-hibernate-core</module>
-        <module>microsphere-sentinel-p6spy</module>
-        <module>microsphere-sentinel-redis</module>
-        <module>microsphere-sentinel-spring-web</module>
+        <module>microsphere-alibaba-sentinel-alibaba-druid</module>
+        <module>microsphere-alibaba-sentinel-mybatis</module>
+        <module>microsphere-alibaba-sentinel-hibernate-core</module>
+        <module>microsphere-alibaba-sentinel-p6spy</module>
+        <module>microsphere-alibaba-sentinel-redis</module>
+        <module>microsphere-alibaba-sentinel-spring-web</module>
     </modules>
 
 </project>
