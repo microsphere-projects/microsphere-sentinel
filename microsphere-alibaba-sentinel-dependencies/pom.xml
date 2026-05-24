@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-dependencies</artifactId>
+    <artifactId>microsphere-alibaba-sentinel-dependencies</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -23,7 +23,7 @@
 
             <dependency>
                 <groupId>io.github.microsphere-projects</groupId>
-                <artifactId>microsphere-sentinel-commons</artifactId>
+                <artifactId>microsphere-alibaba-sentinel-commons</artifactId>
                 <version>${revision}</version>
             </dependency>
 

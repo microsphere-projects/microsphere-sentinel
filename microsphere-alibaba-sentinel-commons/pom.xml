@@ -6,32 +6,24 @@
         <groupId>io.github.microsphere-projects</groupId>
         <artifactId>microsphere-sentinel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../microsphere-sentinel-parent/pom.xml</relativePath>
+        <relativePath>../microsphere-sentinel-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-p6spy</artifactId>
+    <artifactId>microsphere-alibaba-sentinel-commons</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Plugins :: P6Spy</name>
-    <description>Microsphere Alibaba Sentinel Plugin for P6Spy</description>
+    <name>Microsphere :: Alibaba Sentinel :: Commons</name>
+    <description>Microsphere Alibaba Sentinel Commons</description>
 
     <dependencies>
 
-        <!-- Microsphere Sentinel Commons -->
+        <!-- Microsphere Java Core -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-commons</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <!-- Microsphere Annotation Processor -->
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-annotation-processor</artifactId>
-            <optional>true</optional>
+            <artifactId>microsphere-java-core</artifactId>
         </dependency>
 
         <!-- Alibaba Sentinel -->
@@ -41,10 +33,9 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- P6spy -->
         <dependency>
-            <groupId>p6spy</groupId>
-            <artifactId>p6spy</artifactId>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-transport-simple-http</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -55,33 +46,37 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Microsphere Alibaba Druid Test -->
+        <!-- Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Microsphere Logging Test -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-alibaba-druid-test</artifactId>
+            <artifactId>microsphere-logging-test</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- H2 -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>io.github.microsphere-projects</groupId>
+            <artifactId>microsphere-logback</artifactId>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
-
 </project>
