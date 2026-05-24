@@ -5,18 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.microsphere-projects</groupId>
-        <artifactId>microsphere-build</artifactId>
-        <version>0.0.21</version>
+        <artifactId>microsphere-spring-cloud-parent</artifactId>
+        <version>0.1.12</version>
     </parent>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel</artifactId>
+    <artifactId>microsphere-alibaba-sentinel</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>Microsphere :: Alibaba Sentinel</name>
     <description>Microsphere Projects for Alibaba Sentinel</description>
-    <url>https://github.com/microsphere-projects/microsphere-sentinel</url>
+    <url>https://github.com/microsphere-projects/microsphere-alibaba-sentinel</url>
 
     <licenses>
         <license>
@@ -40,46 +40,22 @@
     </developers>
 
     <scm>
-        <url>git@github.com/microsphere-projects/microsphere-sentinel.git</url>
+        <url>git@github.com/microsphere-projects/microsphere-alibaba-sentinel.git</url>
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:ssh://${project.scm.url}</developerConnection>
     </scm>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
+        <revision>0.1.0-SNAPSHOT</revision>
     </properties>
 
     <modules>
-        <module>microsphere-sentinel-parent</module>
-        <module>microsphere-sentinel-core</module>
-        <module>microsphere-sentinel-spring</module>
-        <module>microsphere-sentinel-spring-boot</module>
-        <module>microsphere-sentinel-dashboard</module>
-        <module>microsphere-sentinel-dependencies</module>
+        <module>microsphere-alibaba-sentinel-parent</module>
+        <module>microsphere-alibaba-sentinel-commons</module>
+        <module>microsphere-alibaba-sentinel-plugins</module>
+        <module>microsphere-alibaba-sentinel-spring</module>
+        <module>microsphere-alibaba-sentinel-spring-boot</module>
+        <module>microsphere-alibaba-sentinel-dependencies</module>
     </modules>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>snapshot</id>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-    </repositories>
 
 </project>
