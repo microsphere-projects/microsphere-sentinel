@@ -124,25 +124,28 @@ public class JMXSentinelPluginRepository implements SentinelPluginRepository, Pr
             }
             if (forRemoval) {
                 for (ObjectName name : objectNames) {
-                    mBeanServer.unregisterMBean(name);
                     String pluginName = name.getKeyProperty("name");
-                    delegate.uninstall(pluginName);
+                    uninstall(pluginName);
                 }
             }
             return delegate.getAll();
         });
     }
 
-    public static ObjectName newObjectName(String plugName) throws Exception {
+    static ObjectName newObjectName(String plugName) throws Exception {
         String name = format(OBJECT_NAME_PATTERN, plugName);
         return new ObjectName(name);
     }
 
-    public static <R> R doInMBeanServer(String plugName, ThrowableBiFunction<MBeanServer, ObjectName, R> consumer) {
+    protected <R> R doInMBeanServer(String plugName, ThrowableBiFunction<MBeanServer, ObjectName, R> consumer) {
         MBeanServer mBeanServer = getPlatformMBeanServer();
         return execute(() -> {
             ObjectName objectName = newObjectName(plugName);
-            return consumer.apply(mBeanServer, objectName);
+            R result = null;
+            synchronized (delegate) {
+                result = consumer.apply(mBeanServer, objectName);
+            }
+            return result;
         });
     }
 }
