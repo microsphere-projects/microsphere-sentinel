@@ -4,40 +4,33 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.github.microsphere-projects</groupId>
-        <artifactId>microsphere-sentinel-parent</artifactId>
+        <artifactId>microsphere-alibaba-sentinel-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../../microsphere-sentinel-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-spring-web</artifactId>
+    <artifactId>microsphere-sentinel-redis</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
-    <name>Microsphere :: Alibaba Sentinel :: Plugins :: Spring Web</name>
-    <description>Microsphere Alibaba Sentinel Plugin for Spring Web</description>
+    <name>Microsphere :: Alibaba Sentinel :: Plugins :: Redis</name>
+    <description>Microsphere Alibaba Sentinel Plugin for Redis</description>
 
     <dependencies>
 
         <!-- Microsphere Sentinel Commons -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-commons</artifactId>
+            <artifactId>microsphere-alibaba-sentinel-commons</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- Microsphere Spring Context -->
+        <!-- Microsphere Redis Spring -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-context</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- Microsphere Spring Web -->
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-web</artifactId>
+            <artifactId>microsphere-redis-spring</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -48,24 +41,17 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Servlet API -->
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Spring WebMVC -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <!-- Alibaba Sentinel -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Spring Data Redis -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -83,13 +69,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Microsphere Spring Web -->
-        <dependency>
-            <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-spring-webmvc</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- Microsphere Spring Test -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
@@ -104,17 +83,17 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JSON Assert -->
+        <!-- Lettuce -->
         <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- hamcrest -->
+        <!-- Commons Pool2 -->
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
             <scope>test</scope>
         </dependency>
 

@@ -10,13 +10,13 @@
     </parent>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel</artifactId>
+    <artifactId>microsphere-alibaba-sentinel</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>Microsphere :: Alibaba Sentinel</name>
     <description>Microsphere Projects for Alibaba Sentinel</description>
-    <url>https://github.com/microsphere-projects/microsphere-sentinel</url>
+    <url>https://github.com/microsphere-projects/microsphere-alibaba-sentinel</url>
 
     <licenses>
         <license>
@@ -40,7 +40,7 @@
     </developers>
 
     <scm>
-        <url>git@github.com/microsphere-projects/microsphere-sentinel.git</url>
+        <url>git@github.com/microsphere-projects/microsphere-alibaba-sentinel.git</url>
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:ssh://${project.scm.url}</developerConnection>
     </scm>
@@ -51,12 +51,12 @@
     </properties>
 
     <modules>
-        <module>microsphere-sentinel-parent</module>
-        <module>microsphere-sentinel-commons</module>
-        <module>microsphere-sentinel-plugins</module>
-        <module>microsphere-sentinel-spring</module>
-        <module>microsphere-sentinel-spring-boot</module>
-        <module>microsphere-sentinel-dependencies</module>
+        <module>microsphere-alibaba-sentinel-parent</module>
+        <module>microsphere-alibaba-sentinel-commons</module>
+        <module>microsphere-alibaba-sentinel-plugins</module>
+        <module>microsphere-alibaba-sentinel-spring</module>
+        <module>microsphere-alibaba-sentinel-spring-boot</module>
+        <module>microsphere-alibaba-sentinel-dependencies</module>
     </modules>
 
 </project>
