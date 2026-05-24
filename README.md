@@ -33,11 +33,11 @@ infrastructure components to complete application-level integration:
 
 | **Module**                            | **Purpose**                                                            |
 |---------------------------------------|------------------------------------------------------------------------|
-| **microsphere-sentinel-parent**       | Defines the parent POM with dependency management and version profiles |
-| **microsphere-sentinel-dependencies** | Centralizes dependency management for all project modules              |
-| **microsphere-sentinel-commons**      | Common featurues of Alibaba Sentinel extension                         |
-| **microsphere-sentinel-plugins**      | The plugins of Alibaba Sentinel                                        |
-| **microsphere-sentinel-spring**       | Integration for Alibaba Sentinel Spring                                |
+| **microsphere-alibaba-sentinel-parent**       | Defines the parent POM with dependency management and version profiles |
+| **microsphere-alibaba-sentinel-dependencies** | Centralizes dependency management for all project modules              |
+| **microsphere-alibaba-sentinel-commons**      | Common featurues of Alibaba Sentinel extension                         |
+| **microsphere-alibaba-sentinel-plugins**      | The plugins of Alibaba Sentinel                                        |
+| **microsphere-alibaba-sentinel-spring**       | Integration for Alibaba Sentinel Spring                                |
 
 ## Getting Started
 
@@ -52,7 +52,7 @@ pom.xml:
         <!-- Microsphere Alibaba Sentinel Dependencies -->
         <dependency>
             <groupId>io.github.microsphere-projects</groupId>
-            <artifactId>microsphere-sentinel-dependencies</artifactId>
+            <artifactId>microsphere-alibaba-sentinel-dependencies</artifactId>
             <version>${microsphere-sentinel.version}</version>
             <type>pom</type>
             <scope>import</scope>
@@ -120,15 +120,15 @@ We welcome your contributions! Please read [Code of Conduct](./CODE_OF_CONDUCT.m
 
 ### JavaDoc
 
-- [microsphere-sentinel-commons](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-commons)
-- [microsphere-sentinel-spring](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-spring)
-- [microsphere-sentinel-alibaba-druid](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-alibaba-druid)
-- [microsphere-sentinel-hibernate](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-hibernate)
-- [microsphere-sentinel-mybatis](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-mybatis)
-- [microsphere-sentinel-p6spy](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-p6spy)
-- [microsphere-sentinel-redis](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-redis)
-- [microsphere-sentinel-spring](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-spring)
-- [microsphere-sentinel-spring-web](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-sentinel-spring-web)
+- [microsphere-alibaba-sentinel-commons](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-commons)
+- [microsphere-alibaba-sentinel-spring](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-spring)
+- [microsphere-alibaba-sentinel-alibaba-druid](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-alibaba-druid)
+- [microsphere-alibaba-sentinel-hibernate](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-hibernate)
+- [microsphere-alibaba-sentinel-mybatis](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-mybatis)
+- [microsphere-alibaba-sentinel-p6spy](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-p6spy)
+- [microsphere-alibaba-sentinel-redis](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-redis)
+- [microsphere-alibaba-sentinel-spring](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-spring)
+- [microsphere-alibaba-sentinel-spring-web](https://javadoc.io/doc/io.github.microsphere-projects/microsphere-alibaba-sentinel-spring-web)
 
 ## License
 

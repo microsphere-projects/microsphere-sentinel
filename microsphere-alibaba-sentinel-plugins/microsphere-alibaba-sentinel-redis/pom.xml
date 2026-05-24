@@ -6,12 +6,12 @@
         <groupId>io.github.microsphere-projects</groupId>
         <artifactId>microsphere-alibaba-sentinel-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>../../microsphere-sentinel-parent/pom.xml</relativePath>
+        <relativePath>../../microsphere-alibaba-sentinel-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.microsphere-projects</groupId>
-    <artifactId>microsphere-sentinel-redis</artifactId>
+    <artifactId>microsphere-alibaba-sentinel-redis</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
 
