@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.common;
 
-
 import com.alibaba.csp.sentinel.EntryType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
