@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.common;
 
-
 /**
  * {@link SimpleSentinelPluginRepository}
  *

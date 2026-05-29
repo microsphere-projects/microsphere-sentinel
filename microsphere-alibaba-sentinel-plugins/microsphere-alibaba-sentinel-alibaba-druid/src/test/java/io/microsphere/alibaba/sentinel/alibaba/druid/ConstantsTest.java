@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.alibaba.druid;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.alibaba.sentinel.alibaba.druid.Constants.DEFAULT_CONTEXT_NAME;

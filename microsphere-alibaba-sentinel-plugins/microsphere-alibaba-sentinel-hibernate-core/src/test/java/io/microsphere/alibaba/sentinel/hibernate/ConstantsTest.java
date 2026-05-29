@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.hibernate;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.alibaba.sentinel.hibernate.Constants.DEFAULT_CONTEXT_NAME;
