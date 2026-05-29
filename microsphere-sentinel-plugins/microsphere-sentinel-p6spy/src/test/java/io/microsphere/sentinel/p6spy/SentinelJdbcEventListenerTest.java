@@ -17,7 +17,6 @@
 
 package io.microsphere.sentinel.p6spy;
 
-
 import com.alibaba.druid.pool.DruidDataSource;
 import io.microsphere.alibaba.druid.test.AbstractAlibabaDruidTest;
 import org.junit.jupiter.api.Test;

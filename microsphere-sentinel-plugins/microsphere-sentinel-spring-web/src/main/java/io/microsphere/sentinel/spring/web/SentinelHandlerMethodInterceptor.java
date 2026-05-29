@@ -140,7 +140,6 @@ public class SentinelHandlerMethodInterceptor extends AbstractSentinelPlugin imp
         Collection<WebEndpointMapping> webEndpointMappings = event.getMappings();
         int size = webEndpointMappings.size();
 
-
         Map<Method, String> methodEntryNamesCache = newFixedHashMap(size);
         this.methodResourceNamesCache = methodEntryNamesCache;
 

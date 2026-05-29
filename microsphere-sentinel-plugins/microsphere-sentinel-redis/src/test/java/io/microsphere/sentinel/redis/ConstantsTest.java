@@ -17,7 +17,6 @@
 
 package io.microsphere.sentinel.redis;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.sentinel.common.util.SentinelUtils.getPluginEnabledPropertyName;
