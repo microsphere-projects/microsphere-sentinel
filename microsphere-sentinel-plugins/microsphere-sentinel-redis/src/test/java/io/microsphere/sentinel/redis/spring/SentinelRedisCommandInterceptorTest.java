@@ -17,7 +17,6 @@
 
 package io.microsphere.sentinel.redis.spring;
 
-
 import io.microsphere.redis.spring.annotation.EnableRedisInterceptor;
 import io.microsphere.redis.spring.context.RedisContext;
 import io.microsphere.redis.spring.interceptor.RedisMethodContext;

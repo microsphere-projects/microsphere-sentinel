@@ -17,7 +17,6 @@
 
 package io.microsphere.sentinel.common.constants;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.sentinel.common.constants.SentinelConstants.DEFAULT_CONTEXT_NAME;

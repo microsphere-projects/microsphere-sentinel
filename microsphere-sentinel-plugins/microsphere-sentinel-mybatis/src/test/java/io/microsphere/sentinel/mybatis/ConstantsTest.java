@@ -17,7 +17,6 @@
 
 package io.microsphere.sentinel.mybatis;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.sentinel.mybatis.Constants.DEFAULT_CONTEXT_NAME;

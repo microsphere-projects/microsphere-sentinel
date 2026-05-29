@@ -1,6 +1,5 @@
 package io.microsphere.sentinel.common.util;
 
-
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;

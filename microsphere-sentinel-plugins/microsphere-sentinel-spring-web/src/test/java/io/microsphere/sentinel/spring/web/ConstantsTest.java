@@ -17,7 +17,6 @@
 
 package io.microsphere.sentinel.spring.web;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.sentinel.common.util.SentinelUtils.getPluginEnabledPropertyName;
