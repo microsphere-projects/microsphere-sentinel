@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.p6spy;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.alibaba.sentinel.p6spy.Constants.DEFAULT_CONTEXT_NAME;

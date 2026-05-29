@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.spring.web;
 
-
 import io.microsphere.spring.test.web.context.request.MockServletWebRequest;
 import io.microsphere.spring.test.webmvc.AbstractWebMvcTest;
 import io.microsphere.spring.webmvc.annotation.EnableWebMvcExtension;

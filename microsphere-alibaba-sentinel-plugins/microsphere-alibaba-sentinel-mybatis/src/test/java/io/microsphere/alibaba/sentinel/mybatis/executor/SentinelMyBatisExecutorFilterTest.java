@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.mybatis.executor;
 
-
 import io.microsphere.mybatis.plugin.InterceptingExecutorInterceptor;
 import io.microsphere.mybatis.test.AbstractMapperTest;
 import org.apache.ibatis.session.Configuration;

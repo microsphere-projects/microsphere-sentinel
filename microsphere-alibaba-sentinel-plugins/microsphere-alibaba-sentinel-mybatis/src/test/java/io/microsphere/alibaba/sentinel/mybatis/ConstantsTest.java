@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.mybatis;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.alibaba.sentinel.mybatis.Constants.DEFAULT_CONTEXT_NAME;

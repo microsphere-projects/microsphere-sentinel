@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.spring.web;
 
-
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.alibaba.sentinel.common.util.SentinelUtils.getPluginEnabledPropertyName;
