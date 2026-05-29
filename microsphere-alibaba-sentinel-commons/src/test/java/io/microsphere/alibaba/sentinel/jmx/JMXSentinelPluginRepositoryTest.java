@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.jmx;
 
-
 import io.microsphere.alibaba.sentinel.common.SentinelPluginRepository;
 import io.microsphere.alibaba.sentinel.common.SentinelPluginRepositoryTest;
 

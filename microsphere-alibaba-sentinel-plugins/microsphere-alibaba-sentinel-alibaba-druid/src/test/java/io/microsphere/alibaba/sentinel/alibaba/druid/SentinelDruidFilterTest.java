@@ -17,7 +17,6 @@
 
 package io.microsphere.alibaba.sentinel.alibaba.druid;
 
-
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.pool.DruidDataSource;
 import io.microsphere.alibaba.druid.test.AbstractAlibabaDruidTest;
